@@ -1,0 +1,13 @@
+{
+  "name": "com.virtual-visions.vtility",
+  "displayName": "VTility",
+  "version": "0.0.2",
+  "unity": "2022.3",
+  "description": "Utility packages for VRChat.",
+  "vrchatVersion": "2022.1.1",
+  "author": {
+    "name": "Vaughan Schmidt",
+    "email": "vowganvr@gmail.com",
+    "url": "https://vowgan.dev"
+  }
+}
