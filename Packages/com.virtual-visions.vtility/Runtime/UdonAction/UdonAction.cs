@@ -14,7 +14,6 @@ namespace VirtualVisions.VTility
         ///    public UdonAction BindItem
         ///    {
         ///        get => (UdonAction)(_bindItem != null ? _bindItem : _bindItem = UdonAction.Create());
-        ///        set => _bindItem = value;
         ///    }
         ///    private DataDictionary _bindItem;
         ///    

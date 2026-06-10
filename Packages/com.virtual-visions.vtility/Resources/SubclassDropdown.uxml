@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement name="Root">
+        <ui:VisualElement name="HeaderContainer" style="flex-direction: row;">
+            <ui:Foldout text="Property Name" name="TitleFoldout" />
+            <ui:DropdownField name="TypeDropdown" style="flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Container" />
+    </ui:VisualElement>
+</ui:UXML>
