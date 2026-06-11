@@ -12,28 +12,40 @@ namespace VirtualVisions.VTility
     public abstract class UdonEvent : DataDictionary
     {
         public const string KEY_TARGET = "target";
+        public const string KEY_HAS_EVENT = "hasEvent";
         public const string KEY_EVENT = "event";
         public const string KEY_HAS_OUTPUT = "hasOutput";
         public const string KEY_OUTPUT_NAME = "outputName";
-        
+        public const string KEY_HASH = "hash";
+
         public static UdonEvent _Create(UdonSharpBehaviour target, string eventName)
         {
             DataDictionary dictionary = new DataDictionary();
             dictionary[KEY_TARGET] = target;
+            dictionary[KEY_HAS_EVENT] = !string.IsNullOrEmpty(eventName);
             dictionary[KEY_EVENT] = eventName;
             dictionary[KEY_HAS_OUTPUT] = false;
             dictionary[KEY_OUTPUT_NAME] = string.Empty;
-            return (UdonEvent)dictionary;
+
+            UdonEvent output = (UdonEvent)dictionary;
+            output[KEY_HASH] = output._BuildHash();
+
+            return output;
         }
-        
+
         public static UdonEvent _Create(UdonSharpBehaviour target, string eventName, string outputName)
         {
             DataDictionary dictionary = new DataDictionary();
             dictionary[KEY_TARGET] = target;
+            dictionary[KEY_HAS_EVENT] = !string.IsNullOrEmpty(eventName);
             dictionary[KEY_EVENT] = eventName;
             dictionary[KEY_HAS_OUTPUT] = true;
-            dictionary[KEY_OUTPUT_NAME] =outputName;
-            return (UdonEvent)dictionary;
+            dictionary[KEY_OUTPUT_NAME] = outputName;
+
+            UdonEvent output = (UdonEvent)dictionary;
+            output[KEY_HASH] = output._BuildHash();
+
+            return output;
         }
     }
 
@@ -43,51 +55,58 @@ namespace VirtualVisions.VTility
 
         public static UdonSharpBehaviour _Target(this UdonEvent udonEvent) =>
             (UdonSharpBehaviour)udonEvent[UdonEvent.KEY_TARGET].Reference;
-        
+
+        public static bool _HasEvent(this UdonEvent udonEvent) =>
+            udonEvent[UdonEvent.KEY_HAS_EVENT].Boolean;
+
         public static string _EventName(this UdonEvent udonEvent) =>
             udonEvent[UdonEvent.KEY_EVENT].String;
-        
+
         public static bool _HasOutput(this UdonEvent udonEvent) =>
             udonEvent[UdonEvent.KEY_HAS_OUTPUT].Boolean;
-        
+
         public static string _OutputName(this UdonEvent udonEvent) =>
             udonEvent[UdonEvent.KEY_OUTPUT_NAME].String;
-        
+
+        public static int _Hash(this UdonEvent udonEvent) =>
+            udonEvent[UdonEvent.KEY_HASH].Int;
+
 
         public static void _Invoke(this UdonEvent udonEvent)
         {
             UdonBehaviour target = (UdonBehaviour)udonEvent[UdonEvent.KEY_TARGET].Reference;
-            string eventName = udonEvent[UdonEvent.KEY_EVENT].String;
-            target.SendCustomEvent(eventName);
+
+            if (udonEvent._HasEvent())
+            {
+                target.SendCustomEvent(udonEvent._EventName());
+            }
         }
 
         public static void _Invoke<T>(this UdonEvent udonEvent, T outputValue)
         {
             UdonBehaviour target = (UdonBehaviour)udonEvent[UdonEvent.KEY_TARGET].Reference;
-            string eventName = udonEvent[UdonEvent.KEY_EVENT].String;
-            
-            if (udonEvent[UdonEvent.KEY_HAS_OUTPUT].Boolean)
+
+            if (udonEvent._HasOutput())
             {
-                string outputName = udonEvent[UdonEvent.KEY_OUTPUT_NAME].String;
-                target.SetProgramVariable(outputName, outputValue);
+                target.SetProgramVariable(udonEvent._OutputName(), outputValue);
             }
-            
-            target.SendCustomEvent(eventName);
+
+            if (udonEvent._HasEvent())
+            {
+                target.SendCustomEvent(udonEvent._EventName());
+            }
         }
 
-        public static int _GetHash(this UdonEvent udonEvent)
+        public static int _BuildHash(this UdonEvent udonEvent)
         {
             StringBuilder output = new StringBuilder();
             output.Append(udonEvent._Target());
-            output.Append(udonEvent._EventName());
+            output.Append(udonEvent._HasEvent());
+            if (udonEvent._HasEvent()) output.Append(udonEvent._EventName());
             output.Append(udonEvent._HasOutput());
-            if (udonEvent._HasOutput())
-            {
-                output.Append(udonEvent._OutputName());
-            }
+            if (udonEvent._HasOutput()) output.Append(udonEvent._OutputName());
 
             int hash = Animator.StringToHash(output.ToString());
-            
             return hash;
         }
     }

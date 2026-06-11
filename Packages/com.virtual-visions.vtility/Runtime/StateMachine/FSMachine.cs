@@ -90,5 +90,11 @@ namespace VirtualVisions.VTility
 
             return machine;
         }
+
+        public static FSMachine _Shutdown(this FSMachine machine)
+        {
+            machine._SetState(-1);
+            return machine;
+        }
     }
 }
