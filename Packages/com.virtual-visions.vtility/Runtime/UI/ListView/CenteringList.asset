@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 1
   hasInteractEvent: 0
-  scriptID: 8519714067978298985
+  scriptID: 2887932352230553610
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -488,7 +488,7 @@ MonoBehaviour:
       Data: 26|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: VirtualVisions.Varcade.LayoutDirection, VTility.Runtime
+      Data: VirtualVisions.VTility.LayoutDirection, VTility.Runtime
     - Name: 
       Entry: 8
       Data: 

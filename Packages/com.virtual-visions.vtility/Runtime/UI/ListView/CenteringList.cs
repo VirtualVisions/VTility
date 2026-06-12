@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using VRC.SDK3.Components;
 
-namespace VirtualVisions.Varcade
+namespace VirtualVisions.VTility
 {
     public class CenteringList : UdonListView
     {

@@ -1,9 +1,5 @@
-﻿
-using UdonSharp;
-using UnityEngine;
+﻿using UnityEngine;
 using VRC.SDK3.Data;
-using VRC.SDKBase;
-using VRC.Udon;
 
 namespace VirtualVisions.VTility
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility

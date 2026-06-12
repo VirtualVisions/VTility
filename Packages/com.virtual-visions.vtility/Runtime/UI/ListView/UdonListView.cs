@@ -1,10 +1,8 @@
-﻿using System;
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
-using VirtualVisions.VTility;
 using VRC.SDK3.Data;
 
-namespace VirtualVisions.Varcade
+namespace VirtualVisions.VTility
 {
 
     public enum LayoutDirection
