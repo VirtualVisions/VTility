@@ -37,7 +37,7 @@ namespace VirtualVisions.VTility
 
             return false;
         }
-        
+
         /// <summary>
         /// Directly compare if a string is within a percentage difference of a target string using a levenshtein distance comparison.
         /// </summary>
@@ -103,7 +103,6 @@ namespace VirtualVisions.VTility
                 currentRow = temp;
             }
 
-            Debug.Log($"{a} / {b} : {previousRow[bLength]}");
             return previousRow[bLength];
         }
     }

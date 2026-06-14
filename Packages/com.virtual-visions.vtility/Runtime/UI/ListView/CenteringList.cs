@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using VRC.SDK3.Components;
+using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
@@ -8,6 +9,8 @@ namespace VirtualVisions.VTility
 
         [SerializeField] protected float _itemSize = 50;
         [SerializeField] protected float _spacingSize = 15;
+        [SerializeField] protected float _selectedItemMargin = 30;
+        [SerializeField] protected float _selectedItemScale = 1.2f;
         [SerializeField] private float _tweenDuration = 1;
         [SerializeField] private VRCTweenEase _tweenEase = VRCTweenEase.OutCubic;
 
@@ -23,15 +26,19 @@ namespace VirtualVisions.VTility
             return ((index * _itemSize) + ((index - 1) * _spacingSize) + ItemHalfSize);
         }
 
-        private Vector2 GetLayoutPosition(int index) 
+        private Vector2 GetLayoutPosition(int index)
         {
+            float selectionMargin = 0;
+            if (index < SelectedIndex) selectionMargin = -_selectedItemMargin;
+            if (index > SelectedIndex) selectionMargin = _selectedItemMargin;
+            
             switch (_direction)
             {
                 default:
                 case LayoutDirection.Column:
-                    return new Vector2(0, -GetItemPlacement(index));
+                    return new Vector2(0, -GetItemPlacement(index) + selectionMargin);
                 case LayoutDirection.Row:
-                    return new Vector2(GetItemPlacement(index), 0);
+                    return new Vector2(GetItemPlacement(index) + selectionMargin, 0);
             }
         }
 
@@ -65,30 +72,48 @@ namespace VirtualVisions.VTility
             {
                 default:
                 case LayoutDirection.Column:
-                    if(direction.y == 1) _SelectPrevious();
-                    if(direction.y == -1) _SelectNext();
+                    if (direction.y == 1) _SelectPrevious();
+                    if (direction.y == -1) _SelectNext();
                     break;
                 case LayoutDirection.Row:
-                    if(direction.x == 1) _SelectNext();
-                    if(direction.x == -1) _SelectPrevious();
+                    if (direction.x == 1) _SelectNext();
+                    if (direction.x == -1) _SelectPrevious();
                     break;
             }
         }
-        
+
         public void _SelectPrevious() => _SetIndex(SelectedIndex - 1);
         public void _SelectNext() => _SetIndex(SelectedIndex + 1);
 
 
         public override void _SetIndex(int index)
         {
+            int lastIndex = SelectedIndex;
+
             base._SetIndex(index);
             _TweenToCurrent();
+
+            if (lastIndex != -1 && lastIndex != SelectedIndex)
+            {
+                if (_activeItemKeys.TryGetValue(lastIndex, TokenType.Reference, out DataToken lastItem))
+                {
+                    RectTransform rect = (RectTransform)lastItem.Reference;
+                    rect.TweenAnchorPos(GetLayoutPosition(lastIndex), _tweenDuration, _tweenEase);
+                    rect.TweenScale(Vector3.one, _tweenDuration, _tweenEase);
+                }
+                if (_activeItemKeys.TryGetValue(index, TokenType.Reference, out DataToken nextItem))
+                {
+                    RectTransform rect = (RectTransform)nextItem.Reference;
+                    rect.TweenAnchorPos(GetLayoutPosition(index), _tweenDuration, _tweenEase);
+                    rect.TweenScale(Vector3.one * _selectedItemScale, _tweenDuration, _tweenEase);
+                }
+            }
         }
 
         protected override RectTransform CreateItem()
         {
             RectTransform item = base.CreateItem();
-            
+
             switch (_direction)
             {
                 default:
@@ -101,7 +126,7 @@ namespace VirtualVisions.VTility
                     _itemContainer.sizeDelta = new Vector2(ContainerSize, 0);
                     break;
             }
-            
+
             return item;
         }
 
