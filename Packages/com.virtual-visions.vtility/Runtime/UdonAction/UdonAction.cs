@@ -11,10 +11,7 @@ namespace VirtualVisions.VTility
         /// Since Udon doesn't natively support fields of this type,
         /// it is recommended to use this format for your fields:
         /// 
-        ///    public UdonAction BindItem
-        ///    {
-        ///        get => (UdonAction)(_bindItem != null ? _bindItem : _bindItem = UdonAction.Create());
-        ///    }
+        ///    public UdonAction BindItem => (UdonAction)(_bindItem != null ? _bindItem : _bindItem = UdonAction.Create());
         ///    private DataDictionary _bindItem;
         ///    
 

@@ -11,16 +11,23 @@ namespace VirtualVisions.VTility
         [SerializeField] protected float _spacingSize = 15;
         [SerializeField] protected float _selectedItemMargin = 30;
         [SerializeField] protected float _selectedItemScale = 1.2f;
-        [SerializeField] private float _tweenDuration = 1;
+        [SerializeField] private float _tweenDuration = 0.5f;
         [SerializeField] private VRCTweenEase _tweenEase = VRCTweenEase.OutCubic;
 
-        private VRCTweenHandle _currentTween;
+        private VRCTweenHandle _blendContainer;
+        
+        private VRCTweenHandle _blendNextSelectionPos;
+        private VRCTweenHandle _blendNextSelectionScale;
+        
+        private VRCTweenHandle _blendLastSelectionPos;
+        private VRCTweenHandle _blendLastSelectionScale;
 
-        protected float ContainerSize => GetItemPlacement(ItemCount);
-        protected float ItemHalfSize => _itemSize / 2f;
-        protected float FullItemSize => _itemSize + _spacingSize;
-
-
+        
+        private float ContainerSize => GetItemPlacement(ItemCount);
+        private float ItemHalfSize => _itemSize / 2f;
+        private float FullItemSize => _itemSize + _spacingSize;
+        
+        
         private float GetItemPlacement(int index)
         {
             return ((index * _itemSize) + ((index - 1) * _spacingSize) + ItemHalfSize);
@@ -36,7 +43,7 @@ namespace VirtualVisions.VTility
             {
                 default:
                 case LayoutDirection.Column:
-                    return new Vector2(0, -GetItemPlacement(index) + selectionMargin);
+                    return new Vector2(0, -GetItemPlacement(index) - selectionMargin);
                 case LayoutDirection.Row:
                     return new Vector2(GetItemPlacement(index) + selectionMargin, 0);
             }
@@ -50,7 +57,7 @@ namespace VirtualVisions.VTility
 
         private void Update()
         {
-            if (_currentTween.IsActive)
+            if (_blendContainer.IsActive)
             {
                 RefreshVisibility();
             }
@@ -58,9 +65,9 @@ namespace VirtualVisions.VTility
 
         public void _TweenToCurrent()
         {
-            if (_currentTween.IsActive) _currentTween.Kill();
+            _blendContainer.TryKill();
 
-            _currentTween = _itemContainer.TweenAnchorPos(
+            _blendContainer = _itemContainer.TweenAnchorPos(
                 -GetLayoutPosition(SelectedIndex),
                 _tweenDuration,
                 _tweenEase);
@@ -72,12 +79,12 @@ namespace VirtualVisions.VTility
             {
                 default:
                 case LayoutDirection.Column:
-                    if (direction.y == 1) _SelectPrevious();
-                    if (direction.y == -1) _SelectNext();
+                    if (direction == Vector2Int.up) _SelectPrevious();
+                    if (direction == Vector2Int.down) _SelectNext();
                     break;
                 case LayoutDirection.Row:
-                    if (direction.x == 1) _SelectNext();
-                    if (direction.x == -1) _SelectPrevious();
+                    if (direction == Vector2Int.right) _SelectNext();
+                    if (direction == Vector2Int.left) _SelectPrevious();
                     break;
             }
         }
@@ -93,19 +100,28 @@ namespace VirtualVisions.VTility
             base._SetIndex(index);
             _TweenToCurrent();
 
-            if (lastIndex != -1 && lastIndex != SelectedIndex)
+            if (lastIndex != -1 && lastIndex != SelectedIndex && !Mathf.Approximately(_selectedItemScale, 1))
             {
                 if (_activeItemKeys.TryGetValue(lastIndex, TokenType.Reference, out DataToken lastItem))
                 {
-                    RectTransform rect = (RectTransform)lastItem.Reference;
-                    rect.TweenAnchorPos(GetLayoutPosition(lastIndex), _tweenDuration, _tweenEase);
-                    rect.TweenScale(Vector3.one, _tweenDuration, _tweenEase);
+                    RectTransform rect = lastItem.CastReference<RectTransform>();
+
+                    _blendLastSelectionPos.TryComplete();
+                    _blendLastSelectionScale.TryComplete();
+
+                    _blendLastSelectionPos = rect.TweenAnchorPos(GetLayoutPosition(lastIndex), _tweenDuration, _tweenEase);
+                    _blendLastSelectionScale = rect.TweenScale(Vector3.one, _tweenDuration, _tweenEase);
                 }
+
                 if (_activeItemKeys.TryGetValue(index, TokenType.Reference, out DataToken nextItem))
                 {
-                    RectTransform rect = (RectTransform)nextItem.Reference;
-                    rect.TweenAnchorPos(GetLayoutPosition(index), _tweenDuration, _tweenEase);
-                    rect.TweenScale(Vector3.one * _selectedItemScale, _tweenDuration, _tweenEase);
+                    RectTransform rect = nextItem.CastReference<RectTransform>();
+
+                    _blendNextSelectionPos.TryComplete();
+                    _blendNextSelectionScale.TryComplete();
+
+                    _blendNextSelectionPos = rect.TweenAnchorPos(GetLayoutPosition(index), _tweenDuration, _tweenEase);
+                    _blendNextSelectionScale = rect.TweenScale(Vector3.one * _selectedItemScale, _tweenDuration, _tweenEase);
                 }
             }
         }
