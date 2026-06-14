@@ -18,12 +18,14 @@ namespace VirtualVisions.VTility
 
         public const string KEY_ACTIVE = "active";
         public const string KEY_LIST = "list";
+        public const string KEY_ON_OBJECT_SWITCHED = "onObjectSwitched";
 
         public static ObjectSwitcher Create(GameObject[] objs)
         {
             DataDictionary dict = new DataDictionary();
             dict[KEY_LIST] = objs._ToReferenceArray();
             dict[KEY_ACTIVE] = new DataToken((GameObject)null);
+            dict[KEY_ON_OBJECT_SWITCHED] = UdonAction.Create();
 
             foreach (GameObject obj in objs) obj.SetActive(false);
             
@@ -37,11 +39,21 @@ namespace VirtualVisions.VTility
         public static ObjectSwitcher _ObjSwitcher(this DataToken token) => (ObjectSwitcher)token.DataDictionary;
         public static DataList _List(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_LIST].DataList;
         public static GameObject _Active(this ObjectSwitcher switcher) => (GameObject)switcher[ObjectSwitcher.KEY_ACTIVE].Reference;
+        public static UdonAction _OnObjectSwitched(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_ON_OBJECT_SWITCHED]._UdonAction();
 
         public static void _AddObject(this ObjectSwitcher switcher, GameObject obj)
         {
             switcher._List().Add(obj);
             obj.SetActive(false);
+        }
+        
+        public static void _SwitchTo(this ObjectSwitcher switcher, int index)
+        {
+            DataList list = switcher._List();
+            if (index < 0 || index >= list.Count) return;
+            
+            GameObject obj = list[index].CastReference<GameObject>();
+            switcher._SwitchTo(obj);
         }
         
         public static void _SwitchTo(this ObjectSwitcher switcher, GameObject obj)
@@ -54,20 +66,7 @@ namespace VirtualVisions.VTility
             
             obj.SetActive(true);
             switcher[ObjectSwitcher.KEY_ACTIVE] = obj;
-        }
-        
-        public static void _SwitchTo(this ObjectSwitcher switcher, int index)
-        {
-            DataList list = switcher._List();
-            if (index < 0 || index >= list.Count) return;
-            
-            GameObject obj = list[index].CastReference<GameObject>();
-            
-            GameObject active = switcher._Active();
-            if (active) active.SetActive(false);
-            
-            obj.SetActive(true);
-            switcher[ObjectSwitcher.KEY_ACTIVE] = obj;
+            switcher._OnObjectSwitched()._Invoke(obj);
         }
     }
 }
