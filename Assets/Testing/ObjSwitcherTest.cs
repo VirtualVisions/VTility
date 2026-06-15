@@ -8,7 +8,7 @@ using VRC.SDK3.Data;
 public class ObjSwitcherTest : UdonSharpBehaviour
 {
 
-    public GameObject[] Objs;
+    public Transform[] Objs;
 
     public ObjectSwitcher Switcher => (ObjectSwitcher)_switcher;
     private DataDictionary _switcher;
