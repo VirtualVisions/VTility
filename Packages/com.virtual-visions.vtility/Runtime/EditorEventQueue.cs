@@ -26,7 +26,15 @@ namespace VirtualVisions.VTility
         private static void Update()
         {
             if (_queuedEvent == null) return;
-            _queuedEvent.Invoke();
+            try
+            {
+                _queuedEvent.Invoke();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             _queuedEvent = null;
         }
 
