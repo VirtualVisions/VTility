@@ -81,6 +81,11 @@ namespace VirtualVisions.VTility
         }
 
 
+        public static void _RemoveAllListeners(this UdonAction action)
+        {
+            action._Events().Clear();
+        }
+
 
         public static void _Invoke(this UdonAction action)
         {

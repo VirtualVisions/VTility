@@ -43,8 +43,8 @@ MonoBehaviour:
     y: 0
     width: 526
     height: 794
-  m_MinSize: {x: 516, y: 450}
-  m_MaxSize: {x: 516, y: 2000}
+  m_MinSize: {x: 517, y: 471}
+  m_MaxSize: {x: 517, y: 2021}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 181
+  controlID: 188
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -94,8 +94,8 @@ MonoBehaviour:
     y: 0
     width: 1104
     height: 505.33334
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 24}
   m_Panes:
   - {fileID: 24}
@@ -196,8 +196,8 @@ MonoBehaviour:
     y: 0
     width: 578
     height: 794
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 21}
   m_Panes:
   - {fileID: 21}
@@ -559,9 +559,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 158.99994}
-    m_SelectedIDs: 70630000
-    m_LastClickedID: 25456
-    m_ExpandedIDs: 000000006e6300007063000000ca9a3bffffff7f
+    m_SelectedIDs: 72630000
+    m_LastClickedID: 25458
+    m_ExpandedIDs: 00000000706300007263000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -589,7 +589,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000006e63000070630000
+    m_ExpandedIDs: 000000007063000072630000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -731,9 +731,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 14f8ffff
       m_LastClickedID: 0
-      m_ExpandedIDs: d4faffff
+      m_ExpandedIDs: c8faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1164,11 +1164,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.20339851, y: 0.25038195, z: -0.053890966, w: 0.9450109}
     speed: 2
-    m_Value: {x: 0.2033433, y: 0.25132537, z: -0.054094017, w: 0.9447544}
+    m_Value: {x: -0.20339851, y: -0.25038195, z: 0.05389097, w: -0.94501096}
   m_Size:
     m_Target: 10.804385
     speed: 2
-    m_Value: 11.313493
+    m_Value: 10.804385
   m_Ortho:
     m_Target: 0
     speed: 2
