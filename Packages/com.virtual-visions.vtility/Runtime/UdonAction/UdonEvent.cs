@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using UdonSharp;
-using UnityEngine;
 using VRC.SDK3.Data;
 using VRC.Udon;
 
@@ -100,7 +99,7 @@ namespace VirtualVisions.VTility
         public static int _BuildHash(this UdonEvent udonEvent)
         {
             StringBuilder output = new StringBuilder();
-            output.Append(udonEvent._Target());
+            output.Append(udonEvent._Target().GetInstanceID());
             output.Append(udonEvent._HasEvent());
             if (udonEvent._HasEvent()) output.Append(udonEvent._EventName());
             output.Append(udonEvent._HasOutput());
