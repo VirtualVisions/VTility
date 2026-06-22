@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1349.3334
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: VRChat SDK
   m_RootView: {fileID: 13}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -43,8 +43,8 @@ MonoBehaviour:
     y: 0
     width: 526
     height: 794
-  m_MinSize: {x: 517, y: 471}
-  m_MaxSize: {x: 517, y: 2021}
+  m_MinSize: {x: 516, y: 450}
+  m_MaxSize: {x: 516, y: 2000}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 188
+  controlID: 196
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -94,8 +94,8 @@ MonoBehaviour:
     y: 0
     width: 1104
     height: 505.33334
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 24}
   m_Panes:
   - {fileID: 24}
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 152
+  controlID: 195
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 151
+  controlID: 194
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -196,8 +196,8 @@ MonoBehaviour:
     y: 0
     width: 578
     height: 794
-  m_MinSize: {x: 277, y: 71}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 21}
   m_Panes:
   - {fileID: 21}
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_MinSize: {x: 500, y: 100}
   m_MaxSize: {x: 40480, y: 16192}
   vertical: 0
-  controlID: 150
+  controlID: 193
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -544,7 +544,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Packages/com.virtual-visions.vtility
+    - Assets/Testing
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -552,16 +552,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Packages/com.virtual-visions.vtility
+  - Assets/Testing
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\Development\Repositories\VTility
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 158.99994}
-    m_SelectedIDs: 72630000
-    m_LastClickedID: 25458
-    m_ExpandedIDs: 00000000706300007263000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 7a630000
+    m_LastClickedID: 25466
+    m_ExpandedIDs: 000000006e630000706300008263000084630000c063000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -589,7 +589,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000007063000072630000
+    m_ExpandedIDs: 000000006e63000070630000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -616,8 +616,8 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: c6230000067d0000000000002a690000
+    m_HadKeyboardFocusLastEvent: 1
+    m_ExpandedInstanceIDs: c6230000067d0000000000002a69000014510000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -731,9 +731,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 14f8ffff
-      m_LastClickedID: 0
-      m_ExpandedIDs: c8faffff
+      m_SelectedIDs: feddffff
+      m_LastClickedID: -8706
+      m_ExpandedIDs: d4faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1114,9 +1114,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0, y: 1.5, z: 0}
+    m_Target: {x: -0.44131422, y: 0.3803892, z: 3.3300018}
     speed: 2
-    m_Value: {x: 0, y: 1.5, z: 0}
+    m_Value: {x: -0.44131422, y: 0.3803892, z: 3.3300018}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1162,13 +1162,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.20339851, y: 0.25038195, z: -0.053890966, w: 0.9450109}
+    m_Target: {x: 0.17494671, y: 0.20894092, z: -0.038020812, w: 0.9614075}
     speed: 2
-    m_Value: {x: -0.20339851, y: -0.25038195, z: 0.05389097, w: -0.94501096}
+    m_Value: {x: 0.17494561, y: 0.2089396, z: -0.038020574, w: 0.9614014}
   m_Size:
-    m_Target: 10.804385
+    m_Target: 9.793045
     speed: 2
-    m_Value: 10.804385
+    m_Value: 10.254498
   m_Ortho:
     m_Target: 0
     speed: 2

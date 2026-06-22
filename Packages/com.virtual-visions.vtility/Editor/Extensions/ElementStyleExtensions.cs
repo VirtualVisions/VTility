@@ -4,7 +4,7 @@ namespace VirtualVisions.VTility.Editor
 {
     public static class ElementStyleExtensions
     {
-
+        
         public static bool StyleDisplay(this VisualElement element)
         {
             return element.style.display == DisplayStyle.Flex;

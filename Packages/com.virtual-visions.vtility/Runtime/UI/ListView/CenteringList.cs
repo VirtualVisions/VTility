@@ -104,7 +104,7 @@ namespace VirtualVisions.VTility
             {
                 if (_activeItemKeys.TryGetValue(lastIndex, TokenType.Reference, out DataToken lastItem))
                 {
-                    RectTransform rect = lastItem.CastReference<RectTransform>();
+                    RectTransform rect = lastItem._CastReference<RectTransform>();
 
                     _blendLastSelectionPos.TryComplete();
                     _blendLastSelectionScale.TryComplete();
@@ -115,7 +115,7 @@ namespace VirtualVisions.VTility
 
                 if (_activeItemKeys.TryGetValue(index, TokenType.Reference, out DataToken nextItem))
                 {
-                    RectTransform rect = nextItem.CastReference<RectTransform>();
+                    RectTransform rect = nextItem._CastReference<RectTransform>();
 
                     _blendNextSelectionPos.TryComplete();
                     _blendNextSelectionScale.TryComplete();

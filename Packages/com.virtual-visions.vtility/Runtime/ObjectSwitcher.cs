@@ -25,7 +25,7 @@ namespace VirtualVisions.VTility
         public static ObjectSwitcher Create(GameObject[] objs)
         {
             DataDictionary dict = new DataDictionary();
-            dict[KEY_OBJECT_LIST] = objs._ToReferenceArray();
+            dict[KEY_OBJECT_LIST] = objs._ToRefArray();
             dict[KEY_ACTIVE] = new DataToken((GameObject)null);
             dict[KEY_ON_OBJECT_SWITCHED] = UdonAction.Create();
             dict[KEY_IS_COMPONENT_LIST] = false;
@@ -40,7 +40,7 @@ namespace VirtualVisions.VTility
         public static ObjectSwitcher Create<T>(T[] components) where T: Component
         {
             DataDictionary dict = new DataDictionary();
-            dict[KEY_COMPONENT_LIST] = components._ToReferenceArray();
+            dict[KEY_COMPONENT_LIST] = components._ToRefArray();
             dict[KEY_ACTIVE] = new DataToken((GameObject)null);
             dict[KEY_ON_OBJECT_SWITCHED] = UdonAction.Create();
             dict[KEY_IS_COMPONENT_LIST] = true;
@@ -97,14 +97,14 @@ namespace VirtualVisions.VTility
             GameObject active = switcher._Active();
             if (active) active.SetActive(false);
             
-            GameObject obj = list[index].CastReference<GameObject>(); 
+            GameObject obj = list[index]._CastReference<GameObject>(); 
             switcher[ObjectSwitcher.KEY_ACTIVE] = obj;
             obj.SetActive(true);
             
             if (switcher._IsComponentList())
             {
                 DataList compList = switcher._ComponentList();
-                switcher._OnObjectSwitched()._Invoke(compList[index].CastReference<Component>());
+                switcher._OnObjectSwitched()._Invoke(compList[index]._CastReference<Component>());
             }
             else
             {
