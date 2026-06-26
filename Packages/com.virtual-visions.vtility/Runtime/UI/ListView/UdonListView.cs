@@ -33,7 +33,7 @@ namespace VirtualVisions.VTility
         private Vector2 GetPositionInGroup(int index)
         {
             int groupIndex = GetIndexInGroup(index);
-            float position = (_groupItemSize * groupIndex) + (_groupSpacingSize * (groupIndex - 1));
+            float position = (_groupItemSize + _groupSpacingSize) * groupIndex;
 
             switch (_direction)
             {
@@ -59,8 +59,7 @@ namespace VirtualVisions.VTility
 
         private void OnEnable()
         {
-            _itemContainer.anchoredPosition = -GetLayoutPosition(SelectedIndex);
-            RefreshVisibility();
+            if (ItemCount > 0) RefreshVisibility();
         }
 
 
@@ -70,7 +69,7 @@ namespace VirtualVisions.VTility
             if (_contentPos != containerPos)
             {
                 _contentPos = containerPos;
-                RefreshVisibility();
+                if (ItemCount > 0) RefreshVisibility();
             }
         }
 
@@ -92,6 +91,8 @@ namespace VirtualVisions.VTility
                     _itemContainer.sizeDelta = new Vector2(ContainerSize, FullGroupSize);
                     break;
             }
+
+            RefreshVisibility();
         }
 
         protected override RectTransform CreateItem()
@@ -122,9 +123,9 @@ namespace VirtualVisions.VTility
             for (int i = 0; i < ItemCount; i++)
             {
                 Vector2 layoutPos = GetLayoutPosition(i);
-                bool visible = IsItemVisible(layoutPos, FullItemSize);
+                bool visible = IsItemVisible(layoutPos, FullItemSize, FullItemSize);
                 bool isActive = _activeItemKeys.ContainsKey(i);
-
+                
                 if (visible == isActive) continue;
                 if (visible)
                 {

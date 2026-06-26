@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 using VRC.SDK3.Components;
 using VRC.SDK3.Data;
 
@@ -51,7 +52,7 @@ namespace VirtualVisions.VTility
 
         private void OnEnable()
         {
-            RefreshVisibility();
+            if (ItemSource != null) RefreshVisibility();
         }
 
         private void Update()
@@ -72,6 +73,7 @@ namespace VirtualVisions.VTility
                 _tweenEase);
         }
 
+        [PublicAPI]
         public void _NavigateNext(Vector2Int direction)
         {
             switch (_direction)
@@ -125,6 +127,12 @@ namespace VirtualVisions.VTility
             }
         }
 
+        public override void SetItemSource(DataList list)
+        {
+            base.SetItemSource(list);
+            RefreshVisibility();
+        }
+
         protected override RectTransform CreateItem()
         {
             RectTransform item = base.CreateItem();
@@ -151,7 +159,7 @@ namespace VirtualVisions.VTility
             for (int i = 0; i < ItemCount; i++)
             {
                 Vector2 layoutPos = GetLayoutPosition(i);
-                bool visible = IsItemVisible(layoutPos, FullItemSize);
+                bool visible = IsItemVisible(layoutPos, FullItemSize, FullItemSize);
                 bool isActive = _activeItemKeys.ContainsKey(i);
 
                 if (visible == isActive) continue;

@@ -23,20 +23,25 @@ namespace VirtualVisions.VTility.Demo
                 demoFieldData[i] = string.Concat(i, ": ", Guid.NewGuid().ToString());
             }
         }
-
-
-        private void Start()
+        
+        private void OnEnable()
         {
             list.OnBindItem._AddListener(
                 this,
                 nameof(_OnItemBound),
                 nameof(_OnItemBound_Value));
-        }
-
-        private void OnEnable()
-        {
+            
             list.SetItemSource(demoFieldData.ToRefList());
         }
+
+        private void OnDisable()
+        {
+            list.OnBindItem._RemoveListener(
+                this,
+                nameof(_OnItemBound),
+                nameof(_OnItemBound_Value));
+        }
+
 
         [HideInInspector] public DataList _OnItemBound_Value;
         public void _OnItemBound()

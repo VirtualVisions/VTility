@@ -128,7 +128,7 @@ namespace VirtualVisions.VTility
             _activeItemKeys.Remove(index);
         }
 
-        protected bool IsItemVisible(Vector2 containerPosition, float itemSize)
+        protected bool IsItemVisible(Vector2 containerPosition, float itemSize, float margin = 0)
         {
             Vector2 posStart;
             Vector2 posEnd;
@@ -137,12 +137,12 @@ namespace VirtualVisions.VTility
             {
                 default:
                 case LayoutDirection.Column:
-                    Vector2 itemColumnSize = new Vector2(0, itemSize);
+                    Vector2 itemColumnSize = new Vector2(0, itemSize + margin);
                     posStart = containerPosition + itemColumnSize;
                     posEnd = containerPosition - itemColumnSize;
                     break;
                 case LayoutDirection.Row:
-                    Vector2 itemRowSize = new Vector2(itemSize, 0);
+                    Vector2 itemRowSize = new Vector2(itemSize + margin, 0);
                     posStart = containerPosition + itemRowSize;
                     posEnd = containerPosition - itemRowSize;
                     break;
