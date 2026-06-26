@@ -79,23 +79,6 @@ namespace VirtualVisions.VTility
         public override void SetItemSource(DataList list)
         {
             base.SetItemSource(list);
-
-            // Resize the item container for the new ItemSource list.
-            _itemContainer.anchorMin = Vector2.up;
-            _itemContainer.anchorMax = Vector2.up;
-            _itemContainer.pivot = Vector2.up;
-
-            switch (_direction)
-            {
-                default:
-                case LayoutDirection.Column:
-                    _itemContainer.sizeDelta = new Vector2(FullGroupSize, ContainerSize);
-                    break;
-                case LayoutDirection.Row:
-                    _itemContainer.sizeDelta = new Vector2(ContainerSize, FullGroupSize);
-                    break;
-            }
-
             RebuildList();
         }
 
@@ -119,6 +102,27 @@ namespace VirtualVisions.VTility
             }
 
             return item;
+        }
+
+        protected override void RebuildList()
+        {
+            // Resize the item container for the new ListItems.
+            _itemContainer.anchorMin = Vector2.up;
+            _itemContainer.anchorMax = Vector2.up;
+            _itemContainer.pivot = Vector2.up;
+
+            switch (_direction)
+            {
+                default:
+                case LayoutDirection.Column:
+                    _itemContainer.sizeDelta = new Vector2(FullGroupSize, ContainerSize);
+                    break;
+                case LayoutDirection.Row:
+                    _itemContainer.sizeDelta = new Vector2(ContainerSize, FullGroupSize);
+                    break;
+            }
+            
+            base.RebuildList();
         }
 
         protected override void RefreshVisibility()

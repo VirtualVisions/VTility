@@ -18,7 +18,7 @@ namespace VirtualVisions.VTility
     {
         /// <summary>
         /// Called when data is bound to a specific item.
-        /// Listeners must contain a [RectTransform: item] and [Int: index] variable within a DataList.
+        /// Listeners must contain a [RectTransform: itemObject] [Int: index] [DataToken: itemValue] variable within a DataList.
         /// </summary>
         [PublicAPI]
         public UdonAction OnBindItem =>
@@ -46,9 +46,18 @@ namespace VirtualVisions.VTility
 
         private DataDictionary _onItemUsed;
 
+        /// <summary>
+        /// The original source list of items.
+        /// </summary>
         public DataList ItemSource { get; protected set; }
+        
+        /// <summary>
+        /// The filtered list of items used by the ListView.
+        /// </summary>
+        public DataList ListItems { get; } = new DataList();
+        
         [field: SerializeField] public int SelectedIndex { get; private set; }
-        public int ItemCount => ItemSource != null ? ItemSource.Count : 0;
+        public int ItemCount => ListItems != null ? ListItems.Count : 0;
 
 
         [SerializeField] protected RectTransform _itemPrefab;
@@ -62,6 +71,8 @@ namespace VirtualVisions.VTility
         protected DataList _activeItems = new DataList();
         protected DataList _inactiveItems = new DataList();
 
+        protected bool _useFilter;
+        protected DataList _filterIndices;
 
 
         /// <summary>
@@ -69,7 +80,7 @@ namespace VirtualVisions.VTility
         /// </summary>
         public virtual void SetIndex(int index)
         {
-            SelectedIndex = Mathf.Clamp(index, 0, ItemSource.Count - 1);
+            SelectedIndex = Mathf.Clamp(index, 0, ListItems.Count - 1);
         }
 
         /// <summary>
@@ -79,6 +90,52 @@ namespace VirtualVisions.VTility
         public virtual void SetItemSource(DataList list)
         {
             ItemSource = list;
+            ApplyFilter();
+        }
+
+        [PublicAPI]
+        public void _ClearFilter(bool dontRebuild = false)
+        {
+            _useFilter = false;
+            _filterIndices = null;
+            ApplyFilter();
+
+            if (!dontRebuild) RebuildList();
+        }
+
+        [PublicAPI]
+        public void FilterBy(DataList indices, bool dontRebuild = false)
+        {
+            if (indices == null || indices.Count == 0)
+            {
+                _ClearFilter();
+            }
+            else
+            {
+                _useFilter = true;
+                _filterIndices = indices;
+                ApplyFilter();
+            }
+
+            if (!dontRebuild) RebuildList();
+        }
+
+        private void ApplyFilter()
+        {
+            ListItems.Clear();
+
+            if (_useFilter)
+            {
+                for (int i = 0; i < _filterIndices.Count; i++)
+                {
+                    int index = _filterIndices[i].Int;
+                    ListItems.Add(ItemSource[index]);
+                }
+            }
+            else
+            {
+                ListItems.AddRange(ItemSource);
+            }
         }
 
         /// <summary>
@@ -124,9 +181,14 @@ namespace VirtualVisions.VTility
         {
             item.gameObject.SetActive(true);
 
+            int paramIndex = _useFilter ? _filterIndices[index].Int : index;
+            
             DataList bindParams = new DataList();
+            
             bindParams.Add(item);
-            bindParams.Add(index);
+            bindParams.Add(paramIndex);
+            bindParams.Add(ListItems[index]);
+            
             OnBindItem._Invoke(bindParams);
         }
 
@@ -136,6 +198,11 @@ namespace VirtualVisions.VTility
         protected virtual void OnEnable()
         {
             if (ItemCount > 0) RebuildList();
+        }
+
+        protected virtual void OnDisable()
+        {
+            DestroyAllItems();
         }
 
         /// <summary>
@@ -194,6 +261,12 @@ namespace VirtualVisions.VTility
         /// </summary>
         protected virtual void RebuildList()
         {
+            DestroyAllItems();
+            RefreshVisibility();
+        }
+
+        protected void DestroyAllItems()
+        {
             for (int i = 0; i < _activeItems.Count; i++)
             {
                 RectTransform item = _activeItems[i].CastReference<RectTransform>();
@@ -208,8 +281,6 @@ namespace VirtualVisions.VTility
             _activeItemKeys.Clear();
             _activeItems.Clear();
             _inactiveItems.Clear();
-            
-            RefreshVisibility();
         }
         
         /// <summary>
