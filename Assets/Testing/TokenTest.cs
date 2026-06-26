@@ -11,6 +11,6 @@ public class TokenTest : UdonSharpBehaviour
     public override void Interact()
     {
         DataToken token = new DataToken(this);
-        Debug.Log(token._CastReference<TokenTest>());
+        Debug.Log(token.CastReference<TokenTest>());
     }
 }

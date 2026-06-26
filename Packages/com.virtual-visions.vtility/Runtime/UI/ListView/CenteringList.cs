@@ -4,7 +4,7 @@ using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
-    public class CenteringList : UdonListView
+    public class CenteringList : BaseUdonListView
     {
 
         [SerializeField] protected float _itemSize = 50;
@@ -51,7 +51,6 @@ namespace VirtualVisions.VTility
 
         private void OnEnable()
         {
-            _itemContainer.anchoredPosition = -GetLayoutPosition(SelectedIndex);
             RefreshVisibility();
         }
 
@@ -88,23 +87,23 @@ namespace VirtualVisions.VTility
                     break;
             }
         }
+        
+        public void _SelectPrevious() => SetIndex(SelectedIndex - 1);
+        public void _SelectNext() => SetIndex(SelectedIndex + 1);
 
-        public void _SelectPrevious() => _SetIndex(SelectedIndex - 1);
-        public void _SelectNext() => _SetIndex(SelectedIndex + 1);
 
-
-        public override void _SetIndex(int index)
+        public override void SetIndex(int index)
         {
             int lastIndex = SelectedIndex;
 
-            base._SetIndex(index);
+            base.SetIndex(index);
             _TweenToCurrent();
 
             if (lastIndex != -1 && lastIndex != SelectedIndex && !Mathf.Approximately(_selectedItemScale, 1))
             {
                 if (_activeItemKeys.TryGetValue(lastIndex, TokenType.Reference, out DataToken lastItem))
                 {
-                    RectTransform rect = lastItem._CastReference<RectTransform>();
+                    RectTransform rect = lastItem.CastReference<RectTransform>();
 
                     _blendLastSelectionPos.TryComplete();
                     _blendLastSelectionScale.TryComplete();
@@ -115,7 +114,7 @@ namespace VirtualVisions.VTility
 
                 if (_activeItemKeys.TryGetValue(index, TokenType.Reference, out DataToken nextItem))
                 {
-                    RectTransform rect = nextItem._CastReference<RectTransform>();
+                    RectTransform rect = nextItem.CastReference<RectTransform>();
 
                     _blendNextSelectionPos.TryComplete();
                     _blendNextSelectionScale.TryComplete();
@@ -146,18 +145,20 @@ namespace VirtualVisions.VTility
             return item;
         }
 
-        private void RefreshVisibility()
+        protected override void RefreshVisibility()
         {
+            base.RefreshVisibility();
             for (int i = 0; i < ItemCount; i++)
             {
-                bool visible = IsIndexVisible(i, FullItemSize, ItemHalfSize);
+                Vector2 layoutPos = GetLayoutPosition(i);
+                bool visible = IsItemVisible(layoutPos, FullItemSize);
                 bool isActive = _activeItemKeys.ContainsKey(i);
 
                 if (visible == isActive) continue;
                 if (visible)
                 {
                     RectTransform item = GetItem(i);
-                    item.anchoredPosition = GetLayoutPosition(i);
+                    item.anchoredPosition = layoutPos;
                 }
                 else
                 {

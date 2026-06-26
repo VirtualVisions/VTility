@@ -5,7 +5,7 @@ namespace VirtualVisions.VTility
 {
     public static class TokenExtensions
     {
-        public static T _CastReference<T>(this DataToken token)
+        public static T CastReference<T>(this DataToken token)
         {
             if (token.TokenType != TokenType.Reference)
             {

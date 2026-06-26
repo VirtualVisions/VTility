@@ -26,9 +26,9 @@ namespace VirtualVisions.VTility
 
         public static FSMState _FSMState(this DataToken token) => (FSMState)token.DataDictionary;
 
-        public static UdonAction _OnEnter(this FSMState state) => state[FSMState.KEY_ON_ENTER]._UdonAction();
-        public static UdonAction _OnExit(this FSMState state) => state[FSMState.KEY_ON_EXIT]._UdonAction();
-        public static UdonAction _OnTick(this FSMState state) => state[FSMState.KEY_ON_TICK]._UdonAction();
+        public static UdonAction _OnEnter(this FSMState state) => state[FSMState.KEY_ON_ENTER].UdonAction();
+        public static UdonAction _OnExit(this FSMState state) => state[FSMState.KEY_ON_EXIT].UdonAction();
+        public static UdonAction _OnTick(this FSMState state) => state[FSMState.KEY_ON_TICK].UdonAction();
 
     }
 }

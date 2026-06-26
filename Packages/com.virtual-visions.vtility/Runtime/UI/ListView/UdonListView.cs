@@ -1,165 +1,141 @@
-﻿using UdonSharp;
-using UnityEngine;
+﻿using UnityEngine;
 using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
-
-    public enum LayoutDirection
+    public class UdonListView : BaseUdonListView
     {
-        Column,
-        Row,
-    }
-    
-    [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public abstract class UdonListView : UdonSharpBehaviour
-    {
-        /// <summary>
-        /// Called when data is bound to a specific item.
-        /// Listeners must contain a [RectTransform: item] and [Int: index] variable within a DataList.
-        /// </summary>
-        public UdonAction OnBindItem => (UdonAction)(_onBindItem != null ? _onBindItem : _onBindItem = UdonAction.Create());
-        private DataDictionary _onBindItem;
 
-        /// <summary>
-        /// Called when an item is focused in the list.
-        /// Listeners must contain a [RectTransform: item] variable.
-        /// </summary>
-        public UdonAction OnItemSelected => (UdonAction)(_onItemSelected != null ? _onItemSelected : _onItemSelected = UdonAction.Create());
-        private DataDictionary _onItemSelected;
+        [SerializeField] protected float _itemSize = 50;
+        [SerializeField] protected float _spacingSize = 15;
+        [SerializeField] protected int _groupCount = 1;
+        [SerializeField] protected float _groupItemSize = 80;
+        [SerializeField] protected float _groupSpacingSize = 10;
 
-        /// <summary>
-        /// Called when an item is selected and used.
-        /// Listeners must contain a [RectTransform: item] variable.
-        /// </summary>
-        public UdonAction OnItemUsed => (UdonAction)(_onItemUsed != null ? _onItemUsed : _onItemUsed = UdonAction.Create());
-        private DataDictionary _onItemUsed;
+        private Vector2 _contentPos;
 
-        public DataList ItemSource { get; protected set; }
-        public int SelectedIndex { get; private set; }
+        private float ContainerSize => GetItemPlacement(ItemCount + (_groupCount - 1));
+        private float FullItemSize => _itemSize + _spacingSize;
+        private float FullGroupSize => (_groupItemSize * _groupCount) + (_groupSpacingSize * (_groupCount - 1));
 
 
-        [SerializeField] protected RectTransform _itemPrefab;
-        [SerializeField] protected RectTransform _itemContainer;
-        [SerializeField] protected RectTransform _viewport;
-        [SerializeField] protected LayoutDirection _direction;
-        
-        protected DataDictionary _activeItemKeys = new DataDictionary();
-        protected DataList _activeItems = new DataList();
-        protected DataList _inactiveItems = new DataList();
-        
-        protected int ItemCount => ItemSource != null ? ItemSource.Count : 0;
-
-        
-        public virtual void _SetIndex(int index)
+        private float GetItemPlacement(int index)
         {
-            SelectedIndex = Mathf.Clamp(index, 0, ItemSource.Count - 1);
+            int groupIndex = index / _groupCount;
+            return (groupIndex * (_itemSize + _spacingSize));
         }
 
-        public virtual void _SetItemSource(DataList list)
+        private int GetIndexInGroup(int index)
         {
-            ItemSource = list;
+            return index % _groupCount;
         }
 
-        protected virtual RectTransform GetItem(int index)
+        private Vector2 GetPositionInGroup(int index)
         {
-            if (_activeItemKeys.TryGetValue(index, TokenType.Reference, out DataToken value))
-            {
-                return (RectTransform)value.Reference;
-            }
+            int groupIndex = GetIndexInGroup(index);
+            float position = (_groupItemSize * groupIndex) + (_groupSpacingSize * (groupIndex - 1));
 
-            RectTransform item;
-            if (_inactiveItems.Count > 0)
+            switch (_direction)
             {
-                item = (RectTransform)_inactiveItems[0].Reference;
+                default:
+                case LayoutDirection.Column:
+                    return new Vector2(position, 0);
+                case LayoutDirection.Row:
+                    return new Vector2(0, -position);
             }
-            else
+        }
+
+        private Vector2 GetLayoutPosition(int index)
+        {
+            switch (_direction)
             {
-                item = CreateItem();
+                default:
+                case LayoutDirection.Column:
+                    return new Vector2(0, -GetItemPlacement(index));
+                case LayoutDirection.Row:
+                    return new Vector2(GetItemPlacement(index), 0);
             }
-            
-            _inactiveItems.Remove(item);
-            _activeItems.Add(item);
-            _activeItemKeys[index] = item;
-            BindItem(item, index);
+        }
+
+        private void OnEnable()
+        {
+            _itemContainer.anchoredPosition = -GetLayoutPosition(SelectedIndex);
+            RefreshVisibility();
+        }
+
+
+        private void Update()
+        {
+            Vector2 containerPos = _itemContainer.anchoredPosition;
+            if (_contentPos != containerPos)
+            {
+                _contentPos = containerPos;
+                RefreshVisibility();
+            }
+        }
+
+        public override void SetItemSource(DataList list)
+        {
+            base.SetItemSource(list);
+
+            _itemContainer.anchorMin = Vector2.up;
+            _itemContainer.anchorMax = Vector2.up;
+            _itemContainer.pivot = Vector2.up;
+
+            switch (_direction)
+            {
+                default:
+                case LayoutDirection.Column:
+                    _itemContainer.sizeDelta = new Vector2(FullGroupSize, ContainerSize);
+                    break;
+                case LayoutDirection.Row:
+                    _itemContainer.sizeDelta = new Vector2(ContainerSize, FullGroupSize);
+                    break;
+            }
+        }
+
+        protected override RectTransform CreateItem()
+        {
+            RectTransform item = base.CreateItem();
+
+            item.anchorMin = Vector2.up;
+            item.anchorMax = Vector2.up;
+            item.pivot = Vector2.up;
+
+            switch (_direction)
+            {
+                default:
+                case LayoutDirection.Column:
+                    item.sizeDelta = new Vector2(_groupItemSize, _itemSize);
+                    break;
+                case LayoutDirection.Row:
+                    item.sizeDelta = new Vector2(_itemSize, _groupItemSize);
+                    break;
+            }
 
             return item;
         }
 
-        protected virtual RectTransform CreateItem()
+        protected override void RefreshVisibility()
         {
-            RectTransform obj = (RectTransform)Instantiate(_itemPrefab.gameObject, _itemContainer).transform;
-            _inactiveItems.Add(obj);
-            return obj;
-        }
-
-        protected void BindItem(RectTransform item, int index)
-        {
-            item.gameObject.SetActive(true);
-
-            DataList bindParams = new DataList();
-            bindParams.Add(item);
-            bindParams.Add(index);
-            OnBindItem._Invoke(bindParams);
-        }
-
-        protected void ReleaseItem(int index)
-        {
-            if (!_activeItemKeys.TryGetValue(index, TokenType.Reference, out DataToken value))
+            base.RefreshVisibility();
+            for (int i = 0; i < ItemCount; i++)
             {
-                Debug.LogWarning($"Item index {index} is not currently active.", this);
-                return;
-            }
+                Vector2 layoutPos = GetLayoutPosition(i);
+                bool visible = IsItemVisible(layoutPos, FullItemSize);
+                bool isActive = _activeItemKeys.ContainsKey(i);
 
-            RectTransform item = (RectTransform)value.Reference;
-            item.gameObject.SetActive(false);
-            
-            _inactiveItems.Add(item);
-            _activeItems.Remove(item);
-            _activeItemKeys.Remove(index);
+                if (visible == isActive) continue;
+                if (visible)
+                {
+                    RectTransform item = GetItem(i);
+                    item.anchoredPosition = layoutPos + GetPositionInGroup(i);
+                }
+                else
+                {
+                    ReleaseItem(i);
+                }
+            }
         }
-
-        protected bool IsIndexVisible(int index, float itemSize, float offset = 0)
-        {
-            // The extra add/subtract at the end of these two is for
-            // partial visibility when an item is coming into view.
-            float itemStart = (index * itemSize) + itemSize + offset;
-            float itemEnd = ((index + 1) * itemSize) - itemSize - offset;
-
-            float containerOffset;
-            switch (_direction)
-            {
-                default:
-                case LayoutDirection.Column:
-                    containerOffset = _itemContainer.anchoredPosition.y;
-                    break;
-                case LayoutDirection.Row:
-                    containerOffset = -_itemContainer.anchoredPosition.x;
-                    break;
-            }
-            
-            float itemStartViewport = itemStart - containerOffset;
-            float itemEndViewport = itemEnd - containerOffset;
-
-            float viewportStart;
-            float viewportEnd;
-            
-            switch (_direction)
-            {
-                default:
-                case LayoutDirection.Column:
-                    viewportStart = _viewport.rect.yMin;
-                    viewportEnd = _viewport.rect.yMax;
-                    break;
-                case LayoutDirection.Row:
-                    viewportStart = _viewport.rect.xMin;
-                    viewportEnd = _viewport.rect.xMax;
-                    break;
-            }
-
-            return itemStartViewport > viewportStart &&
-                   itemEndViewport < viewportEnd;
-        }
-
     }
 }

@@ -25,7 +25,7 @@ namespace VirtualVisions.VTility
         public static ObjectSwitcher Create(GameObject[] objs)
         {
             DataDictionary dict = new DataDictionary();
-            dict[KEY_OBJECT_LIST] = objs._ToRefArray();
+            dict[KEY_OBJECT_LIST] = objs.ToRefList();
             dict[KEY_ACTIVE] = new DataToken((GameObject)null);
             dict[KEY_ON_OBJECT_SWITCHED] = UdonAction.Create();
             dict[KEY_IS_COMPONENT_LIST] = false;
@@ -40,7 +40,7 @@ namespace VirtualVisions.VTility
         public static ObjectSwitcher Create<T>(T[] components) where T: Component
         {
             DataDictionary dict = new DataDictionary();
-            dict[KEY_COMPONENT_LIST] = components._ToRefArray();
+            dict[KEY_COMPONENT_LIST] = components.ToRefList();
             dict[KEY_ACTIVE] = new DataToken((GameObject)null);
             dict[KEY_ON_OBJECT_SWITCHED] = UdonAction.Create();
             dict[KEY_IS_COMPONENT_LIST] = true;
@@ -64,7 +64,7 @@ namespace VirtualVisions.VTility
         public static ObjectSwitcher _ObjSwitcher(this DataToken token) => (ObjectSwitcher)token.DataDictionary;
         public static DataList _ObjectList(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_OBJECT_LIST].DataList;
         public static GameObject _Active(this ObjectSwitcher switcher) => (GameObject)switcher[ObjectSwitcher.KEY_ACTIVE].Reference;
-        public static UdonAction _OnObjectSwitched(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_ON_OBJECT_SWITCHED]._UdonAction();
+        public static UdonAction _OnObjectSwitched(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_ON_OBJECT_SWITCHED].UdonAction();
         public static bool _IsComponentList(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_IS_COMPONENT_LIST].Boolean;
         public static DataList _ComponentList(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_COMPONENT_LIST].DataList;
 
@@ -97,14 +97,14 @@ namespace VirtualVisions.VTility
             GameObject active = switcher._Active();
             if (active) active.SetActive(false);
             
-            GameObject obj = list[index]._CastReference<GameObject>(); 
+            GameObject obj = list[index].CastReference<GameObject>(); 
             switcher[ObjectSwitcher.KEY_ACTIVE] = obj;
             obj.SetActive(true);
             
             if (switcher._IsComponentList())
             {
                 DataList compList = switcher._ComponentList();
-                switcher._OnObjectSwitched()._Invoke(compList[index]._CastReference<Component>());
+                switcher._OnObjectSwitched()._Invoke(compList[index].CastReference<Component>());
             }
             else
             {

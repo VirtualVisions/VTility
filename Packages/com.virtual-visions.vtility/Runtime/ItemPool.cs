@@ -42,8 +42,8 @@ namespace VirtualVisions.VTility
         private static int _MaxCount(this ItemPool pool) => pool[ItemPool.KEY_MAX_COUNT].Int;
         private static DataList _ActiveItems(this ItemPool pool) => pool[ItemPool.KEY_ACTIVE_ITEMS].DataList;
         private static DataList _InactiveItems(this ItemPool pool) => pool[ItemPool.KEY_INACTIVE_ITEMS].DataList;
-        public static UdonAction _OnItemCreated(this ItemPool pool) => pool[ItemPool.KEY_ON_ITEM_CREATED]._UdonAction();
-        public static UdonAction _OnItemSpawned(this ItemPool pool) => pool[ItemPool.KEY_ON_ITEM_SPAWNED]._UdonAction();
+        public static UdonAction _OnItemCreated(this ItemPool pool) => pool[ItemPool.KEY_ON_ITEM_CREATED].UdonAction();
+        public static UdonAction _OnItemSpawned(this ItemPool pool) => pool[ItemPool.KEY_ON_ITEM_SPAWNED].UdonAction();
 
         public static int _TotalItemCount(this ItemPool pool)
         {
