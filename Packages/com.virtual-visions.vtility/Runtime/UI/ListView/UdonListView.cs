@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
@@ -57,11 +58,6 @@ namespace VirtualVisions.VTility
             }
         }
 
-        private void OnEnable()
-        {
-            if (ItemCount > 0) RefreshVisibility();
-        }
-
 
         private void Update()
         {
@@ -73,10 +69,18 @@ namespace VirtualVisions.VTility
             }
         }
 
+        [PublicAPI]
+        public void SetGroupCount(int count)
+        {
+            _groupCount = Mathf.Max(1, count);
+            RebuildList();
+        }
+
         public override void SetItemSource(DataList list)
         {
             base.SetItemSource(list);
 
+            // Resize the item container for the new ItemSource list.
             _itemContainer.anchorMin = Vector2.up;
             _itemContainer.anchorMax = Vector2.up;
             _itemContainer.pivot = Vector2.up;
@@ -92,7 +96,7 @@ namespace VirtualVisions.VTility
                     break;
             }
 
-            RefreshVisibility();
+            RebuildList();
         }
 
         protected override RectTransform CreateItem()

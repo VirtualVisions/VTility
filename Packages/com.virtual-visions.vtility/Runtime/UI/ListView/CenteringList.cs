@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 using VRC.SDK3.Components;
 using VRC.SDK3.Data;
@@ -50,17 +51,15 @@ namespace VirtualVisions.VTility
             }
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            if (ItemSource != null) RefreshVisibility();
+            _itemContainer.anchoredPosition = -GetLayoutPosition(SelectedIndex);
+            base.OnEnable();
         }
 
         private void Update()
         {
-            if (_blendContainer.IsActive)
-            {
-                RefreshVisibility();
-            }
+            if (_blendContainer.IsActive) RefreshVisibility();
         }
 
         public void _TweenToCurrent()
@@ -90,15 +89,17 @@ namespace VirtualVisions.VTility
             }
         }
         
+        [PublicAPI]
         public void _SelectPrevious() => SetIndex(SelectedIndex - 1);
+        [PublicAPI]
         public void _SelectNext() => SetIndex(SelectedIndex + 1);
 
 
         public override void SetIndex(int index)
         {
             int lastIndex = SelectedIndex;
-
             base.SetIndex(index);
+            
             _TweenToCurrent();
 
             if (lastIndex != -1 && lastIndex != SelectedIndex && !Mathf.Approximately(_selectedItemScale, 1))
@@ -130,7 +131,7 @@ namespace VirtualVisions.VTility
         public override void SetItemSource(DataList list)
         {
             base.SetItemSource(list);
-            RefreshVisibility();
+            RebuildList();
         }
 
         protected override RectTransform CreateItem()

@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDK3.Data;
@@ -19,6 +20,7 @@ namespace VirtualVisions.VTility
         /// Called when data is bound to a specific item.
         /// Listeners must contain a [RectTransform: item] and [Int: index] variable within a DataList.
         /// </summary>
+        [PublicAPI]
         public UdonAction OnBindItem =>
             (UdonAction)(_onBindItem != null ? _onBindItem : _onBindItem = UdonAction.Create());
 
@@ -28,6 +30,7 @@ namespace VirtualVisions.VTility
         /// Called when an item is focused in the list.
         /// Listeners must contain a [RectTransform: item] variable.
         /// </summary>
+        [PublicAPI]
         public UdonAction OnItemSelected =>
             (UdonAction)(_onItemSelected != null ? _onItemSelected : _onItemSelected = UdonAction.Create());
 
@@ -37,6 +40,7 @@ namespace VirtualVisions.VTility
         /// Called when an item is selected and used.
         /// Listeners must contain a [RectTransform: item] variable.
         /// </summary>
+        [PublicAPI]
         public UdonAction OnItemUsed =>
             (UdonAction)(_onItemUsed != null ? _onItemUsed : _onItemUsed = UdonAction.Create());
 
@@ -44,6 +48,7 @@ namespace VirtualVisions.VTility
 
         public DataList ItemSource { get; protected set; }
         [field: SerializeField] public int SelectedIndex { get; private set; }
+        public int ItemCount => ItemSource != null ? ItemSource.Count : 0;
 
 
         [SerializeField] protected RectTransform _itemPrefab;
@@ -57,19 +62,29 @@ namespace VirtualVisions.VTility
         protected DataList _activeItems = new DataList();
         protected DataList _inactiveItems = new DataList();
 
-        protected int ItemCount => ItemSource != null ? ItemSource.Count : 0;
 
 
+        /// <summary>
+        /// Set the focused index within the list.
+        /// </summary>
         public virtual void SetIndex(int index)
         {
             SelectedIndex = Mathf.Clamp(index, 0, ItemSource.Count - 1);
         }
 
+        /// <summary>
+        /// Assign a DataList as the source for the ListView.
+        /// This is used to rebuild the list post assignation.
+        /// </summary>
         public virtual void SetItemSource(DataList list)
         {
             ItemSource = list;
         }
 
+        /// <summary>
+        /// Retrieve an item that represents a given index in the ItemSource list.
+        /// If one is not available, a new item will be instantiated.
+        /// </summary>
         protected virtual RectTransform GetItem(int index)
         {
             if (_activeItemKeys.TryGetValue(index, TokenType.Reference, out DataToken value))
@@ -102,6 +117,9 @@ namespace VirtualVisions.VTility
             return obj;
         }
 
+        /// <summary>
+        /// Run callbacks to represent the value within the assigned list item.
+        /// </summary>
         protected void BindItem(RectTransform item, int index)
         {
             item.gameObject.SetActive(true);
@@ -112,6 +130,18 @@ namespace VirtualVisions.VTility
             OnBindItem._Invoke(bindParams);
         }
 
+        /// <summary>
+        /// Rebuild the list on re-enable if a list is assigned and has content.
+        /// </summary>
+        protected virtual void OnEnable()
+        {
+            if (ItemCount > 0) RebuildList();
+        }
+
+        /// <summary>
+        /// Disable an item that is no longer visible or in use.
+        /// </summary>
+        /// <param name="index"></param>
         protected void ReleaseItem(int index)
         {
             if (!_activeItemKeys.TryGetValue(index, TokenType.Reference, out DataToken value))
@@ -128,6 +158,9 @@ namespace VirtualVisions.VTility
             _activeItemKeys.Remove(index);
         }
 
+        /// <summary>
+        /// Determine if an items start or end position is visible within the viewport.
+        /// </summary>
         protected bool IsItemVisible(Vector2 containerPosition, float itemSize, float margin = 0)
         {
             Vector2 posStart;
@@ -154,9 +187,35 @@ namespace VirtualVisions.VTility
             Vector3 worldPosEnd = _itemContainer.TransformPoint(posEnd);
             Vector3 viewportPosEnd = _viewport.InverseTransformPoint(worldPosEnd);
             return _viewport.rect.Contains(viewportPosStart) || _viewport.rect.Contains(viewportPosEnd);
-
         }
 
+        /// <summary>
+        /// Destroy all active items before instantiating new ones within the visible region.
+        /// </summary>
+        protected virtual void RebuildList()
+        {
+            for (int i = 0; i < _activeItems.Count; i++)
+            {
+                RectTransform item = _activeItems[i].CastReference<RectTransform>();
+                Destroy(item.gameObject);
+            }
+            for (int i = 0; i < _inactiveItems.Count; i++)
+            {
+                RectTransform item = _inactiveItems[i].CastReference<RectTransform>();
+                Destroy(item.gameObject);
+            }
+            
+            _activeItemKeys.Clear();
+            _activeItems.Clear();
+            _inactiveItems.Clear();
+            
+            RefreshVisibility();
+        }
+        
+        /// <summary>
+        /// Handle visibility checks for individual items.
+        /// Largely handled via inherited classes.
+        /// </summary>
         protected virtual void RefreshVisibility()
         {
         }
