@@ -169,9 +169,10 @@ namespace VirtualVisions.VTility
 
         protected virtual RectTransform CreateItem()
         {
-            RectTransform obj = (RectTransform)Instantiate(_itemPrefab.gameObject, _itemContainer).transform;
-            _inactiveItems.Add(obj);
-            return obj;
+            RectTransform item = (RectTransform)Instantiate(_itemPrefab.gameObject, _itemContainer).transform;
+            
+            _inactiveItems.Add(item);
+            return item;
         }
 
         /// <summary>
@@ -226,34 +227,16 @@ namespace VirtualVisions.VTility
         }
 
         /// <summary>
-        /// Determine if an items start or end position is visible within the viewport.
+        /// Check if a point in item-space is visible in the final viewport.
         /// </summary>
-        protected bool IsItemVisible(Vector2 containerPosition, float itemSize, float margin = 0)
+        protected bool IsPointVisible(Vector2 point)
         {
-            Vector2 posStart;
-            Vector2 posEnd;
+            Vector3 worldPoint = _itemContainer.TransformPoint(point);
+            Vector3 viewportPoint = _viewport.InverseTransformPoint(worldPoint);
 
-            switch (_direction)
-            {
-                default:
-                case LayoutDirection.Column:
-                    Vector2 itemColumnSize = new Vector2(0, itemSize + margin);
-                    posStart = containerPosition + itemColumnSize;
-                    posEnd = containerPosition - itemColumnSize;
-                    break;
-                case LayoutDirection.Row:
-                    Vector2 itemRowSize = new Vector2(itemSize + margin, 0);
-                    posStart = containerPosition + itemRowSize;
-                    posEnd = containerPosition - itemRowSize;
-                    break;
-            }
-
-            Vector3 worldPosStart = _itemContainer.TransformPoint(posStart);
-            Vector3 viewportPosStart = _viewport.InverseTransformPoint(worldPosStart);
-
-            Vector3 worldPosEnd = _itemContainer.TransformPoint(posEnd);
-            Vector3 viewportPosEnd = _viewport.InverseTransformPoint(worldPosEnd);
-            return _viewport.rect.Contains(viewportPosStart) || _viewport.rect.Contains(viewportPosEnd);
+            // Debug.DrawLine(worldPoint, worldPoint + (Vector3)Vector2.one * 0.01f);
+            
+            return _viewport.rect.Contains(viewportPoint);
         }
 
         /// <summary>

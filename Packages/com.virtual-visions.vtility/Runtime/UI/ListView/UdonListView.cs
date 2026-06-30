@@ -128,17 +128,47 @@ namespace VirtualVisions.VTility
         protected override void RefreshVisibility()
         {
             base.RefreshVisibility();
+            
+            float width;
+            float height;
+            
+            switch (_direction)
+            {
+                default:
+                case LayoutDirection.Column:
+                    width = _groupItemSize;
+                    height = _itemSize;
+                    break;
+                case LayoutDirection.Row:
+                    width = _itemSize;
+                    height = _groupItemSize;
+                    break;
+            }
+
+            // We enforce a top-right pivot, so we good
+            Vector2 cornerTopLeft = Vector2.zero;
+            Vector2 cornerTopRight = new Vector2(width, 0);
+            Vector2 cornerBottomLeft = new Vector2(0, -height);
+            Vector2 cornerBottomRight = new Vector2(width, -height);
+            Vector2 itemCenter = new Vector2(width, -height) * 0.5f;
+            
             for (int i = 0; i < ItemCount; i++)
             {
-                Vector2 layoutPos = GetLayoutPosition(i);
-                bool visible = IsItemVisible(layoutPos, FullItemSize, FullItemSize);
+                Vector2 itemPosition = GetLayoutPosition(i) + GetPositionInGroup(i);
+
+                bool visible = IsPointVisible(itemPosition + cornerTopLeft) ||
+                               IsPointVisible(itemPosition + cornerTopRight) ||
+                               IsPointVisible(itemPosition + cornerBottomLeft) ||
+                               IsPointVisible(itemPosition + cornerBottomRight) ||
+                               IsPointVisible(itemPosition + itemCenter);
+                
                 bool isActive = _activeItemKeys.ContainsKey(i);
                 
                 if (visible == isActive) continue;
                 if (visible)
                 {
                     RectTransform item = GetItem(i);
-                    item.anchoredPosition = layoutPos + GetPositionInGroup(i);
+                    item.anchoredPosition = itemPosition;
                 }
                 else
                 {

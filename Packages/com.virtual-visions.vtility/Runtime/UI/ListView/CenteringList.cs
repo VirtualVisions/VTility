@@ -157,10 +157,23 @@ namespace VirtualVisions.VTility
         protected override void RefreshVisibility()
         {
             base.RefreshVisibility();
+
+            Vector2 visibilityCheckOffset;
+            switch (_direction)
+            {
+                default:
+                case LayoutDirection.Column:
+                    visibilityCheckOffset = Vector2.up * _itemSize;
+                    break;
+                case LayoutDirection.Row:
+                    visibilityCheckOffset = Vector2.right * _itemSize;
+                    break;
+            }
+            
             for (int i = 0; i < ItemCount; i++)
             {
                 Vector2 layoutPos = GetLayoutPosition(i);
-                bool visible = IsItemVisible(layoutPos, FullItemSize, FullItemSize);
+                bool visible = IsPointVisible(layoutPos - visibilityCheckOffset) || IsPointVisible(layoutPos + visibilityCheckOffset);
                 bool isActive = _activeItemKeys.ContainsKey(i);
 
                 if (visible == isActive) continue;
