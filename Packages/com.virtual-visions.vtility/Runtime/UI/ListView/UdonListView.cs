@@ -145,7 +145,7 @@ namespace VirtualVisions.VTility
                     break;
             }
 
-            // We enforce a top-right pivot, so we good
+            // We enforce a top-left pivot, so we good
             Vector2 cornerTopLeft = Vector2.zero;
             Vector2 cornerTopRight = new Vector2(width, 0);
             Vector2 cornerBottomLeft = new Vector2(0, -height);
