@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace VirtualVisions.VTility
 {
-    public static class StringExtensions
+    public static class FuzzySearchExtensions
     {
 
         /// <summary>

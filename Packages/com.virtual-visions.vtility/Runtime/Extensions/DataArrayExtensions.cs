@@ -1,9 +1,38 @@
-﻿using VRC.SDK3.Data;
+﻿using System.Text;
+using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
     public static class DataArrayExtensions
     {
+        
+        private static string ContentsToString(DataList list)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                string entry = list[i].ToString();
+                builder.Append(entry);
+            }
+            
+            return builder.ToString();
+        }
+        
+        private static string ContentsToString(DataList list, string separator)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                string entry = list[i].ToString();
+                builder.Append(entry);
+                if (i != list.Count - 1) builder.Append(separator);
+            }
+            
+            return builder.ToString();
+        }
+        
         #region References
         
         /// <summary>
