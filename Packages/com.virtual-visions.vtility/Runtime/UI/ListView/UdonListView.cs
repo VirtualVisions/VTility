@@ -15,7 +15,10 @@ namespace VirtualVisions.VTility
 
         private Vector2 _contentPos;
 
-        private float ContainerSize => GetItemPlacement(ItemCount + (_groupCount - 1));
+        /// <summary>
+        /// Retrieve the full size of the item container, ignoring the item spacing after the last group.
+        /// </summary>
+        private float ContainerSize => GetItemPlacement(ItemCount + (_groupCount - 1)) - _spacingSize;
         private float FullItemSize => _itemSize + _spacingSize;
         private float FullGroupSize => (_groupItemSize * _groupCount) + (_groupSpacingSize * (_groupCount - 1));
 
@@ -23,7 +26,7 @@ namespace VirtualVisions.VTility
         private float GetItemPlacement(int index)
         {
             int groupIndex = index / _groupCount;
-            return (groupIndex * (_itemSize + _spacingSize));
+            return (groupIndex * FullItemSize);
         }
 
         private int GetIndexInGroup(int index)
@@ -145,7 +148,7 @@ namespace VirtualVisions.VTility
                     break;
             }
 
-            // We enforce a top-left pivot, so we good
+            // We enforce a top-right pivot, so we good
             Vector2 cornerTopLeft = Vector2.zero;
             Vector2 cornerTopRight = new Vector2(width, 0);
             Vector2 cornerBottomLeft = new Vector2(0, -height);
