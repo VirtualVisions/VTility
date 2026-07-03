@@ -21,6 +21,6 @@ public class ObjSwitcherTest : UdonSharpBehaviour
 
     public override void Interact()
     {
-        Switcher._SwitchTo(UnityEngine.Random.Range(0, Objs.Length));
+        Switcher.SwitchTo(UnityEngine.Random.Range(0, Objs.Length));
     }
 }

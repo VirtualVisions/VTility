@@ -198,6 +198,7 @@ namespace VirtualVisions.VTility
         /// </summary>
         protected virtual void OnEnable()
         {
+            if (_itemPrefab.gameObject.activeSelf) _itemPrefab.gameObject.SetActive(false);
             if (ItemCount > 0) RebuildList();
         }
 
