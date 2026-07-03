@@ -6,7 +6,7 @@ namespace VirtualVisions.VTility
     public static class DataArrayExtensions
     {
         
-        private static string ContentsToString(DataList list)
+        public static string ContentsToString(this DataList list)
         {
             StringBuilder builder = new StringBuilder();
 
@@ -19,7 +19,7 @@ namespace VirtualVisions.VTility
             return builder.ToString();
         }
         
-        private static string ContentsToString(DataList list, string separator)
+        public static string ContentsToString(this DataList list, string separator)
         {
             StringBuilder builder = new StringBuilder();
 
