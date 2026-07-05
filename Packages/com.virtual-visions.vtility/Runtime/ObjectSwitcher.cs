@@ -13,10 +13,14 @@ namespace VirtualVisions.VTility
         /// Since Udon doesn't natively support fields of this type,
         /// it is recommended to use this format for your fields:
         ///
-        ///    public ObjectSwitcher Switcher => (ObjectSwitcher)_switcher;
+        ///    public ObjectSwitcher Switcher
+        ///    {
+        ///        get => (ObjectSwitcher)_switcher;
+        ///        set => _switcher = value;
+        ///    }
         ///    private DataDictionary _switcher;
-        /// 
 
+        
         public const string KEY_ACTIVE = "active";
         public const string KEY_OBJECT_LIST = "objectList";
         public const string KEY_ON_OBJECT_SWITCHED = "onObjectSwitched";
