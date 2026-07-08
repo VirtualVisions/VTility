@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -96,16 +97,33 @@ namespace VirtualVisions.VTility
                 if (currentType != evt.newValue)
                 {
                     property.managedReferenceValue = null;
-                    Type newType = Type.GetType(typeDict[evt.newValue]);
-                    if (newType != null)
+
+                    if (typeDict.TryGetValue(evt.newValue, out string typeName))
                     {
-                        property.managedReferenceValue = Activator.CreateInstance(newType);
-                        property.serializedObject.ApplyModifiedProperties();
-                        property.serializedObject.Update();
+                        Type foundType = Type.GetType(typeName);
+                        foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+                        {
+                            Type type = assembly.GetType(typeName);
+                            if (type == null) continue;
+                            
+                            foundType = type;
+                            break;
+                        }
+
+                        if (foundType != null)
+                        {
+                            property.managedReferenceValue = Activator.CreateInstance(foundType);
+                            property.serializedObject.ApplyModifiedProperties();
+                            property.serializedObject.Update();
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"{evt.newValue} is not real type.");
+                        }
                     }
                     else
                     {
-                        Debug.LogWarning($"{evt.newValue} is not real type.");
+                        Debug.LogWarning($"Type {evt.newValue} was not found in TypeCache.");
                     }
                 }
                 else
