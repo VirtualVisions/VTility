@@ -33,7 +33,6 @@ namespace VirtualVisions.VTility
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw;
             }
             _queuedEvent = null;
         }
