@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 using UnityEngine;
 using VRC.SDK3.Data;
@@ -98,6 +99,9 @@ namespace VirtualVisions.VTility
             if (!list.Contains(obj)) list.Add(obj);
             switcher.SwitchTo(list.IndexOf(obj));
         }
+
+        [PublicAPI]
+        public static void SwitchTo(this ObjectSwitcher switcher, Enum index) => switcher.SwitchTo(Convert.ToInt32(index));
 
         [PublicAPI]
         public static void SwitchTo(this ObjectSwitcher switcher, int index)

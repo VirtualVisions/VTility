@@ -2,7 +2,8 @@
     "name": "VTility.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:1535ee4078cb5c14899ab9d7e6b6a546"
+        "GUID:1535ee4078cb5c14899ab9d7e6b6a546",
+        "GUID:3c1bc1267eab5884ebe7f232c09ee0d9"
     ],
     "includePlatforms": [
         "Editor"
