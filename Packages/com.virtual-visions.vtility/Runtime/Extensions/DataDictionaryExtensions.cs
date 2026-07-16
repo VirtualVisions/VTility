@@ -6,81 +6,101 @@ namespace VirtualVisions.VTility
 {
     public static class DataDictionaryExtensions
     {
-        public static void CopyEntry(
+        public static DataToken CopyEntry(
             this DataDictionary dict,
             DataDictionary from,
             TokenType type,
             DataToken key)
         {
-            if (from
-                .TryGetValue(key, type, out DataToken value)) dict[key] = value;
+            if (from.TryGetValue(key, type, out DataToken value))
+            {
+                dict[key] = value;
+                return value;
+            }
+
+            return new DataToken(DataError.KeyDoesNotExist);
         }
 
-        public static void CopyEntry(
+        public static DataToken CopyEntry(
             this DataDictionary dict,
             DataDictionary from,
             TokenType type,
             DataToken key,
             DataToken fallback)
         {
-            if (from.TryGetValue(key, type, out DataToken value)) dict[key] = value;
-            else dict[key] = fallback;
+            DataToken result;
+            
+            if (from.TryGetValue(key, type, out DataToken value)) result = value;
+            else result = fallback;
+            dict[key] = result;
+
+            return result;
         }
 
         /// <summary>
         /// If a number of any type is found, it is either copied or cast to the correct type.
         /// </summary>
-        public static void CopyNumber(
+        public static DataToken CopyNumber(
             this DataDictionary dict,
             DataDictionary from,
             TokenType type,
             DataToken key,
             DataToken fallback)
         {
+            DataToken result;
+
             if (from.TryGetValue(key, out DataToken value))
             {
-                if (value.TokenType == type) dict[key] = value;
+                if (value.TokenType == type) result = value;
                 else
                 {
                     switch (type)
                     {
                         case TokenType.SByte:
-                            dict[key] = (sbyte)value;
+                            result = (sbyte)value;
                             break;
                         case TokenType.Byte:
-                            dict[key] = (byte)value;
+                            result = (byte)value;
                             break;
                         case TokenType.Short:
-                            dict[key] = (short)value;
+                            result = (short)value;
                             break;
                         case TokenType.UShort:
-                            dict[key] = (ushort)value;
+                            result = (ushort)value;
                             break;
                         case TokenType.Int:
-                            dict[key] = (int)value;
+                            result = (int)value;
                             break;
                         case TokenType.UInt:
-                            dict[key] = (uint)value;
+                            result = (uint)value;
                             break;
                         case TokenType.Long:
-                            dict[key] = (long)value;
+                            result = (long)value;
                             break;
                         case TokenType.ULong:
-                            dict[key] = (ulong)value;
+                            result = (ulong)value;
                             break;
                         case TokenType.Float:
-                            dict[key] = (float)value;
+                            result = (float)value;
                             break;
                         case TokenType.Double:
-                            dict[key] = (double)value;
+                            result = (double)value;
                             break;
                         default:
                             Debug.LogWarning($"Target type {type} is not a number, entry {key} was not copied.");
+                            result = new DataToken(DataError.TypeUnsupported);
                             break;
                     }
                 }
             }
-            else dict[key] = fallback;
+            else
+            {
+                result = fallback;
+            }
+
+            dict[key] = result;
+
+            return result;
         }
     }
 }
