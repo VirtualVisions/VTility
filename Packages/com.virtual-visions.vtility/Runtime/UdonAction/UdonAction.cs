@@ -34,50 +34,50 @@ namespace VirtualVisions.VTility
 
 
 
-        public static void _AddListener(this UdonAction action,
+        public static void AddListener(this UdonAction action,
             UdonEvent udonEvent)
         {
             action.Events()[udonEvent.Hash()] = udonEvent;
         }
 
-        public static void _AddListener(this UdonAction action,
+        public static void AddListener(this UdonAction action,
             UdonSharpBehaviour target,
             string eventName)
         {
-            action._AddListener(UdonEvent.Create(target, eventName));
+            action.AddListener(UdonEvent.Create(target, eventName));
         }
 
-        public static void _AddListener(this UdonAction action,
+        public static void AddListener(this UdonAction action,
             UdonSharpBehaviour target,
             string eventName,
             string outputName)
         {
-            action._AddListener(UdonEvent.Create(target, eventName, outputName));
+            action.AddListener(UdonEvent.Create(target, eventName, outputName));
         }
 
 
 
-        public static void _RemoveListener(this UdonAction action,
+        public static void RemoveListener(this UdonAction action,
             UdonEvent udonEvent)
         {
             action.Events().Remove(udonEvent.Hash());
         }
 
-        public static void _RemoveListener(this UdonAction action,
+        public static void RemoveListener(this UdonAction action,
             UdonSharpBehaviour target,
             string eventName)
         {
             UdonEvent comparisonEvent = UdonEvent.Create(target, eventName);
-            action._RemoveListener(comparisonEvent);
+            action.RemoveListener(comparisonEvent);
         }
 
-        public static void _RemoveListener(this UdonAction action,
+        public static void RemoveListener(this UdonAction action,
             UdonSharpBehaviour target,
             string eventName,
             string outputName)
         {
             UdonEvent comparisonEvent = UdonEvent.Create(target, eventName, outputName);
-            action._RemoveListener(comparisonEvent);
+            action.RemoveListener(comparisonEvent);
         }
 
 

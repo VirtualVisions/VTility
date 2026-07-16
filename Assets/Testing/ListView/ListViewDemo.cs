@@ -52,7 +52,7 @@ namespace VirtualVisions.VTility.Demo
         
         private void OnEnable()
         {
-            list.OnBindItem._AddListener(
+            list.OnBindItem.AddListener(
                 this,
                 nameof(_OnItemBound),
                 nameof(_OnItemBound_Value));
@@ -62,7 +62,7 @@ namespace VirtualVisions.VTility.Demo
 
         private void OnDisable()
         {
-            list.OnBindItem._RemoveListener(
+            list.OnBindItem.RemoveListener(
                 this,
                 nameof(_OnItemBound),
                 nameof(_OnItemBound_Value));
