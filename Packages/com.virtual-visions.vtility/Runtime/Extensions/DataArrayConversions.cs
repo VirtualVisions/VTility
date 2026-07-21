@@ -3,7 +3,7 @@ using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
-    public static class DataArrayExtensions
+    public static class DataArrayConversions
     {
         
         public static string ContentsToString(this DataList list)
