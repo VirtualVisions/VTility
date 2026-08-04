@@ -4,6 +4,8 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDK3.Components;
+using VRC.Udon;
+using VRC.Udon.Common.Interfaces;
 
 namespace VirtualVisions.VTility
 {
@@ -226,6 +228,11 @@ namespace VirtualVisions.VTility
             }
         }
         
+
+        public void AddCompletionCallback(IUdonEventReceiver target, string eventName)
+        {
+            _handles[0].OnComplete(target, eventName);
+        }
         
     }
 }

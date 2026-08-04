@@ -14,6 +14,7 @@ namespace VirtualVisions.VTility
         EventCall,
     }
     
+    [HelpURL("https://easings.net/")]
     [RequireComponent(typeof(VRCTweenActionUdon))]
     public class VRCTweenAction : MonoBehaviour
     {
