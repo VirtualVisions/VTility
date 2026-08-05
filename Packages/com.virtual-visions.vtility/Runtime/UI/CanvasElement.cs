@@ -1,8 +1,5 @@
-using System;
-using TMPro;
 using UdonSharp;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace VirtualVisions.VTility
 {
@@ -10,23 +7,22 @@ namespace VirtualVisions.VTility
     public class CanvasElement : UdonSharpBehaviour
     {
 
-        [field: Header("Descriptor")]
-        [field: SerializeField] public string Title { get; protected set; }
-        [field: SerializeField] public string Subtitle { get; protected set; }
-        [field: SerializeField] public Sprite Icon { get; protected set; }
-        
-        [field: Header("References")]
-        [field: SerializeField] public TMP_Text TitleLabel { get; protected set; }
-        [field: SerializeField] public TMP_Text SubtitleLabel { get; protected set; }
-        [field: SerializeField] public Image IconImage { get; protected set; }
-        
-        [SerializeField] protected RectTransform _childContainer;
+        public bool Shown { get; private set; }
         [SerializeField] protected VRCTweenActionUdon _tweenOnShow;
         [SerializeField] protected VRCTweenActionUdon _tweenOnHide;
 
+        protected virtual RectTransform _childContainer => _rectTrans;
+
+        /// <summary>
+        /// The descriptor for this element. Automatically populated during build.
+        /// If one is not found on this GameObject, this value will be null.
+        /// </summary>
+        [SerializeField, HideInInspector, FindComponent]
+        public ElementDescriptor Descriptor;
 
         protected bool _initialized;
         protected RectTransform _rectTrans;
+
 
 
         private void Start()
@@ -35,38 +31,26 @@ namespace VirtualVisions.VTility
         }
 
 
+        private void OnEnable() => OnEnabled();
+
+        protected virtual void OnEnabled()
+        {
+            Shown = true;
+        }
+
+
+        private void OnDisable() => OnDisabled();
+
+        protected virtual void OnDisabled()
+        {
+            Shown = false;
+        }
+
+
         protected virtual void Init()
         {
             _initialized = true;
             _rectTrans = (RectTransform)transform;
-            if (!_childContainer) _childContainer = _rectTrans;
-        }
-
-        private void OnValidate() => OnValidation();
-
-        protected virtual void OnValidation()
-        {
-            SetTitle(Title);
-            SetDescription(Subtitle);
-            SetIcon(Icon);
-        }
-
-        public void SetTitle(string value)
-        {
-            Title = value;
-            if (TitleLabel) TitleLabel.text = Title;
-        }
-
-        public void SetDescription(string value)
-        {
-            Subtitle = value;
-            if (SubtitleLabel) SubtitleLabel.text = Subtitle;
-        }
-
-        public void SetIcon(Sprite value)
-        {
-            Icon = value;
-            if (IconImage) IconImage.sprite = Icon;
         }
 
 
@@ -91,7 +75,7 @@ namespace VirtualVisions.VTility
             }
             else
             {
-                gameObject.SetActive(true);
+                gameObject.SetActive(false);
             }
         }
 
@@ -103,6 +87,5 @@ namespace VirtualVisions.VTility
         {
             gameObject.SetActive(false);
         }
-
     }
 }

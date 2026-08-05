@@ -72,6 +72,13 @@ namespace VirtualVisions.VTility
         public static ObjectSwitcher AsObjSwitcher(this DataToken token) => (ObjectSwitcher)token.DataDictionary;
         public static DataList ObjectList(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_OBJECT_LIST].DataList;
         public static GameObject Active(this ObjectSwitcher switcher) => (GameObject)switcher[ObjectSwitcher.KEY_ACTIVE].Reference;
+        /// <summary>
+        /// Passes the new object that is switched to.
+        /// If this is a GameObject list, the GameObject is passed.
+        /// If it's a Component list however, it will be passed cast to Component. 
+        /// </summary>
+        /// <param name="switcher"></param>
+        /// <returns></returns>
         public static UdonAction OnObjectSwitched(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_ON_OBJECT_SWITCHED].UdonAction();
         public static bool IsComponentList(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_IS_COMPONENT_LIST].Boolean;
         public static DataList ComponentList(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_COMPONENT_LIST].DataList;
