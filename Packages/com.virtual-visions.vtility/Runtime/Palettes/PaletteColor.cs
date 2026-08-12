@@ -11,7 +11,10 @@ namespace VirtualVisions.VTility
         {
             UIPalette palette = GetComponentInParent<UIPalette>(true);
             Graphic graphic = GetComponent<Graphic>();
-            if (palette && graphic) graphic.color = palette.GetColor(paletteName);
+            if (palette && graphic && palette.GetColor(paletteName, out Color color))
+            {
+                graphic.color = color;
+            }
         }
     }
 }

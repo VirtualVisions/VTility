@@ -10,14 +10,16 @@ namespace VirtualVisions.VTility
 
         #region Colors
 
-        public Color GetColor(string colorName)
+        public bool GetColor(string colorName, out Color result)
         {
-            if (Palette.GetColor(colorName, out Color color))
+            if (Palette.GetColor(colorName, out result))
             {
-                return color;
+                return true;
             }
 
-            return Color.magenta;
+            result = Color.magenta;
+            return false;
+
         }
 
         public List<string> GetColorPresetNames()
@@ -44,14 +46,16 @@ namespace VirtualVisions.VTility
 
         #region Fonts
 
-        public LabelPreset GetLabel(string presetName)
+        public bool GetLabel(string presetName, out LabelPreset label)
         {
-            if (Palette && Palette.GetLabel(presetName, out LabelPreset label))
+            if (Palette && Palette.GetLabel(presetName, out label))
             {
-                return label;
+                return true;
             }
 
-            return LabelPreset.Fallback;
+            label = default;
+
+            return false;
         }
 
         public List<string> GetLabelPresetNames()

@@ -11,7 +11,7 @@ namespace VirtualVisions.VTility
         [SerializeField] protected VRCTweenActionUdon _tweenOnShow;
         [SerializeField] protected VRCTweenActionUdon _tweenOnHide;
 
-        protected virtual RectTransform _childContainer => _rectTrans;
+        public virtual RectTransform ChildContainer => _rectTrans;
 
         /// <summary>
         /// The descriptor for this element. Automatically populated during build.
@@ -27,7 +27,7 @@ namespace VirtualVisions.VTility
 
         private void Start()
         {
-            if (_initialized) Init();
+            if (!_initialized) Init();
         }
 
 
@@ -51,6 +51,16 @@ namespace VirtualVisions.VTility
         {
             _initialized = true;
             _rectTrans = (RectTransform)transform;
+        }
+
+
+        /// <summary>
+        /// Reparent an item to the ChildContainer of this Element.
+        /// </summary>
+        /// <param name="item"></param>
+        public void AddItem(RectTransform item)
+        {
+            item.SetParent(ChildContainer);
         }
 
 

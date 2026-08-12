@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 
 namespace VirtualVisions.VTility.Editor
 {
-    [CanEditMultipleObjects]
     [CustomEditor(typeof(PaletteColor), true)]
     public class PaletteColorEditor : UnityEditor.Editor
     {
@@ -30,16 +29,11 @@ namespace VirtualVisions.VTility.Editor
             
             InspectorElement.FillDefaultInspector(root, serializedObject, this);
 
+            string current = _paletteName.stringValue;
             List<string> options = _presetNames.ToList();
-            string existing = _paletteName.stringValue;
-            if (!options.Contains(existing))
-            {
-                existing = _presetNames[0];
-                _paletteName.stringValue = existing;
-                serializedObject.ApplyModifiedProperties();
-            }
+            if (!options.Contains(current)) options.Insert(0, current);
 
-            DropdownField presets = new DropdownField(options, existing);
+            DropdownField presets = new DropdownField(options, current);
             presets.label = "Preset";
             presets.AddToClassList("unity-base-field__aligned");
             

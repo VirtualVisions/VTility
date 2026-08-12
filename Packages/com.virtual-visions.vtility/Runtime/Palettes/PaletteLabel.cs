@@ -11,9 +11,8 @@ namespace VirtualVisions.VTility
         {
             UIPalette palette = GetComponentInParent<UIPalette>(true);
             TMP_Text label = GetComponent<TMP_Text>();
-            if (palette && label)
+            if (palette && label && palette.GetLabel(paletteName, out LabelPreset preset))
             {
-                LabelPreset preset = palette.GetLabel(paletteName);
                 label.fontSize = preset.fontSize;
                 label.font = preset.font;
                 label.fontStyle = preset.fontStyle;

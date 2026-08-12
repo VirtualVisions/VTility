@@ -746,7 +746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0417f3e3a2f8418f9693a45ddbb5cbf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paletteName: Success
+  paletteName: Successful
 --- !u!1 &704592378
 GameObject:
   m_ObjectHideFlags: 0
