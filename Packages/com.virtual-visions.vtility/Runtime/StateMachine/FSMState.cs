@@ -2,7 +2,17 @@
 
 namespace VirtualVisions.VTility
 {
-    public abstract class FSMState : DataDictionary
+
+    public enum FSMState_Values
+    {
+        OnEnter,
+        OnExit,
+        OnTick,
+        // ---
+        Count
+    }
+    
+    public abstract class FSMState : DataList
     {
 
         public const string KEY_ON_ENTER = "onEnter";
@@ -11,12 +21,13 @@ namespace VirtualVisions.VTility
 
         public static FSMState Create()
         {
-            DataDictionary dict = new DataDictionary();
-            dict[KEY_ON_ENTER] = UdonAction.Create();
-            dict[KEY_ON_EXIT] = UdonAction.Create();
-            dict[KEY_ON_TICK] = UdonAction.Create();
+            DataToken[] values = new DataToken[(int)FSMState_Values.Count];
             
-            return (FSMState)dict;
+            values[(int)FSMState_Values.OnEnter] = UdonAction.Create();
+            values[(int)FSMState_Values.OnExit] = UdonAction.Create();
+            values[(int)FSMState_Values.OnTick] = UdonAction.Create();
+
+            return (FSMState)new DataList(values);
         }
 
     }
@@ -24,11 +35,11 @@ namespace VirtualVisions.VTility
     public static class FSMStateExtentions
     {
 
-        public static FSMState _FSMState(this DataToken token) => (FSMState)token.DataDictionary;
+        public static FSMState _FSMState(this DataToken token) => (FSMState)token.DataList;
 
-        public static UdonAction _OnEnter(this FSMState state) => state[FSMState.KEY_ON_ENTER].UdonAction();
-        public static UdonAction _OnExit(this FSMState state) => state[FSMState.KEY_ON_EXIT].UdonAction();
-        public static UdonAction _OnTick(this FSMState state) => state[FSMState.KEY_ON_TICK].UdonAction();
+        public static UdonAction _OnEnter(this FSMState state) => state[(int)FSMState_Values.OnEnter].UdonAction();
+        public static UdonAction _OnExit(this FSMState state) => state[(int)FSMState_Values.OnExit].UdonAction();
+        public static UdonAction _OnTick(this FSMState state) => state[(int)FSMState_Values.OnTick].UdonAction();
 
     }
 }

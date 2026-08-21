@@ -24,7 +24,7 @@ namespace VirtualVisions.VTility
         public UdonAction OnBindItem =>
             (UdonAction)(_onBindItem != null ? _onBindItem : _onBindItem = UdonAction.Create());
 
-        private DataDictionary _onBindItem;
+        private DataList _onBindItem;
 
         /// <summary>
         /// Called when an item is focused in the list.
@@ -34,7 +34,7 @@ namespace VirtualVisions.VTility
         public UdonAction OnItemSelected =>
             (UdonAction)(_onItemSelected != null ? _onItemSelected : _onItemSelected = UdonAction.Create());
 
-        private DataDictionary _onItemSelected;
+        private DataList _onItemSelected;
 
         /// <summary>
         /// Called when an item is selected and used.
@@ -44,7 +44,7 @@ namespace VirtualVisions.VTility
         public UdonAction OnItemUsed =>
             (UdonAction)(_onItemUsed != null ? _onItemUsed : _onItemUsed = UdonAction.Create());
 
-        private DataDictionary _onItemUsed;
+        private DataList _onItemUsed;
 
         /// <summary>
         /// The original source list of items.

@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="root" style="flex-direction: row;">
+        <ui:VisualElement name="header" style="width: 30%; margin-right: 8px;">
+            <ui:EnumField type="VirtualVisions.VTility.UdonEventFieldTargetType, VTility.Runtime" name="mode-field" style="flex-shrink: 1; flex-grow: 1;" />
+            <uie:ObjectField name="target-field" style="flex-shrink: 1; flex-grow: 1; min-width: auto;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="inputs" style="flex-grow: 1;">
+            <ui:VisualElement name="event-field" style="flex-direction: row;">
+                <ui:Label tabindex="-1" text="Event" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: middle-left; width: 70px;" />
+                <ui:TextField picking-mode="Ignore" value="filler text" name="event-name-field" style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="parameter-field" style="flex-direction: row; display: flex;">
+                <ui:Label tabindex="-1" text="Parameter" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: middle-left; width: 70px;" />
+                <ui:TextField picking-mode="Ignore" value="filler text" name="parameter-name-field" style="flex-grow: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

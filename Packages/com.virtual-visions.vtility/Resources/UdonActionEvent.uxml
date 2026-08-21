@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="root" style="flex-grow: 1;">
+        <ui:VisualElement name="header" style="flex-direction: row;">
+            <ui:EnumField label="Mode" type="VirtualVisions.VTility.UdonActionFieldMode, VTility.Runtime" name="mode-field" style="flex-grow: 1;" />
+            <uie:ObjectField type="UnityEngine.GameObject, UnityEngine.CoreModule" name="physics-target-field" style="width: 120px;" />
+        </ui:VisualElement>
+        <ui:ListView header-title="Events" reorderable="true" show-foldout-header="true" show-add-remove-footer="true" reorder-mode="Animated" show-border="true" virtualization-method="DynamicHeight" name="event-list" />
+    </ui:VisualElement>
+</ui:UXML>

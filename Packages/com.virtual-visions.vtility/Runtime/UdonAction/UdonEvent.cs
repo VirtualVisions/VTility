@@ -19,6 +19,12 @@ namespace VirtualVisions.VTility
 
         public static UdonEvent Create(UdonSharpBehaviour target, string eventName)
         {
+            UdonBehaviour castTarget = (UdonBehaviour)(UnityEngine.Object)target;
+            return Create(castTarget, eventName);
+        }
+
+        public static UdonEvent Create(UdonBehaviour target, string eventName)
+        {
             DataDictionary dictionary = new DataDictionary();
             dictionary[KEY_TARGET] = target;
             dictionary[KEY_HAS_EVENT] = !string.IsNullOrEmpty(eventName);
@@ -33,6 +39,12 @@ namespace VirtualVisions.VTility
         }
 
         public static UdonEvent Create(UdonSharpBehaviour target, string eventName, string outputName)
+        {
+            UdonBehaviour castTarget = (UdonBehaviour)(UnityEngine.Object)target;
+            return Create(castTarget, eventName, outputName);
+        }
+        
+        public static UdonEvent Create(UdonBehaviour target, string eventName, string outputName)
         {
             DataDictionary dictionary = new DataDictionary();
             dictionary[KEY_TARGET] = target;
@@ -52,8 +64,8 @@ namespace VirtualVisions.VTility
     {
         public static UdonEvent UdonEvent(this DataToken token) => (UdonEvent)token.DataDictionary;
 
-        public static UdonSharpBehaviour Target(this UdonEvent udonEvent) =>
-            (UdonSharpBehaviour)udonEvent[VTility.UdonEvent.KEY_TARGET].Reference;
+        public static UdonBehaviour Target(this UdonEvent udonEvent) =>
+            (UdonBehaviour)udonEvent[VTility.UdonEvent.KEY_TARGET].Reference;
 
         public static bool HasEvent(this UdonEvent udonEvent) =>
             udonEvent[VTility.UdonEvent.KEY_HAS_EVENT].Boolean;

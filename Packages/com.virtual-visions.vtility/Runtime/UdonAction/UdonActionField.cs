@@ -1,23 +1,21 @@
 ﻿using System;
-using VRC.Udon;
 
 namespace VirtualVisions.VTility
 {
-    /// <summary>
-    /// Currently unused.
-    /// </summary>
+
+    public enum UdonActionTriggerMode
+    {
+        EventOnly,
+        OnStart,
+        OnEnable,
+        OnDisable,
+    }
+    
     [Serializable]
     public class UdonActionField
     {
+        public UdonActionTriggerMode mode;
         public UdonEventField[] events;
-
-        public void Invoke()
-        {
-            foreach (UdonEventField evt in events)
-            {
-                evt.Invoke();
-            }
-        }
     }
 
     /// <summary>
@@ -27,40 +25,29 @@ namespace VirtualVisions.VTility
     public class UdonActionField<T>
     {
         public UdonEventField<T>[] events;
-
-        public void Invoke(T value)
-        {
-            foreach (UdonEventField<T> evt in events)
-            {
-                evt.Invoke(value);
-            }
-        }
     }
-    
+
+
+    public enum UdonEventFieldTargetType
+    {
+        USharp,
+        Udon,
+    }
 
     [Serializable]
     public class UdonEventField
     {
-        public UdonBehaviour target;
+        public UdonEventFieldTargetType type;
+        public UnityEngine.Object target;
         public string eventName;
-        
-        public void Invoke()
-        {
-            target.SendCustomEvent(eventName);
-        }
     }
 
     [Serializable]
     public class UdonEventField<T>
     {
-        public UdonBehaviour target;
+        public UdonEventFieldTargetType type;
+        public UnityEngine.Object target;
         public string eventName;
         public string variableName;
-        
-        public void Invoke(T value)
-        {
-            target.SetProgramVariable(variableName, value);
-            target.SendCustomEvent(eventName);
-        }
     }
 }
