@@ -117,7 +117,7 @@ namespace VirtualVisions.VTility
             output.Append(udonEvent.HasOutput());
             if (udonEvent.HasOutput()) output.Append(udonEvent.OutputName());
 
-            int hash = output.GetHashCode();
+            int hash = output.ToString().GetHashCode();
             return hash;
         }
     }
