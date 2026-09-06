@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
@@ -57,34 +56,34 @@ namespace VirtualVisions.VTility
                     switch (type)
                     {
                         case TokenType.SByte:
-                            result = (sbyte)value;
+                            result = (sbyte)value.Number;
                             break;
                         case TokenType.Byte:
-                            result = (byte)value;
+                            result = (byte)value.Number;
                             break;
                         case TokenType.Short:
-                            result = (short)value;
+                            result = (short)value.Number;
                             break;
                         case TokenType.UShort:
-                            result = (ushort)value;
+                            result = (ushort)value.Number;
                             break;
                         case TokenType.Int:
-                            result = (int)value;
+                            result = (int)value.Number;
                             break;
                         case TokenType.UInt:
-                            result = (uint)value;
+                            result = (uint)value.Number;
                             break;
                         case TokenType.Long:
-                            result = (long)value;
+                            result = (long)value.Number;
                             break;
                         case TokenType.ULong:
-                            result = (ulong)value;
+                            result = (ulong)value.Number;
                             break;
                         case TokenType.Float:
-                            result = (float)value;
+                            result = (float)value.Number;
                             break;
                         case TokenType.Double:
-                            result = (double)value;
+                            result = (double)value.Number;
                             break;
                         default:
                             Debug.LogWarning($"Target type {type} is not a number, entry {key} was not copied.");
