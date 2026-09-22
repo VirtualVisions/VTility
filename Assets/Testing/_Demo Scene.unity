@@ -373,6 +373,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 238856108}
+  <descriptor>k__BackingField: {fileID: 0}
   _tweenOnShow: {fileID: 2063070491}
   _tweenOnHide: {fileID: 1336474575}
 --- !u!114 &238856110
@@ -423,12 +424,12 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 238856110}
-  <title>k__BackingField: 
+  <title>k__BackingField: my label here
   <subtitle>k__BackingField: 
-  <icon>k__BackingField: {fileID: 0}
-  <titleLabel>k__BackingField: {fileID: 0}
+  <icon>k__BackingField: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  <titleLabel>k__BackingField: {fileID: 1642154858}
   <subtitleLabel>k__BackingField: {fileID: 0}
-  <iconImage>k__BackingField: {fileID: 0}
+  <iconImage>k__BackingField: {fileID: 741645354}
 --- !u!1 &319403392
 GameObject:
   m_ObjectHideFlags: 0
@@ -1872,7 +1873,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Woah
+  m_text: my label here
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

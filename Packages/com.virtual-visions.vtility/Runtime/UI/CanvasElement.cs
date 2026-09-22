@@ -34,7 +34,7 @@ namespace VirtualVisions.VTility
         /// The descriptor for this element. Automatically populated during build.
         /// If one is not found on this GameObject, this value will be null.
         /// </summary>
-        [field: FindComponent] public ElementDescriptor descriptor { get; private set; }
+        [field: FindComponent, SerializeField, HideInInspector] public ElementDescriptor descriptor { get; private set; }
         
         
         [SerializeField] protected VRCTweenActionUdon _tweenOnShow;

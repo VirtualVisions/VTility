@@ -13,6 +13,7 @@ namespace VirtualVisions.VTility
         [field: SerializeField] public string subtitle { get; protected set; }
         [field: SerializeField] public Sprite icon { get; protected set; }
         
+        
         [field: Header("References")]
         [field: SerializeField] public TMP_Text titleLabel { get; protected set; }
         [field: SerializeField] public TMP_Text subtitleLabel { get; protected set; }
