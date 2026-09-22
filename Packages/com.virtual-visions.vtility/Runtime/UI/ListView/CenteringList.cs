@@ -25,21 +25,21 @@ namespace VirtualVisions.VTility
         private VRCTweenHandle _blendLastSelectionScale;
 
         
-        private float ContainerSize => GetItemPlacement(ItemCount);
-        private float ItemHalfSize => _itemSize / 2f;
-        private float FullItemSize => _itemSize + _spacingSize;
+        private float containerSize => GetItemPlacement(itemCount);
+        private float itemHalfSize => _itemSize / 2f;
+        private float fullItemSize => _itemSize + _spacingSize;
         
         
         private float GetItemPlacement(int index)
         {
-            return ((index * _itemSize) + ((index - 1) * _spacingSize) + ItemHalfSize);
+            return ((index * _itemSize) + ((index - 1) * _spacingSize) + itemHalfSize);
         }
 
         private Vector2 GetLayoutPosition(int index)
         {
             float selectionMargin = 0;
-            if (index < SelectedIndex) selectionMargin = -_selectedItemMargin;
-            if (index > SelectedIndex) selectionMargin = _selectedItemMargin;
+            if (index < selectedIndex) selectionMargin = -_selectedItemMargin;
+            if (index > selectedIndex) selectionMargin = _selectedItemMargin;
             
             switch (_direction)
             {
@@ -53,7 +53,7 @@ namespace VirtualVisions.VTility
 
         protected override void OnEnable()
         {
-            _itemContainer.anchoredPosition = -GetLayoutPosition(SelectedIndex);
+            _itemContainer.anchoredPosition = -GetLayoutPosition(selectedIndex);
             base.OnEnable();
         }
 
@@ -67,7 +67,7 @@ namespace VirtualVisions.VTility
             _blendContainer.TryKill();
 
             _blendContainer = _itemContainer.TweenAnchorPos(
-                -GetLayoutPosition(SelectedIndex),
+                -GetLayoutPosition(selectedIndex),
                 _tweenDuration,
                 _tweenEase);
         }
@@ -90,19 +90,19 @@ namespace VirtualVisions.VTility
         }
         
         [PublicAPI]
-        public void _SelectPrevious() => SetIndex(SelectedIndex - 1);
+        public void _SelectPrevious() => SetIndex(selectedIndex - 1);
         [PublicAPI]
-        public void _SelectNext() => SetIndex(SelectedIndex + 1);
+        public void _SelectNext() => SetIndex(selectedIndex + 1);
 
 
         public override void SetIndex(int index)
         {
-            int lastIndex = SelectedIndex;
+            int lastIndex = selectedIndex;
             base.SetIndex(index);
             
             _TweenToCurrent();
 
-            if (lastIndex != -1 && lastIndex != SelectedIndex && !Mathf.Approximately(_selectedItemScale, 1))
+            if (lastIndex != -1 && lastIndex != selectedIndex && !Mathf.Approximately(_selectedItemScale, 1))
             {
                 if (_activeItemKeys.TryGetValue(lastIndex, TokenType.Reference, out DataToken lastItem))
                 {
@@ -143,11 +143,11 @@ namespace VirtualVisions.VTility
                 default:
                 case LayoutDirection.Column:
                     item.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _itemSize);
-                    _itemContainer.sizeDelta = new Vector2(0, ContainerSize);
+                    _itemContainer.sizeDelta = new Vector2(0, containerSize);
                     break;
                 case LayoutDirection.Row:
                     item.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _itemSize);
-                    _itemContainer.sizeDelta = new Vector2(ContainerSize, 0);
+                    _itemContainer.sizeDelta = new Vector2(containerSize, 0);
                     break;
             }
 
@@ -170,7 +170,7 @@ namespace VirtualVisions.VTility
                     break;
             }
             
-            for (int i = 0; i < ItemCount; i++)
+            for (int i = 0; i < itemCount; i++)
             {
                 Vector2 layoutPos = GetLayoutPosition(i);
                 bool visible = IsPointVisible(layoutPos - visibilityCheckOffset) || IsPointVisible(layoutPos + visibilityCheckOffset);

@@ -375,7 +375,6 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 238856108}
   _tweenOnShow: {fileID: 2063070491}
   _tweenOnHide: {fileID: 1336474575}
-  Descriptor: {fileID: 0}
 --- !u!114 &238856110
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -424,12 +423,12 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 238856110}
-  <Title>k__BackingField: Woah
-  <Subtitle>k__BackingField: Subtitle
-  <Icon>k__BackingField: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  <TitleLabel>k__BackingField: {fileID: 1642154858}
-  <SubtitleLabel>k__BackingField: {fileID: 0}
-  <IconImage>k__BackingField: {fileID: 741645354}
+  <title>k__BackingField: 
+  <subtitle>k__BackingField: 
+  <icon>k__BackingField: {fileID: 0}
+  <titleLabel>k__BackingField: {fileID: 0}
+  <subtitleLabel>k__BackingField: {fileID: 0}
+  <iconImage>k__BackingField: {fileID: 0}
 --- !u!1 &319403392
 GameObject:
   m_ObjectHideFlags: 0
@@ -2492,7 +2491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ea896f26f3a8f4f9e5f09dcd5b2616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Palette: {fileID: 11400000, guid: faaa4fdc5f6b1dc48a9c0088cf0c59be, type: 2}
+  palette: {fileID: 11400000, guid: faaa4fdc5f6b1dc48a9c0088cf0c59be, type: 2}
 --- !u!1 &1931802503
 GameObject:
   m_ObjectHideFlags: 0

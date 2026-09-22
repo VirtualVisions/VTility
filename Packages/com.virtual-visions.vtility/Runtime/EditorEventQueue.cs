@@ -7,6 +7,7 @@ namespace VirtualVisions.VTility
 {
     /// <summary>
     /// Safely queue an event to happen at the next available editor step.
+    /// This is the runtime-safe equivalent of EditorApplication.delayCall
     /// </summary>
 #if UNITY_EDITOR
     [InitializeOnLoad]

@@ -1,5 +1,6 @@
 using UdonSharp;
 using UnityEngine;
+using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
@@ -7,18 +8,38 @@ namespace VirtualVisions.VTility
     public class CanvasElement : UdonSharpBehaviour
     {
 
-        public bool Shown { get; private set; }
-        [SerializeField] protected VRCTweenActionUdon _tweenOnShow;
-        [SerializeField] protected VRCTweenActionUdon _tweenOnHide;
-
-        public virtual RectTransform ChildContainer => _rectTrans;
-
+        /// <summary>
+        /// Whether the element is actively displayed and active.
+        /// </summary>
+        public bool isShown { get; private set; }
+        
+        /// <summary>
+        /// Parent used for storing child elements.
+        /// </summary>
+        public virtual RectTransform childContainer => _rectTrans;
+        
+        /// <summary>
+        /// Callback fired immediately upon the GameObject running OnEnable.
+        /// </summary>
+        public UdonAction onShow => (UdonAction)(_onShow != null ? _onShow : _onShow = UdonAction.Create());
+        private DataList _onShow;
+        
+        /// <summary>
+        /// Callback fired immediately upon the GameObject running OnDisable.
+        /// </summary>
+        public UdonAction onHidden => (UdonAction)(_onHidden != null ? _onHidden : _onHidden = UdonAction.Create());
+        private DataList _onHidden;
+        
         /// <summary>
         /// The descriptor for this element. Automatically populated during build.
         /// If one is not found on this GameObject, this value will be null.
         /// </summary>
-        [SerializeField, HideInInspector, FindComponent]
-        public ElementDescriptor Descriptor;
+        [field: FindComponent] public ElementDescriptor descriptor { get; private set; }
+        
+        
+        [SerializeField] protected VRCTweenActionUdon _tweenOnShow;
+        [SerializeField] protected VRCTweenActionUdon _tweenOnHide;
+
 
         protected bool _initialized;
         protected RectTransform _rectTrans;
@@ -35,7 +56,8 @@ namespace VirtualVisions.VTility
 
         protected virtual void OnEnabled()
         {
-            Shown = true;
+            isShown = true;
+            onShow._Invoke();
         }
 
 
@@ -43,7 +65,8 @@ namespace VirtualVisions.VTility
 
         protected virtual void OnDisabled()
         {
-            Shown = false;
+            isShown = false;
+            onHidden._Invoke();
         }
 
 
@@ -60,7 +83,7 @@ namespace VirtualVisions.VTility
         /// <param name="item"></param>
         public void AddItem(RectTransform item)
         {
-            item.SetParent(ChildContainer);
+            item.SetParent(childContainer);
         }
 
 

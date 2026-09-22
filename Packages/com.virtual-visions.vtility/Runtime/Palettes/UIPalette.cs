@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace VirtualVisions.VTility
 {
     public class UIPalette : MonoBehaviour
     {
 
-        public UIPaletteAsset Palette;
+        [FormerlySerializedAs("Palette")] public UIPaletteAsset palette;
 
         #region Colors
 
         public bool GetColor(string colorName, out Color result)
         {
-            if (Palette.GetColor(colorName, out result))
+            if (palette.GetColor(colorName, out result))
             {
                 return true;
             }
@@ -24,7 +25,7 @@ namespace VirtualVisions.VTility
 
         public List<string> GetColorPresetNames()
         {
-            if (Palette) return Palette.GetColorPresetNames();
+            if (palette) return palette.GetColorPresetNames();
             return new List<string>() { UIPaletteAsset.NONE_FIELD };
         }
 
@@ -48,7 +49,7 @@ namespace VirtualVisions.VTility
 
         public bool GetLabel(string presetName, out LabelPreset label)
         {
-            if (Palette && Palette.GetLabel(presetName, out label))
+            if (palette && palette.GetLabel(presetName, out label))
             {
                 return true;
             }
@@ -60,7 +61,7 @@ namespace VirtualVisions.VTility
 
         public List<string> GetLabelPresetNames()
         {
-            if (Palette) return Palette.GetLabelPresetNames();
+            if (palette) return palette.GetLabelPresetNames();
             return new List<string>() { UIPaletteAsset.NONE_FIELD };
         }
 

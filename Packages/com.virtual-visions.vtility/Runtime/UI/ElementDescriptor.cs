@@ -9,41 +9,41 @@ namespace VirtualVisions.VTility
     public class ElementDescriptor : UdonSharpBehaviour
     {
         
-        [field: SerializeField] public string Title { get; protected set; }
-        [field: SerializeField] public string Subtitle { get; protected set; }
-        [field: SerializeField] public Sprite Icon { get; protected set; }
+        [field: SerializeField] public string title { get; protected set; }
+        [field: SerializeField] public string subtitle { get; protected set; }
+        [field: SerializeField] public Sprite icon { get; protected set; }
         
         [field: Header("References")]
-        [field: SerializeField] public TMP_Text TitleLabel { get; protected set; }
-        [field: SerializeField] public TMP_Text SubtitleLabel { get; protected set; }
-        [field: SerializeField] public Image IconImage { get; protected set; }
+        [field: SerializeField] public TMP_Text titleLabel { get; protected set; }
+        [field: SerializeField] public TMP_Text subtitleLabel { get; protected set; }
+        [field: SerializeField] public Image iconImage { get; protected set; }
 
         
         private void OnValidate() => OnValidation();
 
         protected virtual void OnValidation()
         {
-            SetTitle(Title);
-            SetDescription(Subtitle);
-            SetIcon(Icon);
+            SetTitle(title);
+            SetDescription(subtitle);
+            SetIcon(icon);
         }
 
         public void SetTitle(string value)
         {
-            Title = value;
-            if (TitleLabel) TitleLabel.text = Title;
+            title = value;
+            if (titleLabel) titleLabel.text = title;
         }
 
         public void SetDescription(string value)
         {
-            Subtitle = value;
-            if (SubtitleLabel) SubtitleLabel.text = Subtitle;
+            subtitle = value;
+            if (subtitleLabel) subtitleLabel.text = subtitle;
         }
 
         public void SetIcon(Sprite value)
         {
-            Icon = value;
-            if (IconImage) IconImage.sprite = Icon;
+            icon = value;
+            if (iconImage) iconImage.sprite = icon;
         }
 
     }

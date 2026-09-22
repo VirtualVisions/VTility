@@ -5,18 +5,25 @@ using VRC.Udon;
 
 namespace VirtualVisions.VTility
 {
+
+    public enum UdonEvent_Values
+    {
+        Target,
+        HasEvent,
+        Event,
+        HasOutput,
+        OutputName,
+        Hash,
+        
+        Count
+    }
+    
     /// <summary>
     /// A specific event callable via Udon. To be used in tandem with UdonAction.
     /// </summary>
-    public abstract class UdonEvent : DataDictionary
+    public abstract class UdonEvent : DataList
     {
-        public const string KEY_TARGET = "target";
-        public const string KEY_HAS_EVENT = "hasEvent";
-        public const string KEY_EVENT = "event";
-        public const string KEY_HAS_OUTPUT = "hasOutput";
-        public const string KEY_OUTPUT_NAME = "outputName";
-        public const string KEY_HASH = "hash";
-
+        
         public static UdonEvent Create(UdonSharpBehaviour target, string eventName)
         {
             UdonBehaviour castTarget = (UdonBehaviour)(UnityEngine.Object)target;
@@ -25,17 +32,17 @@ namespace VirtualVisions.VTility
 
         public static UdonEvent Create(UdonBehaviour target, string eventName)
         {
-            DataDictionary dictionary = new DataDictionary();
-            dictionary[KEY_TARGET] = target;
-            dictionary[KEY_HAS_EVENT] = !string.IsNullOrEmpty(eventName);
-            dictionary[KEY_EVENT] = eventName;
-            dictionary[KEY_HAS_OUTPUT] = false;
-            dictionary[KEY_OUTPUT_NAME] = string.Empty;
+            DataToken[] values = new DataToken[(int)UdonEvent_Values.Count];
+            values.Set(UdonEvent_Values.Target, target);
+            values.Set(UdonEvent_Values.HasEvent, !string.IsNullOrEmpty(eventName));
+            values.Set(UdonEvent_Values.Event, eventName);
+            values.Set(UdonEvent_Values.HasOutput, false);
+            values.Set(UdonEvent_Values.OutputName, string.Empty);
 
-            UdonEvent output = (UdonEvent)dictionary;
-            output[KEY_HASH] = output.BuildHash();
+            UdonEvent udonList = (UdonEvent)new DataList(values);
+            udonList.Set(UdonEvent_Values.Hash, udonList.BuildHash());
 
-            return output;
+            return udonList;
         }
 
         public static UdonEvent Create(UdonSharpBehaviour target, string eventName, string outputName)
@@ -46,46 +53,46 @@ namespace VirtualVisions.VTility
         
         public static UdonEvent Create(UdonBehaviour target, string eventName, string outputName)
         {
-            DataDictionary dictionary = new DataDictionary();
-            dictionary[KEY_TARGET] = target;
-            dictionary[KEY_HAS_EVENT] = !string.IsNullOrEmpty(eventName);
-            dictionary[KEY_EVENT] = eventName;
-            dictionary[KEY_HAS_OUTPUT] = true;
-            dictionary[KEY_OUTPUT_NAME] = outputName;
+            DataToken[] values = new DataToken[(int)UdonEvent_Values.Count];
+            values.Set(UdonEvent_Values.Target, target);
+            values.Set(UdonEvent_Values.HasEvent, !string.IsNullOrEmpty(eventName));
+            values.Set(UdonEvent_Values.Event, eventName);
+            values.Set(UdonEvent_Values.HasOutput, true);
+            values.Set(UdonEvent_Values.OutputName, outputName);
 
-            UdonEvent output = (UdonEvent)dictionary;
-            output[KEY_HASH] = output.BuildHash();
+            UdonEvent udonList = (UdonEvent)new DataList(values);
+            udonList.Set(UdonEvent_Values.Hash, udonList.BuildHash());
 
-            return output;
+            return udonList;
         }
     }
 
     public static class UdonEventExtensions
     {
-        public static UdonEvent UdonEvent(this DataToken token) => (UdonEvent)token.DataDictionary;
+        public static UdonEvent UdonEvent(this DataToken token) => (UdonEvent)token.DataList;
 
         public static UdonBehaviour Target(this UdonEvent udonEvent) =>
-            (UdonBehaviour)udonEvent[VTility.UdonEvent.KEY_TARGET].Reference;
+            (UdonBehaviour)udonEvent.Get(UdonEvent_Values.Target).Reference;
 
         public static bool HasEvent(this UdonEvent udonEvent) =>
-            udonEvent[VTility.UdonEvent.KEY_HAS_EVENT].Boolean;
+            udonEvent.Get(UdonEvent_Values.HasEvent).Boolean;
 
         public static string EventName(this UdonEvent udonEvent) =>
-            udonEvent[VTility.UdonEvent.KEY_EVENT].String;
+            udonEvent.Get(UdonEvent_Values.Event).String;
 
         public static bool HasOutput(this UdonEvent udonEvent) =>
-            udonEvent[VTility.UdonEvent.KEY_HAS_OUTPUT].Boolean;
+            udonEvent.Get(UdonEvent_Values.HasOutput).Boolean;
 
         public static string OutputName(this UdonEvent udonEvent) =>
-            udonEvent[VTility.UdonEvent.KEY_OUTPUT_NAME].String;
+            udonEvent.Get(UdonEvent_Values.OutputName).String;
 
         public static int Hash(this UdonEvent udonEvent) =>
-            udonEvent[VTility.UdonEvent.KEY_HASH].Int;
+            udonEvent.Get(UdonEvent_Values.Hash).Int;
 
 
         public static void _Invoke(this UdonEvent udonEvent)
         {
-            UdonBehaviour target = (UdonBehaviour)udonEvent[VTility.UdonEvent.KEY_TARGET].Reference;
+            UdonBehaviour target = (UdonBehaviour)udonEvent.Get(UdonEvent_Values.Target).Reference;
 
             if (udonEvent.HasEvent())
             {
@@ -95,7 +102,7 @@ namespace VirtualVisions.VTility
 
         public static void _Invoke<T>(this UdonEvent udonEvent, T outputValue)
         {
-            UdonBehaviour target = (UdonBehaviour)udonEvent[VTility.UdonEvent.KEY_TARGET].Reference;
+            UdonBehaviour target = (UdonBehaviour)udonEvent.Get(UdonEvent_Values.Target).Reference;
 
             if (udonEvent.HasOutput())
             {

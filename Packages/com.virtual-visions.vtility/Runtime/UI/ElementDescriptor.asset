@@ -50,13 +50,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: <Title>k__BackingField
+      Data: <title>k__BackingField
     - Name: $v
       Entry: 7
       Data: 2|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: <Title>k__BackingField
+      Data: <title>k__BackingField
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 3|System.RuntimeType, mscorlib
@@ -110,13 +110,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: <Subtitle>k__BackingField
+      Data: <subtitle>k__BackingField
     - Name: $v
       Entry: 7
       Data: 6|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: <Subtitle>k__BackingField
+      Data: <subtitle>k__BackingField
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 3
@@ -164,13 +164,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: <Icon>k__BackingField
+      Data: <icon>k__BackingField
     - Name: $v
       Entry: 7
       Data: 9|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: <Icon>k__BackingField
+      Data: <icon>k__BackingField
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 10|System.RuntimeType, mscorlib
@@ -224,13 +224,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: <TitleLabel>k__BackingField
+      Data: <titleLabel>k__BackingField
     - Name: $v
       Entry: 7
       Data: 13|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: <TitleLabel>k__BackingField
+      Data: <titleLabel>k__BackingField
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 14|System.RuntimeType, mscorlib
@@ -293,13 +293,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: <SubtitleLabel>k__BackingField
+      Data: <subtitleLabel>k__BackingField
     - Name: $v
       Entry: 7
       Data: 18|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: <SubtitleLabel>k__BackingField
+      Data: <subtitleLabel>k__BackingField
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 14
@@ -347,13 +347,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: <IconImage>k__BackingField
+      Data: <iconImage>k__BackingField
     - Name: $v
       Entry: 7
       Data: 21|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: <IconImage>k__BackingField
+      Data: <iconImage>k__BackingField
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 22|System.RuntimeType, mscorlib

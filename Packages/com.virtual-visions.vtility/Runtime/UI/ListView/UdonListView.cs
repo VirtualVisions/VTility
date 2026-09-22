@@ -18,15 +18,15 @@ namespace VirtualVisions.VTility
         /// <summary>
         /// Retrieve the full size of the item container, ignoring the item spacing after the last group.
         /// </summary>
-        private float ContainerSize => GetItemPlacement(ItemCount + (_groupCount - 1)) - _spacingSize;
-        private float FullItemSize => _itemSize + _spacingSize;
-        private float FullGroupSize => (_groupItemSize * _groupCount) + (_groupSpacingSize * (_groupCount - 1));
+        private float containerSize => GetItemPlacement(itemCount + (_groupCount - 1)) - _spacingSize;
+        private float fullItemSize => _itemSize + _spacingSize;
+        private float fullGroupSize => (_groupItemSize * _groupCount) + (_groupSpacingSize * (_groupCount - 1));
 
 
         private float GetItemPlacement(int index)
         {
             int groupIndex = index / _groupCount;
-            return (groupIndex * FullItemSize);
+            return (groupIndex * fullItemSize);
         }
 
         private int GetIndexInGroup(int index)
@@ -68,7 +68,7 @@ namespace VirtualVisions.VTility
             if (_contentPos != containerPos)
             {
                 _contentPos = containerPos;
-                if (ItemCount > 0) RefreshVisibility();
+                if (itemCount > 0) RefreshVisibility();
             }
         }
 
@@ -118,10 +118,10 @@ namespace VirtualVisions.VTility
             {
                 default:
                 case LayoutDirection.Column:
-                    _itemContainer.sizeDelta = new Vector2(FullGroupSize, ContainerSize);
+                    _itemContainer.sizeDelta = new Vector2(fullGroupSize, containerSize);
                     break;
                 case LayoutDirection.Row:
-                    _itemContainer.sizeDelta = new Vector2(ContainerSize, FullGroupSize);
+                    _itemContainer.sizeDelta = new Vector2(containerSize, fullGroupSize);
                     break;
             }
             
@@ -155,7 +155,7 @@ namespace VirtualVisions.VTility
             Vector2 cornerBottomRight = new Vector2(width, -height);
             Vector2 itemCenter = new Vector2(width, -height) * 0.5f;
             
-            for (int i = 0; i < ItemCount; i++)
+            for (int i = 0; i < itemCount; i++)
             {
                 Vector2 itemPosition = GetLayoutPosition(i) + GetPositionInGroup(i);
 

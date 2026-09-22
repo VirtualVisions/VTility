@@ -3,47 +3,53 @@ using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
-    public abstract class ItemPool : DataDictionary
-    {
 
-        public const string KEY_PREFAB = "prefab";
-        public const string KEY_PARENT = "parent";
-        public const string KEY_MAX_COUNT = "maxCount";
+    public enum ItemPool_Values
+    {
+        Prefab,
+        Parent,
+        MaxCount,
+        OnItemCreated,
+        OnItemSpawned,
+        ActiveItems,
+        InactiveItems,
         
-        public const string KEY_ON_ITEM_CREATED = "onItemCreated";
-        public const string KEY_ON_ITEM_SPAWNED = "onItemSpawned";
-        public const string KEY_ACTIVE_ITEMS = "activeItems";
-        public const string KEY_INACTIVE_ITEMS = "inactiveItems";
+        Count
+    }
+    
+    public abstract class ItemPool : DataList
+    {
         
         public static ItemPool Create(
             GameObject prefab,
             Transform parent,
             int maxCount)
         {
-            DataDictionary dict = new DataDictionary();
-            dict[KEY_PREFAB] = prefab;
-            dict[KEY_PARENT] = parent;
-            dict[KEY_MAX_COUNT] = maxCount;
-
-            dict[KEY_ON_ITEM_CREATED] = UdonAction.Create();
-            dict[KEY_ON_ITEM_SPAWNED] = UdonAction.Create();
-            dict[KEY_ACTIVE_ITEMS] = new DataList(maxCount);
-            dict[KEY_INACTIVE_ITEMS] = new DataList(maxCount);
-
-            return (ItemPool)dict;
+            DataToken[] values = new DataToken[(int)ItemPool_Values.Count];
+            values.Set(ItemPool_Values.Prefab, prefab);
+            values.Set(ItemPool_Values.Parent, parent);
+            values.Set(ItemPool_Values.MaxCount, maxCount);
+            values.Set(ItemPool_Values.OnItemCreated, UdonAction.Create());
+            values.Set(ItemPool_Values.OnItemSpawned, UdonAction.Create());
+            values.Set(ItemPool_Values.ActiveItems, new DataList(maxCount));
+            values.Set(ItemPool_Values.InactiveItems, new DataList(maxCount));
+            
+            
+            ItemPool result = (ItemPool)new DataList(values);
+            return result;
         }
     }
 
     public static class ItemPoolExtensions
     {
-        public static ItemPool _ItemPool(this DataToken token) => (ItemPool)token.DataDictionary;
-        private static GameObject _Prefab(this ItemPool pool) => (GameObject)pool[ItemPool.KEY_PREFAB].Reference;
-        private static Transform _Parent(this ItemPool pool) => (Transform)pool[ItemPool.KEY_PARENT].Reference;
-        private static int _MaxCount(this ItemPool pool) => pool[ItemPool.KEY_MAX_COUNT].Int;
-        private static DataList _ActiveItems(this ItemPool pool) => pool[ItemPool.KEY_ACTIVE_ITEMS].DataList;
-        private static DataList _InactiveItems(this ItemPool pool) => pool[ItemPool.KEY_INACTIVE_ITEMS].DataList;
-        public static UdonAction _OnItemCreated(this ItemPool pool) => pool[ItemPool.KEY_ON_ITEM_CREATED].UdonAction();
-        public static UdonAction _OnItemSpawned(this ItemPool pool) => pool[ItemPool.KEY_ON_ITEM_SPAWNED].UdonAction();
+        public static ItemPool _ItemPool(this DataToken token) => (ItemPool)token.DataList;
+        private static GameObject _Prefab(this ItemPool pool) => pool.Get(ItemPool_Values.Prefab).CastReference<GameObject>();
+        private static Transform _Parent(this ItemPool pool) => pool.Get(ItemPool_Values.Parent).CastReference<Transform>();
+        private static int _MaxCount(this ItemPool pool) => pool.Get(ItemPool_Values.MaxCount).Int;
+        public static UdonAction _OnItemCreated(this ItemPool pool) => pool.Get(ItemPool_Values.OnItemCreated).UdonAction();
+        public static UdonAction _OnItemSpawned(this ItemPool pool) => pool.Get(ItemPool_Values.OnItemSpawned).UdonAction();
+        private static DataList _ActiveItems(this ItemPool pool) => pool.Get(ItemPool_Values.ActiveItems).DataList;
+        private static DataList _InactiveItems(this ItemPool pool) => pool.Get(ItemPool_Values.InactiveItems).DataList;
 
         public static int _TotalItemCount(this ItemPool pool)
         {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3ff26d760d8fe409292b1b604f0ce8, type: 3}
   m_Name: Demo Palette
   m_EditorClassIdentifier: 
-  <Colors>k__BackingField:
+  colors:
   - name: True Black
     value: {r: 0, g: 0, b: 0, a: 1}
   - name: True White
@@ -31,7 +31,7 @@ MonoBehaviour:
     value: {r: 0.8867924, g: 0.82108027, b: 0.43781886, a: 1}
   - name: Alert
     value: {r: 0.8509804, g: 0.3764706, b: 0.38431373, a: 1}
-  <Labels>k__BackingField:
+  labels:
   - name: Body
     fontSize: 20
     font: {fileID: 0}

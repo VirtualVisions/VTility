@@ -8,19 +8,19 @@ using VRC.SDK3.Data;
 public class ObjSwitcherTest : UdonSharpBehaviour
 {
 
-    public Transform[] Objs;
+    public Transform[] objs;
 
-    public ObjectSwitcher Switcher => (ObjectSwitcher)_switcher;
-    private DataDictionary _switcher;
+    public ObjectSwitcher switcher => (ObjectSwitcher)_switcher;
+    private DataList _switcher;
 
 
     private void Start()
     {
-        _switcher = ObjectSwitcher.Create(Objs);
+        _switcher = ObjectSwitcher.Create(objs);
     }
 
     public override void Interact()
     {
-        Switcher.SwitchTo(UnityEngine.Random.Range(0, Objs.Length));
+        switcher.SwitchTo(UnityEngine.Random.Range(0, objs.Length));
     }
 }

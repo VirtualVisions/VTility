@@ -20,12 +20,12 @@ namespace VirtualVisions.VTility
         {
             DataToken[] values = new DataToken[(int)FSMachine_Values.Count];
             
-            values[(int)FSMachine_Values.States] = new DataDictionary();
+            values.Set(FSMachine_Values.States, new DataDictionary());
 
             FSMState emptyState = FSMState.Create();
-            values[(int)FSMachine_Values.States].DataDictionary[-1] = emptyState;
-            values[(int)FSMachine_Values.CurrentState] = emptyState;
-            values[(int)FSMachine_Values.CurrentStateValue] = -1;
+            values.Get(FSMachine_Values.States).DataDictionary[-1] = emptyState;
+            values.Set(FSMachine_Values.CurrentState, emptyState);
+            values.Set(FSMachine_Values.CurrentStateValue, -1);
 
             return (FSMachine)new DataList(values);
         }
@@ -57,7 +57,7 @@ namespace VirtualVisions.VTility
         }
 
 
-        public static DataDictionary _States(this FSMachine machine) => machine[(int)FSMachine_Values.States].DataDictionary;
+        public static DataDictionary _States(this FSMachine machine) => machine.Get(FSMachine_Values.States).DataDictionary;
 
 
         public static FSMachine _SetState(this FSMachine machine, Enum state) =>

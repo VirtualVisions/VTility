@@ -21,7 +21,7 @@ namespace VirtualVisions.VTility
         /// Listeners must contain a [RectTransform: itemObject] [Int: index] [DataToken: itemValue] variable within a DataList.
         /// </summary>
         [PublicAPI]
-        public UdonAction OnBindItem =>
+        public UdonAction onBindItem =>
             (UdonAction)(_onBindItem != null ? _onBindItem : _onBindItem = UdonAction.Create());
 
         private DataList _onBindItem;
@@ -31,7 +31,7 @@ namespace VirtualVisions.VTility
         /// Listeners must contain a [RectTransform: item] variable.
         /// </summary>
         [PublicAPI]
-        public UdonAction OnItemSelected =>
+        public UdonAction onItemSelected =>
             (UdonAction)(_onItemSelected != null ? _onItemSelected : _onItemSelected = UdonAction.Create());
 
         private DataList _onItemSelected;
@@ -41,7 +41,7 @@ namespace VirtualVisions.VTility
         /// Listeners must contain a [RectTransform: item] variable.
         /// </summary>
         [PublicAPI]
-        public UdonAction OnItemUsed =>
+        public UdonAction onItemUsed =>
             (UdonAction)(_onItemUsed != null ? _onItemUsed : _onItemUsed = UdonAction.Create());
 
         private DataList _onItemUsed;
@@ -49,15 +49,15 @@ namespace VirtualVisions.VTility
         /// <summary>
         /// The original source list of items.
         /// </summary>
-        public DataList ItemSource { get; protected set; }
+        public DataList itemSource { get; protected set; }
         
         /// <summary>
         /// The filtered list of items used by the ListView.
         /// </summary>
-        public DataList ListItems { get; } = new DataList();
+        public DataList listItems { get; } = new DataList();
         
-        [field: SerializeField] public int SelectedIndex { get; private set; }
-        public int ItemCount => ListItems != null ? ListItems.Count : 0;
+        [field: SerializeField] public int selectedIndex { get; private set; }
+        public int itemCount => listItems != null ? listItems.Count : 0;
 
 
         [SerializeField] protected RectTransform _itemPrefab;
@@ -67,9 +67,9 @@ namespace VirtualVisions.VTility
 
 
         // Key: Int Index, Value: RectTransform Item
-        protected DataDictionary _activeItemKeys = new DataDictionary();
-        protected DataList _activeItems = new DataList();
-        protected DataList _inactiveItems = new DataList();
+        protected readonly DataDictionary _activeItemKeys = new DataDictionary();
+        protected readonly DataList _activeItems = new DataList();
+        protected readonly DataList _inactiveItems = new DataList();
 
         protected bool _useFilter;
         protected DataList _filterIndices;
@@ -80,7 +80,7 @@ namespace VirtualVisions.VTility
         /// </summary>
         public virtual void SetIndex(int index)
         {
-            SelectedIndex = Mathf.Clamp(index, 0, ListItems.Count - 1);
+            selectedIndex = Mathf.Clamp(index, 0, listItems.Count - 1);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace VirtualVisions.VTility
         /// </summary>
         public virtual void SetItemSource(DataList list)
         {
-            ItemSource = list;
+            itemSource = list;
             ApplyFilter();
         }
 
@@ -122,19 +122,19 @@ namespace VirtualVisions.VTility
 
         private void ApplyFilter()
         {
-            ListItems.Clear();
+            listItems.Clear();
 
             if (_useFilter)
             {
                 for (int i = 0; i < _filterIndices.Count; i++)
                 {
                     int index = _filterIndices[i].Int;
-                    ListItems.Add(ItemSource[index]);
+                    listItems.Add(itemSource[index]);
                 }
             }
             else
             {
-                ListItems.AddRange(ItemSource);
+                listItems.AddRange(itemSource);
             }
         }
 
@@ -188,9 +188,9 @@ namespace VirtualVisions.VTility
             
             bindParams.Add(item);
             bindParams.Add(paramIndex);
-            bindParams.Add(ListItems[index]);
+            bindParams.Add(listItems[index]);
             
-            OnBindItem._Invoke(bindParams);
+            onBindItem._Invoke(bindParams);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace VirtualVisions.VTility
         protected virtual void OnEnable()
         {
             if (_itemPrefab.gameObject.activeSelf) _itemPrefab.gameObject.SetActive(false);
-            if (ItemCount > 0) RebuildList();
+            if (itemCount > 0) RebuildList();
         }
 
         protected virtual void OnDisable()

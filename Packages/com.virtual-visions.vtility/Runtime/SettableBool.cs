@@ -13,5 +13,4 @@ namespace VirtualVisions.VTility
         public static bool IsFalse(this SettableBool settable) => settable == SettableBool.False;
         public static bool IsTrue(this SettableBool settable) => settable == SettableBool.True;
     }
-    
 }

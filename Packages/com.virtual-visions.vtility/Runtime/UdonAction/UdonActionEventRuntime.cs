@@ -13,7 +13,7 @@ namespace VirtualVisions.VTility
         [HideInInspector] public UdonBehaviour[] targets;
         [HideInInspector] public string[] eventNames;
 
-        public UdonAction Action => (UdonAction)(_action != null ? _action : _action = UdonAction.Create());
+        public UdonAction action => (UdonAction)(_action != null ? _action : _action = UdonAction.Create());
         private DataList _action;
         
         private bool _initialized;
@@ -43,7 +43,7 @@ namespace VirtualVisions.VTility
                 UdonBehaviour target = targets[i];
                 string eventName = eventNames[i];
 
-                Action.AddListener(target, eventName);
+                action.AddListener(target, eventName);
             }
         }
 
@@ -52,7 +52,7 @@ namespace VirtualVisions.VTility
         {
             if (!_initialized) Init();
 
-            Action._Invoke();
+            action._Invoke();
         }
     }
 }

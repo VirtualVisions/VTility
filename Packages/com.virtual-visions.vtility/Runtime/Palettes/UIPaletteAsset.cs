@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace VirtualVisions.VTility
 {
@@ -27,11 +27,11 @@ namespace VirtualVisions.VTility
 
         #region Colors
         
-        [field: SerializeField] public List<ColorPreset> Colors { get; private set; } = new List<ColorPreset>();
+        [field: SerializeField, FormerlySerializedAs("<Colors>k__BackingField")] public List<ColorPreset> colors = new List<ColorPreset>();
         
         public bool GetColor(string colorName, out Color color)
         {
-            foreach (ColorPreset col in Colors)
+            foreach (ColorPreset col in colors)
             {
                 if (string.Equals(col.name, colorName))
                 {
@@ -49,7 +49,7 @@ namespace VirtualVisions.VTility
             List<string> names = new List<string>();
             names.Add(NONE_FIELD);
             
-            foreach (ColorPreset preset in Colors)
+            foreach (ColorPreset preset in colors)
             {
                 names.Add(preset.name);
             }
@@ -63,12 +63,12 @@ namespace VirtualVisions.VTility
         
         #region Fonts
 
-        [field: SerializeField] public List<LabelPreset> Labels { get; private set; } = new List<LabelPreset>();
+        [field: SerializeField, FormerlySerializedAs("<Labels>k__BackingField")] public List<LabelPreset> labels = new List<LabelPreset>();
         
 
         public bool GetLabel(string labelName, out LabelPreset label)
         {
-            foreach (LabelPreset preset in Labels)
+            foreach (LabelPreset preset in labels)
             {
                 if (preset.name.Equals(labelName))
                 {
@@ -86,7 +86,7 @@ namespace VirtualVisions.VTility
             List<string> names = new List<string>();
             names.Add(NONE_FIELD);
             
-            foreach (LabelPreset preset in Labels)
+            foreach (LabelPreset preset in labels)
             {
                 names.Add(preset.name);
             }

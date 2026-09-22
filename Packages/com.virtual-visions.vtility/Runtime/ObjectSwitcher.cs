@@ -5,53 +5,59 @@ using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
+
+    public enum ObjectSwitcher_Values
+    {
+        Active,
+        ObjectList,
+        OnObjectSwitched,
+        IsComponentList,
+        ComponentList,
+        
+        Count
+    }
+    
     /// <summary>
     /// Switch between a list of GameObjects, allowing for only one to be active at any time.
     /// </summary>
-    public abstract class ObjectSwitcher : DataDictionary
+    public abstract class ObjectSwitcher : DataList
     {
         
         /// Since Udon doesn't natively support fields of this type,
         /// it is recommended to use this format for your fields:
         ///
-        ///    public ObjectSwitcher Switcher
+        ///    public ObjectSwitcher switcher
         ///    {
         ///        get => (ObjectSwitcher)_switcher;
         ///        set => _switcher = value;
         ///    }
-        ///    private DataDictionary _switcher;
+        ///    private DataList _switcher;
 
         
-        public const string KEY_ACTIVE = "active";
-        public const string KEY_OBJECT_LIST = "objectList";
-        public const string KEY_ON_OBJECT_SWITCHED = "onObjectSwitched";
-        public const string KEY_IS_COMPONENT_LIST = "isComponentList";
-        public const string KEY_COMPONENT_LIST = "componentList";
-
         [PublicAPI]
         public static ObjectSwitcher Create(GameObject[] objs)
         {
-            DataDictionary dict = new DataDictionary();
-            dict[KEY_OBJECT_LIST] = objs.ToRefList();
-            dict[KEY_ACTIVE] = new DataToken((GameObject)null);
-            dict[KEY_ON_OBJECT_SWITCHED] = UdonAction.Create();
-            dict[KEY_IS_COMPONENT_LIST] = false;
-            dict[KEY_COMPONENT_LIST] = new DataList();
-
-            foreach (GameObject obj in objs) obj.SetActive(false);
+            DataToken[] values = new DataToken[(int)ObjectSwitcher_Values.Count];
             
-            ObjectSwitcher switcher = (ObjectSwitcher)dict;
-            return switcher;
+            values.Set(ObjectSwitcher_Values.Active, (GameObject)null);
+            values.Set(ObjectSwitcher_Values.ObjectList, objs.ToRefList());
+            values.Set(ObjectSwitcher_Values.OnObjectSwitched, UdonAction.Create());
+            values.Set(ObjectSwitcher_Values.IsComponentList, false);
+            values.Set(ObjectSwitcher_Values.ComponentList, new DataList());
+            
+            DataList objectSwitcher = new DataList(values);
+            return (ObjectSwitcher)objectSwitcher;
         }
 
         [PublicAPI]
         public static ObjectSwitcher Create<T>(T[] components) where T: Component
         {
-            DataDictionary dict = new DataDictionary();
-            dict[KEY_COMPONENT_LIST] = components.ToRefList();
-            dict[KEY_ACTIVE] = new DataToken((GameObject)null);
-            dict[KEY_ON_OBJECT_SWITCHED] = UdonAction.Create();
-            dict[KEY_IS_COMPONENT_LIST] = true;
+            DataToken[] values = new DataToken[(int)ObjectSwitcher_Values.Count];
+            
+            values.Set(ObjectSwitcher_Values.ComponentList, components.ToRefList());
+            values.Set(ObjectSwitcher_Values.IsComponentList, true);
+            values.Set(ObjectSwitcher_Values.Active, new DataToken((GameObject)null));
+            values.Set(ObjectSwitcher_Values.OnObjectSwitched, UdonAction.Create());
 
             DataList objList = new DataList();
             foreach (T comp in components)
@@ -60,18 +66,18 @@ namespace VirtualVisions.VTility
                 obj.SetActive(false);
                 objList.Add(obj);
             }
-            dict[KEY_OBJECT_LIST] = objList;
+            values.Set(ObjectSwitcher_Values.ObjectList, objList);
             
-            ObjectSwitcher switcher = (ObjectSwitcher)dict;
-            return switcher;
+            DataList objectSwitcher = new DataList(values);
+            return (ObjectSwitcher)objectSwitcher;
         }
     }
 
     public static class ObjectSwitcherExtensions
     {
-        public static ObjectSwitcher AsObjSwitcher(this DataToken token) => (ObjectSwitcher)token.DataDictionary;
-        public static DataList ObjectList(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_OBJECT_LIST].DataList;
-        public static GameObject Active(this ObjectSwitcher switcher) => (GameObject)switcher[ObjectSwitcher.KEY_ACTIVE].Reference;
+        public static ObjectSwitcher AsObjSwitcher(this DataToken token) => (ObjectSwitcher)token.DataList;
+        public static DataList ObjectList(this ObjectSwitcher switcher) => switcher[(int)ObjectSwitcher_Values.ObjectList].DataList;
+        public static GameObject Active(this ObjectSwitcher switcher) => (GameObject)switcher[(int)ObjectSwitcher_Values.Active].Reference;
         /// <summary>
         /// Passes the new object that is switched to.
         /// If this is a GameObject list, the GameObject is passed.
@@ -79,10 +85,16 @@ namespace VirtualVisions.VTility
         /// </summary>
         /// <param name="switcher"></param>
         /// <returns></returns>
-        public static UdonAction OnObjectSwitched(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_ON_OBJECT_SWITCHED].UdonAction();
-        public static bool IsComponentList(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_IS_COMPONENT_LIST].Boolean;
-        public static DataList ComponentList(this ObjectSwitcher switcher) => switcher[ObjectSwitcher.KEY_COMPONENT_LIST].DataList;
-
+        public static UdonAction OnObjectSwitched(this ObjectSwitcher switcher) => 
+            switcher.Get(ObjectSwitcher_Values.OnObjectSwitched).UdonAction();
+        
+        public static bool IsComponentList(this ObjectSwitcher switcher) => 
+            switcher.Get(ObjectSwitcher_Values.IsComponentList).Boolean;
+        
+        public static DataList ComponentList(this ObjectSwitcher switcher) => 
+            switcher.Get(ObjectSwitcher_Values.ComponentList).DataList;
+        
+        
         [PublicAPI]
         public static void AddObject(this ObjectSwitcher switcher, GameObject obj)
         {
@@ -122,7 +134,7 @@ namespace VirtualVisions.VTility
             if (index >= 0 && index < list.Count)
             {
                 obj = list[index].CastReference<GameObject>(); 
-                switcher[ObjectSwitcher.KEY_ACTIVE] = obj;
+                switcher[(int)ObjectSwitcher_Values.Active] = obj;
                 obj.SetActive(true);
             }
             
