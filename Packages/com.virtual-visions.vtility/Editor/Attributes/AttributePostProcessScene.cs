@@ -31,8 +31,8 @@ namespace VirtualVisions.VTility.Editor
                     Type fieldType = field.FieldType;
                     
                     // Find Component Handling
-                    FindComponentAttribute findComponent = field.GetCustomAttribute<FindComponentAttribute>();
-                    if (findComponent != null && typeof(Component).IsAssignableFrom(field.FieldType))
+                    GetComponentAttribute getComponent = field.GetCustomAttribute<GetComponentAttribute>();
+                    if (getComponent != null && typeof(Component).IsAssignableFrom(field.FieldType))
                     {
                         Object foundTarget = script.transform.GetComponent(fieldType);
                         if (foundTarget)
@@ -55,8 +55,8 @@ namespace VirtualVisions.VTility.Editor
                     }
 
                     // Find Parent Handling
-                    FindParentAttribute findParent = field.GetCustomAttribute<FindParentAttribute>();
-                    if (findParent != null && typeof(MonoBehaviour).IsAssignableFrom(field.FieldType))
+                    GetParentAttribute getParent = field.GetCustomAttribute<GetParentAttribute>();
+                    if (getParent != null && typeof(MonoBehaviour).IsAssignableFrom(field.FieldType))
                     {
                         Object foundTarget = script.transform.GetComponentInParent(fieldType);
                         if (foundTarget)
@@ -93,8 +93,8 @@ namespace VirtualVisions.VTility.Editor
                     }
 
                     // Find Siblings Handling
-                    FindSiblingsAttribute findSiblings = field.GetCustomAttribute<FindSiblingsAttribute>();
-                    if (findSiblings != null && fieldType.IsArray && script.transform.parent)
+                    GetSiblingsAttribute getSiblings = field.GetCustomAttribute<GetSiblingsAttribute>();
+                    if (getSiblings != null && fieldType.IsArray && script.transform.parent)
                     {
                         Type elementType = fieldType.GetElementType();
                         if (elementType != null && typeof(Component).IsAssignableFrom(elementType))
@@ -119,8 +119,8 @@ namespace VirtualVisions.VTility.Editor
                     }
 
                     // Find Children Handling
-                    FindChildrenAttribute findChildren = field.GetCustomAttribute<FindChildrenAttribute>();
-                    if (findChildren != null && fieldType.IsArray && script.transform.parent)
+                    GetChildrenAttribute getChildren = field.GetCustomAttribute<GetChildrenAttribute>();
+                    if (getChildren != null && fieldType.IsArray && script.transform.parent)
                     {
                         Type elementType = fieldType.GetElementType();
                         if (elementType != null && typeof(Component).IsAssignableFrom(elementType))
@@ -146,5 +146,6 @@ namespace VirtualVisions.VTility.Editor
                 }
             }
         }
+        
     }
 }

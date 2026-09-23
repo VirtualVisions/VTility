@@ -29,12 +29,13 @@ namespace VirtualVisions.VTility
         /// </summary>
         public UdonAction onHidden => (UdonAction)(_onHidden != null ? _onHidden : _onHidden = UdonAction.Create());
         private DataList _onHidden;
-        
+
         /// <summary>
         /// The descriptor for this element. Automatically populated during build.
         /// If one is not found on this GameObject, this value will be null.
         /// </summary>
-        [field: FindComponent, SerializeField, HideInInspector] public ElementDescriptor descriptor { get; private set; }
+        /// Note: For some U# compatability reason, GetComponent cannot be used on a {get; private set;} field.
+        [GetComponent, SerializeField, HideInInspector] public ElementDescriptor descriptor;
         
         
         [SerializeField] protected VRCTweenActionUdon _tweenOnShow;

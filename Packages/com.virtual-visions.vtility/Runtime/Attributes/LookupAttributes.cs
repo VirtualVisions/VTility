@@ -4,11 +4,11 @@ using UnityEngine;
 namespace VirtualVisions.VTility
 {
     /// <summary>
-    /// Runs "FindObjectOfType" during PostProcessScene.
+    /// Runs "GetComponent" on the target object during PostProcessScene.
     /// Field must be Serialized.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class FindComponentAttribute : PropertyAttribute
+    public class GetComponentAttribute : PropertyAttribute
     {
     }
 
@@ -22,11 +22,11 @@ namespace VirtualVisions.VTility
     }
     
     /// <summary>
-    /// Runs "GetComponent" on the instance's Parent transform during PostProcessScene.
+    /// Runs "GetComponentInParent" on the target object during PostProcessScene.
     /// Field must be Serialized.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class FindParentAttribute : PropertyAttribute
+    public class GetParentAttribute : PropertyAttribute
     {
     }
     
@@ -44,7 +44,7 @@ namespace VirtualVisions.VTility
     /// Field must be an array and Serialized.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class FindSiblingsAttribute : PropertyAttribute
+    public class GetSiblingsAttribute : PropertyAttribute
     {
     }
     
@@ -53,7 +53,7 @@ namespace VirtualVisions.VTility
     /// Field must be an array and Serialized.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class FindChildrenAttribute : PropertyAttribute
+    public class GetChildrenAttribute : PropertyAttribute
     {
     }
 }
