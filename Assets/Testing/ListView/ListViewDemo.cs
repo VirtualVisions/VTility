@@ -69,12 +69,13 @@ namespace VirtualVisions.VTility.Demo
         }
 
 
-        [HideInInspector] public DataList _OnItemBound_Value;
+        [NonSerialized] public DataToken _OnItemBound_Value;
         public void _OnItemBound()
         {
-            RectTransform rt = _OnItemBound_Value[0].CastReference<RectTransform>();
-            int index = _OnItemBound_Value[1].Int;
-            string item = _OnItemBound_Value[2].String;
+            DataList list = _OnItemBound_Value.DataList;
+            RectTransform rt = list[0].CastReference<RectTransform>();
+            int index = list[1].Int;
+            string item = list[2].String;
             
             TMP_Text label = rt.GetComponentInChildren<TMP_Text>();
             if (label)

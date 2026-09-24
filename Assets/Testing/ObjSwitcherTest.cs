@@ -16,7 +16,7 @@ public class ObjSwitcherTest : UdonSharpBehaviour
 
     private void Start()
     {
-        _switcher = ObjectSwitchers.Create(objs);
+        _switcher = ObjectSwitcher.Create(objs);
     }
 
     public override void Interact()

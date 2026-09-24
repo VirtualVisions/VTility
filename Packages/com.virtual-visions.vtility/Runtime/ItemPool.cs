@@ -16,14 +16,9 @@ namespace VirtualVisions.VTility
         // ---
         Count
     }
-    
+
     public abstract class ItemPool : DataList
     {
-    }
-
-    public static class ItemPools
-    {
-        
         public static ItemPool Create(
             GameObject prefab,
             Transform parent,
@@ -33,23 +28,26 @@ namespace VirtualVisions.VTility
             values[(int)ItemPool_Values.Prefab] = prefab;
             values[(int)ItemPool_Values.Parent] = parent;
             values[(int)ItemPool_Values.MaxCount] = maxCount;
-            values[(int)ItemPool_Values.OnItemCreated] = UdonActions.Create();
-            values[(int)ItemPool_Values.OnItemSpawned] = UdonActions.Create();
+            values[(int)ItemPool_Values.OnItemCreated] = UdonAction.Create();
+            values[(int)ItemPool_Values.OnItemSpawned] = UdonAction.Create();
             values[(int)ItemPool_Values.ActiveItems] = new DataList(maxCount);
             values[(int)ItemPool_Values.InactiveItems] = new DataList(maxCount);
-            
-            
+
+
             ItemPool result = (ItemPool)new DataList(values);
             return result;
         }
-        
-        
+    }
+
+    public static class ItemPools
+    {
+
         public static ItemPool _ItemPool(this DataToken token) => (ItemPool)token.DataList;
         private static GameObject _Prefab(this ItemPool pool) => pool[(int)ItemPool_Values.Prefab].CastReference<GameObject>();
         private static Transform _Parent(this ItemPool pool) => pool[(int)ItemPool_Values.Parent].CastReference<Transform>();
         private static int _MaxCount(this ItemPool pool) => pool[(int)ItemPool_Values.MaxCount].Int;
-        public static UdonAction<GameObject> _OnItemCreated(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemCreated].AsUdonAction<GameObject>();
-        public static UdonAction<GameObject> _OnItemSpawned(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemSpawned].AsUdonAction<GameObject>();
+        public static UdonAction _OnItemCreated(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemCreated].AsUdonAction();
+        public static UdonAction _OnItemSpawned(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemSpawned].AsUdonAction();
         private static DataList _ActiveItems(this ItemPool pool) => pool[(int)ItemPool_Values.ActiveItems].DataList;
         private static DataList _InactiveItems(this ItemPool pool) => pool[(int)ItemPool_Values.InactiveItems].DataList;
 
@@ -61,7 +59,7 @@ namespace VirtualVisions.VTility
         public static GameObject _GetItem(this ItemPool pool)
         {
             GameObject item;
-            
+
             if (pool._InactiveItems().Count > 0)
             {
                 item = (GameObject)pool._InactiveItems()[0].Reference;
@@ -70,7 +68,7 @@ namespace VirtualVisions.VTility
             {
                 item = pool._CreateItem();
             }
-            
+
             if (item)
             {
                 pool._ActiveItems().Add(item);
@@ -82,6 +80,7 @@ namespace VirtualVisions.VTility
             {
                 Debug.LogWarning("No remaining items that can be allocated.");
             }
+
             return item;
         }
 
@@ -102,7 +101,7 @@ namespace VirtualVisions.VTility
         {
             DataList activeCopy = new DataList();
             activeCopy.AddRange(pool._ActiveItems());
-            
+
             int activeCount = activeCopy.Count;
             if (activeCount == 0) return;
             for (int i = 0; i < activeCount; i++)

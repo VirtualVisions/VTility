@@ -22,9 +22,9 @@ namespace VirtualVisions.VTility
         {
             DataToken[] values = new DataToken[(int)FSMState_Values.Count];
             
-            values[(int)FSMState_Values.OnEnter] = UdonActions.Create();
-            values[(int)FSMState_Values.OnExit] = UdonActions.Create();
-            values[(int)FSMState_Values.OnTick] = UdonActions.Create<float>();
+            values[(int)FSMState_Values.OnEnter] = UdonAction.Create();
+            values[(int)FSMState_Values.OnExit] = UdonAction.Create();
+            values[(int)FSMState_Values.OnTick] = UdonAction.Create();
 
             return (FSMState)new DataList(values);
         }
@@ -33,7 +33,10 @@ namespace VirtualVisions.VTility
 
         public static UdonAction _OnEnter(this FSMState state) => state[(int)FSMState_Values.OnEnter].AsUdonAction();
         public static UdonAction _OnExit(this FSMState state) => state[(int)FSMState_Values.OnExit].AsUdonAction();
-        public static UdonAction<float> _OnTick(this FSMState state) => state[(int)FSMState_Values.OnTick].AsUdonAction<float>();
+        /// <summary>
+        /// This takes a single float to display the delta since the last tick.
+        /// </summary>
+        public static UdonAction _OnTick(this FSMState state) => state[(int)FSMState_Values.OnTick].AsUdonAction();
 
     }
 }
