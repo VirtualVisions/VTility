@@ -13,11 +13,15 @@ namespace VirtualVisions.VTility
         OnItemSpawned,
         ActiveItems,
         InactiveItems,
-        
+        // ---
         Count
     }
     
     public abstract class ItemPool : DataList
+    {
+    }
+
+    public static class ItemPools
     {
         
         public static ItemPool Create(
@@ -26,30 +30,28 @@ namespace VirtualVisions.VTility
             int maxCount)
         {
             DataToken[] values = new DataToken[(int)ItemPool_Values.Count];
-            values.Set(ItemPool_Values.Prefab, prefab);
-            values.Set(ItemPool_Values.Parent, parent);
-            values.Set(ItemPool_Values.MaxCount, maxCount);
-            values.Set(ItemPool_Values.OnItemCreated, UdonAction.Create());
-            values.Set(ItemPool_Values.OnItemSpawned, UdonAction.Create());
-            values.Set(ItemPool_Values.ActiveItems, new DataList(maxCount));
-            values.Set(ItemPool_Values.InactiveItems, new DataList(maxCount));
+            values[(int)ItemPool_Values.Prefab] = prefab;
+            values[(int)ItemPool_Values.Parent] = parent;
+            values[(int)ItemPool_Values.MaxCount] = maxCount;
+            values[(int)ItemPool_Values.OnItemCreated] = UdonActions.Create();
+            values[(int)ItemPool_Values.OnItemSpawned] = UdonActions.Create();
+            values[(int)ItemPool_Values.ActiveItems] = new DataList(maxCount);
+            values[(int)ItemPool_Values.InactiveItems] = new DataList(maxCount);
             
             
             ItemPool result = (ItemPool)new DataList(values);
             return result;
         }
-    }
-
-    public static class ItemPoolExtensions
-    {
+        
+        
         public static ItemPool _ItemPool(this DataToken token) => (ItemPool)token.DataList;
-        private static GameObject _Prefab(this ItemPool pool) => pool.Get(ItemPool_Values.Prefab).CastReference<GameObject>();
-        private static Transform _Parent(this ItemPool pool) => pool.Get(ItemPool_Values.Parent).CastReference<Transform>();
-        private static int _MaxCount(this ItemPool pool) => pool.Get(ItemPool_Values.MaxCount).Int;
-        public static UdonAction _OnItemCreated(this ItemPool pool) => pool.Get(ItemPool_Values.OnItemCreated).UdonAction();
-        public static UdonAction _OnItemSpawned(this ItemPool pool) => pool.Get(ItemPool_Values.OnItemSpawned).UdonAction();
-        private static DataList _ActiveItems(this ItemPool pool) => pool.Get(ItemPool_Values.ActiveItems).DataList;
-        private static DataList _InactiveItems(this ItemPool pool) => pool.Get(ItemPool_Values.InactiveItems).DataList;
+        private static GameObject _Prefab(this ItemPool pool) => pool[(int)ItemPool_Values.Prefab].CastReference<GameObject>();
+        private static Transform _Parent(this ItemPool pool) => pool[(int)ItemPool_Values.Parent].CastReference<Transform>();
+        private static int _MaxCount(this ItemPool pool) => pool[(int)ItemPool_Values.MaxCount].Int;
+        public static UdonAction<GameObject> _OnItemCreated(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemCreated].AsUdonAction<GameObject>();
+        public static UdonAction<GameObject> _OnItemSpawned(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemSpawned].AsUdonAction<GameObject>();
+        private static DataList _ActiveItems(this ItemPool pool) => pool[(int)ItemPool_Values.ActiveItems].DataList;
+        private static DataList _InactiveItems(this ItemPool pool) => pool[(int)ItemPool_Values.InactiveItems].DataList;
 
         public static int _TotalItemCount(this ItemPool pool)
         {

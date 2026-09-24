@@ -8,76 +8,75 @@ namespace VirtualVisions.VTility
     public enum UdonAction_Values
     {
         Events,
-        
+        // ---
         Count
     }
     
     /// <summary>
-    /// A subscribable action that can be repeatedly called with passable variables.
+    /// A subscribable action that can be repeatedly called.
     /// </summary>
     public abstract class UdonAction : DataList
     {
-        /// Since Udon doesn't natively support fields of this type,
-        /// it is recommended to use this format for your fields:
-        /// 
-        ///    public UdonAction BindItem => (UdonAction)(_bindItem != null ? _bindItem : _bindItem = UdonAction.Create());
-        ///    private DataList _bindItem;
-        ///    
+        // Since Udon doesn't natively support fields of this type,
+        // it is recommended to use this format for your fields:
+        // 
+        //    public UdonAction bindItem => (UdonAction)(_bindItem != null ? _bindItem : _bindItem = UdonAction.Create());
+        //    private DataList _bindItem;
+        //    
         
+    }
+
+    public static partial class UdonActions
+    {
 
         public static UdonAction Create()
         {
             DataToken[] values = new DataToken[(int)UdonAction_Values.Count];
-            
+
             values[(int)UdonAction_Values.Events] = new DataDictionary();
             
             return (UdonAction)new DataList(values);
         }
-    }
-
-    public static class UdonActionExtensions
-    {
-        public static UdonAction UdonAction(this DataToken token) => (UdonAction)token.DataList;
+        
+        
+        
+        
+        public static UdonAction AsUdonAction(this DataToken token) => (UdonAction)token.DataList;
+        public static UdonAction BackingUdonAction(ref DataList backingValue) =>
+            (UdonAction)(backingValue != null ? backingValue : backingValue = UdonActions.Create());
+        
+        
         public static DataDictionary Events(this UdonAction action) => action[(int)UdonAction_Values.Events].DataDictionary;
 
 
 
         public static void AddListener(this UdonAction action,
-            UdonEvent udonEvent)
+            UdonEvent udonEvent,
+            bool invokeImmediate = false)
         {
             action.Events()[udonEvent.Hash()] = udonEvent;
-        }
-
-        public static void AddListener(this UdonAction action,
-            UdonBehaviour target,
-            string eventName)
-        {
-            action.AddListener(UdonEvent.Create(target, eventName));
-        }
-
-        public static void AddListener(this UdonAction action,
-            UdonSharpBehaviour target,
-            string eventName)
-        {
-            action.AddListener(UdonEvent.Create(target, eventName));
+            if (invokeImmediate) udonEvent._Invoke();
         }
 
         public static void AddListener(this UdonAction action,
             UdonBehaviour target,
             string eventName,
-            string outputName)
+            bool invokeImmediate = false)
         {
-            action.AddListener(UdonEvent.Create(target, eventName, outputName));
+            UdonEvent udonEvent = UdonEvents.Create(target, eventName);
+            action.AddListener(udonEvent);
+            if (invokeImmediate) udonEvent._Invoke();
         }
 
         public static void AddListener(this UdonAction action,
             UdonSharpBehaviour target,
             string eventName,
-            string outputName)
+            bool invokeImmediate = false)
         {
-            action.AddListener(UdonEvent.Create(target, eventName, outputName));
+            UdonEvent udonEvent = UdonEvents.Create(target, eventName);
+            action.AddListener(udonEvent);
+            if (invokeImmediate) udonEvent._Invoke();
         }
-
 
 
         public static void RemoveListener(this UdonAction action,
@@ -90,7 +89,7 @@ namespace VirtualVisions.VTility
             UdonSharpBehaviour target,
             string eventName)
         {
-            UdonEvent comparisonEvent = UdonEvent.Create(target, eventName);
+            UdonEvent comparisonEvent = UdonEvents.Create(target, eventName);
             action.RemoveListener(comparisonEvent);
         }
 
@@ -98,25 +97,7 @@ namespace VirtualVisions.VTility
             UdonBehaviour target,
             string eventName)
         {
-            UdonEvent comparisonEvent = UdonEvent.Create(target, eventName);
-            action.RemoveListener(comparisonEvent);
-        }
-
-        public static void RemoveListener(this UdonAction action,
-            UdonBehaviour target,
-            string eventName,
-            string outputName)
-        {
-            UdonEvent comparisonEvent = UdonEvent.Create(target, eventName, outputName);
-            action.RemoveListener(comparisonEvent);
-        }
-
-        public static void RemoveListener(this UdonAction action,
-            UdonSharpBehaviour target,
-            string eventName,
-            string outputName)
-        {
-            UdonEvent comparisonEvent = UdonEvent.Create(target, eventName, outputName);
+            UdonEvent comparisonEvent = UdonEvents.Create(target, eventName);
             action.RemoveListener(comparisonEvent);
         }
 
@@ -132,19 +113,8 @@ namespace VirtualVisions.VTility
             DataList events = action.Events().GetValues();
             for (int i = 0; i < events.Count; i++)
             {
-                UdonEvent udonEvent = events[i].UdonEvent();
+                UdonEvent udonEvent = events[i].AsUdonEvent();
                 udonEvent._Invoke();
-            }
-        }
-
-        public static void _Invoke<T>(this UdonAction action,
-            T outputValue)
-        {
-            DataList events = action.Events().GetValues();
-            for (int i = 0; i < events.Count; i++)
-            {
-                UdonEvent udonEvent = events[i].UdonEvent();
-                udonEvent._Invoke(outputValue);
             }
         }
     }

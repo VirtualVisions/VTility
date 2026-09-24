@@ -16,25 +16,5 @@ namespace VirtualVisions.VTility
             value = list[index];
             return true;
         }
-
-        public static DataToken Get(this DataList list, Enum key)
-        {
-            return list[Convert.ToInt32(key)];
-        }
-
-        public static DataToken Get(this DataToken[] array, Enum key)
-        {
-            return array[Convert.ToInt32(key)];
-        }
-
-        public static void Set(this DataList list, Enum key, DataToken value)
-        {
-            list[Convert.ToInt32(key)] = value;
-        }
-
-        public static void Set(this DataToken[] array, Enum key, DataToken value)
-        {
-            array[Convert.ToInt32(key)] = value;
-        }
     }
 }

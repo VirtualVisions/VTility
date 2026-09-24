@@ -13,14 +13,21 @@ namespace VirtualVisions.VTility
         OnObjectSwitched,
         IsComponentList,
         ComponentList,
-        
+        OnComponentSwitched,
+        // ---
         Count
     }
+    
+    //TODO: Break this out into a generic "ObjectSwitcher<TComponent>" version as well. 
     
     /// <summary>
     /// Switch between a list of GameObjects, allowing for only one to be active at any time.
     /// </summary>
     public abstract class ObjectSwitcher : DataList
+    {
+    }
+
+    public static class ObjectSwitchers
     {
         
         /// Since Udon doesn't natively support fields of this type,
@@ -39,11 +46,12 @@ namespace VirtualVisions.VTility
         {
             DataToken[] values = new DataToken[(int)ObjectSwitcher_Values.Count];
             
-            values.Set(ObjectSwitcher_Values.Active, (GameObject)null);
-            values.Set(ObjectSwitcher_Values.ObjectList, objs.ToRefList());
-            values.Set(ObjectSwitcher_Values.OnObjectSwitched, UdonAction.Create());
-            values.Set(ObjectSwitcher_Values.IsComponentList, false);
-            values.Set(ObjectSwitcher_Values.ComponentList, new DataList());
+            values[(int)ObjectSwitcher_Values.Active] = (GameObject)null;
+            values[(int)ObjectSwitcher_Values.ObjectList] = objs.ToRefList();
+            values[(int)ObjectSwitcher_Values.OnObjectSwitched] = UdonActions.Create<GameObject>();
+            values[(int)ObjectSwitcher_Values.IsComponentList] = false;
+            values[(int)ObjectSwitcher_Values.ComponentList] = new DataList();
+            values[(int)ObjectSwitcher_Values.OnComponentSwitched] = UdonActions.Create<Component>();
             
             DataList objectSwitcher = new DataList(values);
             return (ObjectSwitcher)objectSwitcher;
@@ -54,10 +62,10 @@ namespace VirtualVisions.VTility
         {
             DataToken[] values = new DataToken[(int)ObjectSwitcher_Values.Count];
             
-            values.Set(ObjectSwitcher_Values.ComponentList, components.ToRefList());
-            values.Set(ObjectSwitcher_Values.IsComponentList, true);
-            values.Set(ObjectSwitcher_Values.Active, new DataToken((GameObject)null));
-            values.Set(ObjectSwitcher_Values.OnObjectSwitched, UdonAction.Create());
+            values[(int)ObjectSwitcher_Values.ComponentList] = components.ToRefList();
+            values[(int)ObjectSwitcher_Values.IsComponentList] = true;
+            values[(int)ObjectSwitcher_Values.Active] = new DataToken((GameObject)null);
+            values[(int)ObjectSwitcher_Values.OnObjectSwitched] = UdonActions.Create();
 
             DataList objList = new DataList();
             foreach (T comp in components)
@@ -66,15 +74,22 @@ namespace VirtualVisions.VTility
                 obj.SetActive(false);
                 objList.Add(obj);
             }
-            values.Set(ObjectSwitcher_Values.ObjectList, objList);
+            values[(int)ObjectSwitcher_Values.ObjectList] = objList;
             
             DataList objectSwitcher = new DataList(values);
             return (ObjectSwitcher)objectSwitcher;
         }
-    }
-
-    public static class ObjectSwitcherExtensions
-    {
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         public static ObjectSwitcher AsObjSwitcher(this DataToken token) => (ObjectSwitcher)token.DataList;
         public static DataList ObjectList(this ObjectSwitcher switcher) => switcher[(int)ObjectSwitcher_Values.ObjectList].DataList;
         public static GameObject Active(this ObjectSwitcher switcher) => (GameObject)switcher[(int)ObjectSwitcher_Values.Active].Reference;
@@ -85,14 +100,17 @@ namespace VirtualVisions.VTility
         /// </summary>
         /// <param name="switcher"></param>
         /// <returns></returns>
-        public static UdonAction OnObjectSwitched(this ObjectSwitcher switcher) => 
-            switcher.Get(ObjectSwitcher_Values.OnObjectSwitched).UdonAction();
+        public static UdonAction<GameObject> OnObjectSwitched(this ObjectSwitcher switcher) => 
+            switcher[(int)ObjectSwitcher_Values.OnObjectSwitched].AsUdonAction<GameObject>();
+        
+        public static UdonAction<Component> OnComponentSwitched(this ObjectSwitcher switcher) => 
+            switcher[(int)ObjectSwitcher_Values.OnComponentSwitched].AsUdonAction<Component>();
         
         public static bool IsComponentList(this ObjectSwitcher switcher) => 
-            switcher.Get(ObjectSwitcher_Values.IsComponentList).Boolean;
+            switcher[(int)ObjectSwitcher_Values.IsComponentList].Boolean;
         
         public static DataList ComponentList(this ObjectSwitcher switcher) => 
-            switcher.Get(ObjectSwitcher_Values.ComponentList).DataList;
+            switcher[(int)ObjectSwitcher_Values.ComponentList].DataList;
         
         
         [PublicAPI]
@@ -141,7 +159,7 @@ namespace VirtualVisions.VTility
             if (switcher.IsComponentList())
             {
                 DataList compList = switcher.ComponentList();
-                switcher.OnObjectSwitched()._Invoke(compList[index].CastReference<Component>());
+                switcher.OnComponentSwitched()._Invoke(compList[index].CastReference<Component>());
             }
             else
             {

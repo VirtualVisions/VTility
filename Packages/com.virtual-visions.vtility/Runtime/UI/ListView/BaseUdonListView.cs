@@ -21,8 +21,8 @@ namespace VirtualVisions.VTility
         /// Listeners must contain a [RectTransform: itemObject] [Int: index] [DataToken: itemValue] variable within a DataList.
         /// </summary>
         [PublicAPI]
-        public UdonAction onBindItem =>
-            (UdonAction)(_onBindItem != null ? _onBindItem : _onBindItem = UdonAction.Create());
+        public UdonAction<DataList> onBindItem =>
+            (UdonAction<DataList>)(_onBindItem != null ? _onBindItem : _onBindItem = UdonActions.Create<DataList>());
 
         private DataList _onBindItem;
 
@@ -31,8 +31,8 @@ namespace VirtualVisions.VTility
         /// Listeners must contain a [RectTransform: item] variable.
         /// </summary>
         [PublicAPI]
-        public UdonAction onItemSelected =>
-            (UdonAction)(_onItemSelected != null ? _onItemSelected : _onItemSelected = UdonAction.Create());
+        public UdonAction<RectTransform> onItemSelected =>
+            (UdonAction<RectTransform>)(_onItemSelected != null ? _onItemSelected : _onItemSelected = UdonActions.Create<RectTransform>());
 
         private DataList _onItemSelected;
 
@@ -41,8 +41,8 @@ namespace VirtualVisions.VTility
         /// Listeners must contain a [RectTransform: item] variable.
         /// </summary>
         [PublicAPI]
-        public UdonAction onItemUsed =>
-            (UdonAction)(_onItemUsed != null ? _onItemUsed : _onItemUsed = UdonAction.Create());
+        public UdonAction<RectTransform> onItemUsed =>
+            (UdonAction<RectTransform>)(_onItemUsed != null ? _onItemUsed : _onItemUsed = UdonActions.Create<RectTransform>());
 
         private DataList _onItemUsed;
 

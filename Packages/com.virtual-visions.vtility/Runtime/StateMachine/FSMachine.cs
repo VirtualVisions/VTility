@@ -15,24 +15,26 @@ namespace VirtualVisions.VTility
     
     public abstract class FSMachine : DataList
     {
+    }
+
+    public static class StateMachines
+    {
 
         public static FSMachine Create()
         {
             DataToken[] values = new DataToken[(int)FSMachine_Values.Count];
             
-            values.Set(FSMachine_Values.States, new DataDictionary());
+            values[(int)FSMachine_Values.States] = new DataDictionary();
 
-            FSMState emptyState = FSMState.Create();
-            values.Get(FSMachine_Values.States).DataDictionary[-1] = emptyState;
-            values.Set(FSMachine_Values.CurrentState, emptyState);
-            values.Set(FSMachine_Values.CurrentStateValue, -1);
+            FSMState emptyState = FSMStates.Create();
+            values[(int)FSMachine_Values.States].DataDictionary[-1] = emptyState;
+            values[(int)FSMachine_Values.CurrentState] = emptyState;
+            values[(int)FSMachine_Values.CurrentStateValue] = -1;
 
             return (FSMachine)new DataList(values);
         }
-    }
-
-    public static class StateMachineExtensions
-    {
+        
+        
         public static FSMachine _StateMachine(this DataToken token) => (FSMachine)token.DataList;
 
 
@@ -50,14 +52,15 @@ namespace VirtualVisions.VTility
         {
             if (machine._States().ContainsKey(state)) return machine._States()[state]._FSMState();
 
-            FSMState newState = FSMState.Create();
+            FSMState newState = FSMStates.Create();
             machine._States()[state] = newState;
 
             return newState;
         }
 
 
-        public static DataDictionary _States(this FSMachine machine) => machine.Get(FSMachine_Values.States).DataDictionary;
+        public static DataDictionary _States(this FSMachine machine) => 
+            machine[(int)FSMachine_Values.States].DataDictionary;
 
 
         public static FSMachine _SetState(this FSMachine machine, Enum state) =>

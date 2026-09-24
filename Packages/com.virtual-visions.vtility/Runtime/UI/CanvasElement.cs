@@ -21,13 +21,13 @@ namespace VirtualVisions.VTility
         /// <summary>
         /// Callback fired immediately upon the GameObject running OnEnable.
         /// </summary>
-        public UdonAction onShow => (UdonAction)(_onShow != null ? _onShow : _onShow = UdonAction.Create());
+        public UdonAction onShow => (UdonAction)(_onShow != null ? _onShow : _onShow = UdonActions.Create());
         private DataList _onShow;
         
         /// <summary>
         /// Callback fired immediately upon the GameObject running OnDisable.
         /// </summary>
-        public UdonAction onHidden => (UdonAction)(_onHidden != null ? _onHidden : _onHidden = UdonAction.Create());
+        public UdonAction onHidden => (UdonAction)(_onHidden != null ? _onHidden : _onHidden = UdonActions.Create());
         private DataList _onHidden;
 
         /// <summary>
