@@ -8,7 +8,7 @@ using VRC.Udon;
 public class UdonActionTester : UdonSharpBehaviour
 {
 
-    public UdonAction<float> onValueChanged => UdonActions.BackingUdonAction<float>(ref _onValueChanged, 0);
+    public UdonAction<float> onValueChanged => UdonActions.BackingUdonAction<float>(ref _onValueChanged);
     private DataList _onValueChanged;
 
 

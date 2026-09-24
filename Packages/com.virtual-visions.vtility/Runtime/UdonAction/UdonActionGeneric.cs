@@ -27,12 +27,12 @@ namespace VirtualVisions.VTility
     public static partial class UdonActions
     {
         
-        public static UdonAction<T> Create<T>(T defaultValue)
+        public static UdonAction<T> Create<T>()
         {
             DataToken[] values = new DataToken[(int)UdonActionGeneric_Values.Count];
             
             values[(int)UdonActionGeneric_Values.Events] = new DataDictionary();
-            values[(int)UdonActionGeneric_Values.Value] = new DataToken(defaultValue);
+            values[(int)UdonActionGeneric_Values.Value] = new DataToken((T)default);
             
             return (UdonAction<T>)new DataList(values);
         }
@@ -41,8 +41,8 @@ namespace VirtualVisions.VTility
         
         
         public static UdonAction<T> AsUdonAction<T>(this DataToken token) => (UdonAction<T>)token.DataList;
-        public static UdonAction<T> BackingUdonAction<T>(ref DataList backingValue, T defaultValue) =>
-            (UdonAction<T>)(backingValue != null ? backingValue : backingValue = Create(defaultValue));
+        public static UdonAction<T> BackingUdonAction<T>(ref DataList backingValue) =>
+            (UdonAction<T>)(backingValue != null ? backingValue : backingValue = Create());
         
         
         public static DataDictionary Events<T>(this UdonAction<T> action) => action[(int)UdonActionGeneric_Values.Events].DataDictionary;

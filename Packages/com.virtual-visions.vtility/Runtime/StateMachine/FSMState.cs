@@ -24,7 +24,7 @@ namespace VirtualVisions.VTility
             
             values[(int)FSMState_Values.OnEnter] = UdonActions.Create();
             values[(int)FSMState_Values.OnExit] = UdonActions.Create();
-            values[(int)FSMState_Values.OnTick] = UdonActions.Create<float>(0);
+            values[(int)FSMState_Values.OnTick] = UdonActions.Create<float>();
 
             return (FSMState)new DataList(values);
         }
