@@ -22,7 +22,7 @@ namespace VirtualVisions.VTility
         /// </summary>
         [PublicAPI]
         public UdonAction<DataList> onBindItem =>
-            (UdonAction<DataList>)(_onBindItem != null ? _onBindItem : _onBindItem = UdonActions.Create<DataList>());
+            (UdonAction<DataList>)(_onBindItem != null ? _onBindItem : _onBindItem = UdonActions.Create<DataList>(null));
 
         private DataList _onBindItem;
 
@@ -32,7 +32,7 @@ namespace VirtualVisions.VTility
         /// </summary>
         [PublicAPI]
         public UdonAction<RectTransform> onItemSelected =>
-            (UdonAction<RectTransform>)(_onItemSelected != null ? _onItemSelected : _onItemSelected = UdonActions.Create<RectTransform>());
+            (UdonAction<RectTransform>)(_onItemSelected != null ? _onItemSelected : _onItemSelected = UdonActions.Create<RectTransform>(null));
 
         private DataList _onItemSelected;
 
@@ -42,7 +42,7 @@ namespace VirtualVisions.VTility
         /// </summary>
         [PublicAPI]
         public UdonAction<RectTransform> onItemUsed =>
-            (UdonAction<RectTransform>)(_onItemUsed != null ? _onItemUsed : _onItemUsed = UdonActions.Create<RectTransform>());
+            (UdonAction<RectTransform>)(_onItemUsed != null ? _onItemUsed : _onItemUsed = UdonActions.Create<RectTransform>(null));
 
         private DataList _onItemUsed;
 

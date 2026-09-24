@@ -27,12 +27,12 @@ namespace VirtualVisions.VTility
     public static partial class UdonActions
     {
         
-        public static UdonAction<T> Create<T>()
+        public static UdonAction<T> Create<T>(T defaultValue)
         {
             DataToken[] values = new DataToken[(int)UdonActionGeneric_Values.Count];
             
             values[(int)UdonActionGeneric_Values.Events] = new DataDictionary();
-            values[(int)UdonActionGeneric_Values.Value] = new DataDictionary();
+            values[(int)UdonActionGeneric_Values.Value] = new DataToken(defaultValue);
             
             return (UdonAction<T>)new DataList(values);
         }
@@ -41,8 +41,8 @@ namespace VirtualVisions.VTility
         
         
         public static UdonAction<T> AsUdonAction<T>(this DataToken token) => (UdonAction<T>)token.DataList;
-        public static UdonAction<T> BackingUdonAction<T>(ref DataList backingValue) =>
-            (UdonAction<T>)(backingValue != null ? backingValue : backingValue = Create<T>());
+        public static UdonAction<T> BackingUdonAction<T>(ref DataList backingValue, T defaultValue) =>
+            (UdonAction<T>)(backingValue != null ? backingValue : backingValue = Create(defaultValue));
         
         
         public static DataDictionary Events<T>(this UdonAction<T> action) => action[(int)UdonActionGeneric_Values.Events].DataDictionary;
@@ -59,7 +59,7 @@ namespace VirtualVisions.VTility
         {
             UdonEvent<T> udonEvent = UdonEvents.Create<T>(target, eventName, outputName);
             action.AddListener(udonEvent);
-            if (invokeImmediate) udonEvent._Invoke(Value(action));
+            if (invokeImmediate && action.Value() != null) udonEvent._Invoke(action.Value());
         }
 
         public static void AddListener<T>(this UdonAction<T> action,
@@ -70,7 +70,7 @@ namespace VirtualVisions.VTility
         {
             UdonEvent<T> udonEvent = UdonEvents.Create<T>(target, eventName, outputName);
             action.AddListener(udonEvent);
-            if (invokeImmediate) udonEvent._Invoke(Value(action));
+            if (invokeImmediate && action.Value() != null) udonEvent._Invoke(action.Value());
         }
 
         public static void AddListener<T>(this UdonAction<T> action,
@@ -78,7 +78,7 @@ namespace VirtualVisions.VTility
             bool invokeImmediate = false)
         {
             action.Events()[udonEvent.Hash()] = udonEvent;
-            if (invokeImmediate) udonEvent._Invoke(Value(action));
+            if (invokeImmediate && action.Value() != null) udonEvent._Invoke(action.Value());
         }
 
         
