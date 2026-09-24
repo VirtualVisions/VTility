@@ -48,10 +48,10 @@ namespace VirtualVisions.VTility
             
             values[(int)ObjectSwitcher_Values.Active] = (GameObject)null;
             values[(int)ObjectSwitcher_Values.ObjectList] = objs.ToRefList();
-            values[(int)ObjectSwitcher_Values.OnObjectSwitched] = UdonActions.Create<GameObject>(null);
+            values[(int)ObjectSwitcher_Values.OnObjectSwitched] = UdonActions.Create<GameObject>();
             values[(int)ObjectSwitcher_Values.IsComponentList] = false;
             values[(int)ObjectSwitcher_Values.ComponentList] = new DataList();
-            values[(int)ObjectSwitcher_Values.OnComponentSwitched] = UdonActions.Create<Component>(null);
+            values[(int)ObjectSwitcher_Values.OnComponentSwitched] = UdonActions.Create<Component>();
             
             DataList objectSwitcher = new DataList(values);
             return (ObjectSwitcher)objectSwitcher;
@@ -64,10 +64,10 @@ namespace VirtualVisions.VTility
             
             values[(int)ObjectSwitcher_Values.Active] = (GameObject)null;
             
-            values[(int)ObjectSwitcher_Values.OnObjectSwitched] = UdonActions.Create<GameObject>(null);
+            values[(int)ObjectSwitcher_Values.OnObjectSwitched] = UdonActions.Create<GameObject>();
             values[(int)ObjectSwitcher_Values.IsComponentList] = false;
             values[(int)ObjectSwitcher_Values.ComponentList] = new DataList();
-            values[(int)ObjectSwitcher_Values.OnComponentSwitched] = UdonActions.Create<Component>(null);
+            values[(int)ObjectSwitcher_Values.OnComponentSwitched] = UdonActions.Create<Component>();
 
             DataList objList = new DataList();
             foreach (T comp in components)

@@ -42,7 +42,7 @@ namespace VirtualVisions.VTility
         
         public static UdonAction<T> AsUdonAction<T>(this DataToken token) => (UdonAction<T>)token.DataList;
         public static UdonAction<T> BackingUdonAction<T>(ref DataList backingValue) =>
-            (UdonAction<T>)(backingValue != null ? backingValue : backingValue = Create());
+            (UdonAction<T>)(backingValue != null ? backingValue : backingValue = Create<T>());
         
         
         public static DataDictionary Events<T>(this UdonAction<T> action) => action[(int)UdonActionGeneric_Values.Events].DataDictionary;
