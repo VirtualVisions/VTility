@@ -230,7 +230,7 @@ MonoBehaviour:
       Data: 13|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: VRC.SDK3.Data.DataList, VRCSDK3
+      Data: VRC.SDK3.Data.DataToken, VRCSDK3
     - Name: 
       Entry: 8
       Data: 
@@ -248,7 +248,7 @@ MonoBehaviour:
       Data: 
     - Name: <IsSerialized>k__BackingField
       Entry: 5
-      Data: true
+      Data: false
     - Name: _fieldAttributes
       Entry: 7
       Data: 14|System.Collections.Generic.List`1[[System.Attribute, mscorlib]], mscorlib
@@ -257,7 +257,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 15|UnityEngine.HideInInspector, UnityEngine.CoreModule
+      Data: 15|System.NonSerializedAttribute, mscorlib
     - Name: 
       Entry: 8
       Data: 

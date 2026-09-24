@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
@@ -21,6 +22,14 @@ namespace VirtualVisions.VTility
             }
 
             return reference;
+        }
+        
+        /// <summary>
+        /// Read the token's Integer value as a casted Enum type.
+        /// </summary>
+        public static T AsEnum<T>(this DataToken token) where T : Enum
+        {
+            return (T)(object)token.Int;
         }
     }
 }

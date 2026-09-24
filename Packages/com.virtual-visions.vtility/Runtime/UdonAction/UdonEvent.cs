@@ -1,4 +1,5 @@
-﻿using UdonSharp;
+﻿using System;
+using UdonSharp;
 using VRC.SDK3.Data;
 using VRC.Udon;
 
@@ -99,6 +100,8 @@ namespace VirtualVisions.VTility
 
         // ---
 
+        public static void _Invoke(this UdonEvent udonEvent, Enum value) => udonEvent._Invoke(Convert.ToInt32(value));
+        
         public static void _Invoke(this UdonEvent udonEvent, DataToken value = default)
         {
             UdonBehaviour target = udonEvent.Target();
