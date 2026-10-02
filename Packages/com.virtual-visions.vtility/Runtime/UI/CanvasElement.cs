@@ -91,18 +91,28 @@ namespace VirtualVisions.VTility
         /// <summary>
         /// Enable this GameObject. Plays a tween if available.
         /// </summary>
-        public void _ShowElement()
+        public void _ShowElement(bool skipTween = false)
         {
-            if (_tweenOnShow) _tweenOnShow._RunTween();
+            if (_tweenOnHide && _tweenOnHide.tweenActive)
+            {
+                _tweenOnHide._ForceCompleteTween();
+            }
+            
+            if (!skipTween && _tweenOnShow) _tweenOnShow._RunTween();
             gameObject.SetActive(true);
         }
 
         /// <summary>
         /// Disable this GameObject. Plays a tween if available, disabling the GameObject after.
         /// </summary>
-        public void _HideElement()
+        public void _HideElement(bool skipTween = false)
         {
-            if (_tweenOnHide)
+            if (_tweenOnShow && _tweenOnShow.tweenActive)
+            {
+                _tweenOnShow._ForceCompleteTween();
+            }
+            
+            if (!skipTween && _tweenOnHide)
             {
                 _tweenOnHide._RunTween();
                 _tweenOnHide.AddCompletionCallback(this, nameof(_DisableOnHideTweenComplete));

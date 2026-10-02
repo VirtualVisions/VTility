@@ -23,7 +23,7 @@ namespace VirtualVisions.VTility
         // Since Udon doesn't natively support fields of this type,
         // it is recommended to use this format for your fields:
         // 
-        //    public UdonAction onShow => UdonActions.BackingUdonAction(ref _onShow);
+        //    public UdonAction onShow => UdonActionExtensions.BackingUdonAction(ref _onShow);
         //    private DataList _onShow;
         //    
         
@@ -37,8 +37,6 @@ namespace VirtualVisions.VTility
             
             return (UdonAction)new DataList(values);
         }
-        
-        
     }
 
     public static class UdonActionExtensions

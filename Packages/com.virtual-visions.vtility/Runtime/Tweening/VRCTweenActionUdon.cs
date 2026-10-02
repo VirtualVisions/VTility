@@ -12,6 +12,8 @@ namespace VirtualVisions.VTility
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class VRCTweenActionUdon : UdonSharpBehaviour
     {
+        
+        public bool tweenActive { get; private set; }
 
         [HideInInspector] public TweenTrigger activation;
         [HideInInspector] public int tweenCount;
@@ -78,14 +80,21 @@ namespace VirtualVisions.VTility
             _handles = new VRCTweenHandle[tweenCount];
         }
 
-        public void _RunTween()
+        public void _ForceCompleteTween()
         {
-            if (!_initialized) Init();
-
             foreach (VRCTweenHandle handle in _handles)
             {
                 handle.TryComplete();
             }
+        }
+
+        public void _RunTween()
+        {
+            if (!_initialized) Init();
+
+            _ForceCompleteTween();
+            
+            tweenActive = true;
             
             for (int i = 0; i < tweenCount; i++)
             {
@@ -226,8 +235,14 @@ namespace VirtualVisions.VTility
                 if (loopCount != 0) handle = handle.SetLoops(loopCount, loopType);
                 _handles[i] = handle;
             }
+
+            AddCompletionCallback(this, nameof(_OnTweenComplete));
         }
-        
+
+        public void _OnTweenComplete()
+        {
+            tweenActive = false;
+        }
 
         public void AddCompletionCallback(IUdonEventReceiver target, string eventName)
         {

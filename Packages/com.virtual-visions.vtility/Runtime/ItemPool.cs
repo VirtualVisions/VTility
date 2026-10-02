@@ -39,42 +39,44 @@ namespace VirtualVisions.VTility
         }
     }
 
-    public static class ItemPools
+    public static class ItemPoolExtensions
     {
 
-        public static ItemPool _ItemPool(this DataToken token) => (ItemPool)token.DataList;
-        private static GameObject _Prefab(this ItemPool pool) => pool[(int)ItemPool_Values.Prefab].CastReference<GameObject>();
-        private static Transform _Parent(this ItemPool pool) => pool[(int)ItemPool_Values.Parent].CastReference<Transform>();
-        private static int _MaxCount(this ItemPool pool) => pool[(int)ItemPool_Values.MaxCount].Int;
-        public static UdonAction _OnItemCreated(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemCreated].AsUdonAction();
-        public static UdonAction _OnItemSpawned(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemSpawned].AsUdonAction();
-        private static DataList _ActiveItems(this ItemPool pool) => pool[(int)ItemPool_Values.ActiveItems].DataList;
-        private static DataList _InactiveItems(this ItemPool pool) => pool[(int)ItemPool_Values.InactiveItems].DataList;
+        public static ItemPool AsItemPool(this DataToken token) => (ItemPool)token.DataList;
+        public static ItemPool AsItemPool(this DataList list) => (ItemPool)list;
+        
+        private static GameObject Prefab(this ItemPool pool) => pool[(int)ItemPool_Values.Prefab].CastReference<GameObject>();
+        private static Transform Parent(this ItemPool pool) => pool[(int)ItemPool_Values.Parent].CastReference<Transform>();
+        private static int MaxCount(this ItemPool pool) => pool[(int)ItemPool_Values.MaxCount].Int;
+        public static UdonAction OnItemCreated(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemCreated].AsUdonAction();
+        public static UdonAction OnItemSpawned(this ItemPool pool) => pool[(int)ItemPool_Values.OnItemSpawned].AsUdonAction();
+        private static DataList ActiveItems(this ItemPool pool) => pool[(int)ItemPool_Values.ActiveItems].DataList;
+        private static DataList InactiveItems(this ItemPool pool) => pool[(int)ItemPool_Values.InactiveItems].DataList;
 
-        public static int _TotalItemCount(this ItemPool pool)
+        public static int TotalItemCount(this ItemPool pool)
         {
-            return pool._ActiveItems().Count + pool._InactiveItems().Count;
+            return pool.ActiveItems().Count + pool.InactiveItems().Count;
         }
 
-        public static GameObject _GetItem(this ItemPool pool)
+        public static GameObject GetItem(this ItemPool pool)
         {
             GameObject item;
 
-            if (pool._InactiveItems().Count > 0)
+            if (pool.InactiveItems().Count > 0)
             {
-                item = (GameObject)pool._InactiveItems()[0].Reference;
+                item = (GameObject)pool.InactiveItems()[0].Reference;
             }
             else
             {
-                item = pool._CreateItem();
+                item = pool.CreateItem();
             }
 
             if (item)
             {
-                pool._ActiveItems().Add(item);
-                pool._InactiveItems().Remove(item);
+                pool.ActiveItems().Add(item);
+                pool.InactiveItems().Remove(item);
                 item.SetActive(true);
-                pool._OnItemSpawned()._Invoke(item);
+                pool.OnItemSpawned()._Invoke(item);
             }
             else
             {
@@ -84,43 +86,43 @@ namespace VirtualVisions.VTility
             return item;
         }
 
-        public static void _ReturnItem(this ItemPool pool, GameObject item)
+        public static void ReturnItem(this ItemPool pool, GameObject item)
         {
-            if (!pool._ActiveItems().Contains(item))
+            if (!pool.ActiveItems().Contains(item))
             {
                 Debug.LogWarning($"Item {item} does not exist within pool.");
                 return;
             }
 
-            pool._ActiveItems().Remove(item);
-            pool._InactiveItems().Add(item);
+            pool.ActiveItems().Remove(item);
+            pool.InactiveItems().Add(item);
             item.SetActive(false);
         }
 
-        public static void _ReturnAll(this ItemPool pool)
+        public static void ReturnAll(this ItemPool pool)
         {
             DataList activeCopy = new DataList();
-            activeCopy.AddRange(pool._ActiveItems());
+            activeCopy.AddRange(pool.ActiveItems());
 
             int activeCount = activeCopy.Count;
             if (activeCount == 0) return;
             for (int i = 0; i < activeCount; i++)
             {
                 GameObject item = (GameObject)activeCopy[i].Reference;
-                pool._ReturnItem(item);
+                pool.ReturnItem(item);
             }
         }
 
-        private static GameObject _CreateItem(this ItemPool pool)
+        private static GameObject CreateItem(this ItemPool pool)
         {
-            if (pool._TotalItemCount() >= pool._MaxCount())
+            if (pool.TotalItemCount() >= pool.MaxCount())
             {
                 return null;
             }
 
-            GameObject item = Object.Instantiate(pool._Prefab(), pool._Parent());
-            pool._InactiveItems().Add(item);
-            pool._OnItemCreated()._Invoke(item);
+            GameObject item = Object.Instantiate(pool.Prefab(), pool.Parent());
+            pool.InactiveItems().Add(item);
+            pool.OnItemCreated()._Invoke(item);
             return item;
         }
     }

@@ -14,7 +14,7 @@ namespace Testing
             list._AddRef(Vector2.one);
 
             DataToken colorToken = new DataToken(Color.cyan);
-            Debug.Log(colorToken._ColorRef());
+            Debug.Log(colorToken.AsColor());
         }
     }
 }

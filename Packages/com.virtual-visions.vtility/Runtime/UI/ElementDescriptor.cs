@@ -32,19 +32,31 @@ namespace VirtualVisions.VTility
         public void SetTitle(string value)
         {
             title = value;
-            if (titleLabel) titleLabel.text = title;
+            if (titleLabel)
+            {
+                titleLabel.gameObject.SetActive(!string.IsNullOrEmpty(title));
+                titleLabel.text = title;
+            }
         }
 
         public void SetDescription(string value)
         {
             subtitle = value;
-            if (subtitleLabel) subtitleLabel.text = subtitle;
+            if (subtitleLabel)
+            {
+                subtitleLabel.gameObject.SetActive(!string.IsNullOrEmpty(subtitle));
+                subtitleLabel.text = subtitle;
+            }
         }
 
         public void SetIcon(Sprite value)
         {
             icon = value;
-            if (iconImage) iconImage.sprite = icon;
+            if (iconImage)
+            {
+                iconImage.gameObject.SetActive(icon);
+                iconImage.sprite = icon;
+            }
         }
 
     }
