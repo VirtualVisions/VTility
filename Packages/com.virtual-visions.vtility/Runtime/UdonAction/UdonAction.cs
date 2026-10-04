@@ -170,6 +170,8 @@ namespace VirtualVisions.VTility
         public static void _Invoke(this UdonAction action, DataToken value)
         {
             DataList events = action.Events().GetValues();
+            action.SetOutput(value);
+            
             for (int i = 0; i < events.Count; i++)
             {
                 UdonEvent udonEvent = events[i].AsUdonEvent();
