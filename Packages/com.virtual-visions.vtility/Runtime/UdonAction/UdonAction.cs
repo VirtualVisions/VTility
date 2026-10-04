@@ -157,7 +157,17 @@ namespace VirtualVisions.VTility
         
         public static void _Invoke(this UdonAction action, Enum value) => action._Invoke(Convert.ToInt32(value));
         
-        public static void _Invoke(this UdonAction action, DataToken value = default)
+        public static void _Invoke(this UdonAction action)
+        {
+            DataList events = action.Events().GetValues();
+            for (int i = 0; i < events.Count; i++)
+            {
+                UdonEvent udonEvent = events[i].AsUdonEvent();
+                udonEvent._Invoke();
+            }
+        }
+        
+        public static void _Invoke(this UdonAction action, DataToken value)
         {
             DataList events = action.Events().GetValues();
             for (int i = 0; i < events.Count; i++)
