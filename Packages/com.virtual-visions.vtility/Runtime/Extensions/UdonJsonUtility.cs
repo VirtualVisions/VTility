@@ -1,6 +1,6 @@
 ﻿using VRC.SDK3.Data;
 
-namespace Monocle.Runtime
+namespace VirtualVisions.VTility
 {
     public static class UdonJsonUtility
     {
