@@ -25,7 +25,7 @@ namespace VirtualVisions.VTility
         }
         
         /// <summary>
-        /// Read the token's Integer or Reference value as a cast Enum type.
+        /// Read the token's Integer, Byte, or Reference value as a cast Enum type.
         /// </summary>
         public static T AsEnum<T>(this DataToken token) where T : Enum
         {

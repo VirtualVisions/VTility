@@ -24,5 +24,13 @@ namespace VirtualVisions.VTility
             value.SetValue(_slider.value);
             base._OnComponentUsed();
         }
+        
+#if UNITY_EDITOR && !COMPILER_UDONSHARP
+        protected override void _OnValidate()
+        {
+            _slider = GetComponent<Slider>();
+            _slider.AddUdonListener(this, nameof(_OnComponentUsed));
+        }
+#endif
     }
 }

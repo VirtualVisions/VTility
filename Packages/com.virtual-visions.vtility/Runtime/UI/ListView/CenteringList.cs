@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 using VRC.SDK3.Components;
 using VRC.SDK3.Data;

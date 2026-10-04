@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
@@ -25,5 +24,13 @@ namespace VirtualVisions.VTility
             value.SetValue(_dropdown.value);
             base._OnComponentUsed();
         }
+        
+#if UNITY_EDITOR && !COMPILER_UDONSHARP
+        protected override void _OnValidate()
+        {
+            _dropdown = GetComponent<TMP_Dropdown>();
+            _dropdown.AddUdonListener(this, nameof(_OnComponentUsed));
+        }
+#endif
     }
 }

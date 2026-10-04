@@ -4,6 +4,7 @@ using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
+    [RequireComponent(typeof(RectTransform))]
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class CanvasElement : UdonSharpBehaviour
     {
@@ -131,5 +132,12 @@ namespace VirtualVisions.VTility
         {
             gameObject.SetActive(false);
         }
+
+        private void OnValidate() => _OnValidate();
+
+        protected virtual void _OnValidate()
+        {
+        }
+        
     }
 }

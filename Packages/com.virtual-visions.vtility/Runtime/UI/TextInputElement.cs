@@ -24,5 +24,13 @@ namespace VirtualVisions.VTility
             value.SetValue(_inputField.text);
             base._OnComponentUsed();
         }
+        
+#if UNITY_EDITOR && !COMPILER_UDONSHARP
+        protected override void _OnValidate()
+        {
+            _inputField = GetComponent<TMP_InputField>();
+            _inputField.AddUdonListener(this, nameof(_OnComponentUsed));
+        }
+#endif
     }
 }

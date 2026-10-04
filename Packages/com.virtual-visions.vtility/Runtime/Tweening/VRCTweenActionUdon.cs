@@ -1,10 +1,7 @@
-﻿
-using System;
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDK3.Components;
-using VRC.Udon;
 using VRC.Udon.Common.Interfaces;
 
 namespace VirtualVisions.VTility
