@@ -25,11 +25,15 @@ namespace VirtualVisions.VTility
             base._OnComponentUsed();
         }
         
+
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
         protected override void _OnValidate()
         {
             _dropdown = GetComponent<TMP_Dropdown>();
-            _dropdown.AddUdonListener(this, nameof(_OnComponentUsed));
+            EditorEventQueue.QueueEvent(() =>
+            {
+                _dropdown.AddUdonListener(this, nameof(_OnComponentUsed));
+            });
         }
 #endif
     }

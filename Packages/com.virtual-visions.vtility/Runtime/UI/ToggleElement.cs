@@ -29,7 +29,10 @@ namespace VirtualVisions.VTility
         protected override void _OnValidate()
         {
             _toggle = GetComponent<Toggle>();
-            _toggle.AddUdonListener(this, nameof(_OnComponentUsed));
+            EditorEventQueue.QueueEvent(() =>
+            {
+                _toggle.AddUdonListener(this, nameof(_OnComponentUsed));
+            });
         }
 #endif
     }

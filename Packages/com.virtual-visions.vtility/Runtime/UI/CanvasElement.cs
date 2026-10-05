@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDK3.Data;
@@ -92,7 +93,13 @@ namespace VirtualVisions.VTility
         /// <summary>
         /// Enable this GameObject. Plays a tween if available.
         /// </summary>
-        public void _ShowElement(bool skipTween = false)
+        [UsedImplicitly]
+        public void _ShowElement() => _ShowElement(false);
+
+        /// <summary>
+        /// Enable this GameObject. Plays a tween if available.
+        /// </summary>
+        public void _ShowElement(bool skipTween)
         {
             if (_tweenOnHide && _tweenOnHide.tweenActive)
             {
@@ -106,7 +113,13 @@ namespace VirtualVisions.VTility
         /// <summary>
         /// Disable this GameObject. Plays a tween if available, disabling the GameObject after.
         /// </summary>
-        public void _HideElement(bool skipTween = false)
+        [UsedImplicitly]
+        public void _HideElement() => _HideElement(false);
+
+        /// <summary>
+        /// Disable this GameObject. Plays a tween if available, disabling the GameObject after.
+        /// </summary>
+        public void _HideElement(bool skipTween)
         {
             if (_tweenOnShow && _tweenOnShow.tweenActive)
             {

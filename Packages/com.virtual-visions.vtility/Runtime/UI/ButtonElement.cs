@@ -19,7 +19,11 @@ namespace VirtualVisions.VTility
         protected override void _OnValidate()
         {
             _button = GetComponent<Button>();
-            _button.AddUdonListener(this, nameof(_OnComponentUsed));
+
+            EditorEventQueue.QueueEvent(() =>
+            {
+                _button.AddUdonListener(this, nameof(_OnComponentUsed));
+            });
         }
 #endif
     }

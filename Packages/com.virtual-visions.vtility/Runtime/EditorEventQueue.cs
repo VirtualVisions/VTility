@@ -7,40 +7,13 @@ namespace VirtualVisions.VTility
 {
     /// <summary>
     /// Safely queue an event to happen at the next available editor step.
-    /// This is the runtime-safe equivalent of EditorApplication.delayCall
+    /// This is the runtime-safe wrapper of EditorApplication.delayCall
     /// </summary>
-#if UNITY_EDITOR
-    [InitializeOnLoad]
-#endif
-    public class EditorEventQueue
+    public static class EditorEventQueue
     {
-        
-        private static event Action _queuedEvent;
-        
-        static EditorEventQueue()
-        {
-#if UNITY_EDITOR
-            EditorApplication.update += Update;
-#endif
-        }
-
-        private static void Update()
-        {
-            if (_queuedEvent == null) return;
-            try
-            {
-                _queuedEvent.Invoke();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            _queuedEvent = null;
-        }
-
         public static void QueueEvent(Action action)
         {
-            _queuedEvent += action;
+            EditorApplication.delayCall += () => action?.Invoke();
         }
     }
 }

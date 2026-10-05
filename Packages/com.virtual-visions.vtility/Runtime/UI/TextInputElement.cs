@@ -29,7 +29,10 @@ namespace VirtualVisions.VTility
         protected override void _OnValidate()
         {
             _inputField = GetComponent<TMP_InputField>();
-            _inputField.AddUdonListener(this, nameof(_OnComponentUsed));
+            EditorEventQueue.QueueEvent(() =>
+            {
+                _inputField.AddUdonListener(this, nameof(_OnComponentUsed));
+            });
         }
 #endif
     }

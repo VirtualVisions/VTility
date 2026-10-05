@@ -4,6 +4,7 @@ using UdonSharp;
 using UdonSharpEditor;
 using UnityEditor;
 using UnityEditor.Events;
+using UnityEngine.Events;
 #endif
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,7 @@ namespace VirtualVisions.VTility
     public static class UIEventAssignment
     {
         /// <summary>
-        /// Force a Unity Canvas Button to have a single callback, running SendCustomEvent on a given UdonSharpBehaviour.
+        /// Append an UdonBehaviour event onto this Button component.
         /// </summary>
         public static void AddUdonListener(this Button button, UdonSharpBehaviour target, string eventName)
         {
@@ -23,12 +24,8 @@ namespace VirtualVisions.VTility
             UdonBehaviour behaviour = UdonSharpEditorUtility.GetBackingUdonBehaviour(target);
             if (!behaviour) return;
 
-            SerializedObject serializedObject = new SerializedObject(button);
-            serializedObject.Update();
-            SerializedProperty persistentCalls = serializedObject.FindProperty("m_OnClick.m_PersistentCalls.m_Calls");
-
-            if (HasEvent(persistentCalls, behaviour, eventName)) return;
-
+            if (HasEvent(button.onClick, behaviour)) return;
+            
             UnityEventTools.AddStringPersistentListener(button.onClick, behaviour.SendCustomEvent, eventName);
             EditorUtility.SetDirty(button);
 #endif
@@ -36,7 +33,7 @@ namespace VirtualVisions.VTility
 
 
         /// <summary>
-        /// Force a Unity Canvas Dropdown to have a single callback, running SendCustomEvent on a given UdonSharpBehaviour.
+        /// Append an UdonBehaviour event onto this TMP_Dropdown component.
         /// </summary>
         public static void AddUdonListener(this TMP_Dropdown dropdown, UdonSharpBehaviour target, string eventName)
         {
@@ -45,11 +42,7 @@ namespace VirtualVisions.VTility
             UdonBehaviour behaviour = UdonSharpEditorUtility.GetBackingUdonBehaviour(target);
             if (!behaviour) return;
 
-            SerializedObject serializedObject = new SerializedObject(dropdown);
-            serializedObject.Update();
-            SerializedProperty persistentCalls = serializedObject.FindProperty("m_OnValueChanged.m_PersistentCalls.m_Calls");
-
-            if (HasEvent(persistentCalls, behaviour, eventName)) return;
+            if (HasEvent(dropdown.onValueChanged, behaviour)) return;
 
             UnityEventTools.AddStringPersistentListener(dropdown.onValueChanged, behaviour.SendCustomEvent, eventName);
             EditorUtility.SetDirty(dropdown);
@@ -58,7 +51,7 @@ namespace VirtualVisions.VTility
 
 
         /// <summary>
-        /// Force a Unity Canvas Slider to have a single callback, running SendCustomEvent on a given UdonSharpBehaviour.
+        /// Append an UdonBehaviour event onto this Slider component.
         /// </summary>
         public static void AddUdonListener(this Slider slider, UdonSharpBehaviour target, string eventName)
         {
@@ -67,11 +60,7 @@ namespace VirtualVisions.VTility
             UdonBehaviour behaviour = UdonSharpEditorUtility.GetBackingUdonBehaviour(target);
             if (!behaviour) return;
 
-            SerializedObject serializedObject = new SerializedObject(slider);
-            serializedObject.Update();
-            SerializedProperty persistentCalls = serializedObject.FindProperty("m_OnValueChanged.m_PersistentCalls.m_Calls");
-
-            if (HasEvent(persistentCalls, behaviour, eventName)) return;
+            if (HasEvent(slider.onValueChanged, behaviour)) return;
 
             UnityEventTools.AddStringPersistentListener(slider.onValueChanged, behaviour.SendCustomEvent, eventName);
             EditorUtility.SetDirty(slider);
@@ -80,7 +69,7 @@ namespace VirtualVisions.VTility
 
 
         /// <summary>
-        /// Force a Unity Canvas TMP_InputField to have a single callback, running SendCustomEvent on a given UdonSharpBehaviour.
+        /// Append an UdonBehaviour event onto this TMP_InputField component.
         /// </summary>
         public static void AddUdonListener(this TMP_InputField inputField, UdonSharpBehaviour target, string eventName)
         {
@@ -89,11 +78,7 @@ namespace VirtualVisions.VTility
             UdonBehaviour behaviour = UdonSharpEditorUtility.GetBackingUdonBehaviour(target);
             if (!behaviour) return;
 
-            SerializedObject serializedObject = new SerializedObject(inputField);
-            serializedObject.Update();
-            SerializedProperty persistentCalls = serializedObject.FindProperty("m_OnValueChanged.m_PersistentCalls.m_Calls");
-
-            if (HasEvent(persistentCalls, behaviour, eventName)) return;
+            if (HasEvent(inputField.onValueChanged, behaviour)) return;
 
             UnityEventTools.AddStringPersistentListener(inputField.onValueChanged, behaviour.SendCustomEvent, eventName);
             EditorUtility.SetDirty(inputField);
@@ -102,7 +87,7 @@ namespace VirtualVisions.VTility
 
 
         /// <summary>
-        /// Force a Unity Canvas Toggle to have a single callback, running SendCustomEvent on a given UdonSharpBehaviour.
+        /// Append an UdonBehaviour event onto this Toggle component.
         /// </summary>
         public static void AddUdonListener(this Toggle toggle, UdonSharpBehaviour target, string eventName)
         {
@@ -111,12 +96,8 @@ namespace VirtualVisions.VTility
             UdonBehaviour behaviour = UdonSharpEditorUtility.GetBackingUdonBehaviour(target);
             if (!behaviour) return;
 
-            SerializedObject serializedObject = new SerializedObject(toggle);
-            serializedObject.Update();
-            SerializedProperty persistentCalls = serializedObject.FindProperty("onValueChanged.m_PersistentCalls.m_Calls");
-
-            if (HasEvent(persistentCalls, behaviour, eventName)) return;
-
+            if (HasEvent(toggle.onValueChanged, behaviour)) return;
+            
             UnityEventTools.AddStringPersistentListener(toggle.onValueChanged, behaviour.SendCustomEvent, eventName);
             EditorUtility.SetDirty(toggle);
 #endif
@@ -124,22 +105,15 @@ namespace VirtualVisions.VTility
 
 
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
-        private static bool HasEvent(SerializedProperty persistentCalls, UdonBehaviour target, string eventName)
+        private static bool HasEvent(UnityEventBase evt, UdonBehaviour target)
         {
-            for (int i = 0; i < persistentCalls.arraySize; i++)
+            for (int i = 0; i < evt.GetPersistentEventCount(); i++)
             {
-                SerializedProperty call = persistentCalls.GetArrayElementAtIndex(i);
-                Object callTarget = call.FindPropertyRelative("m_Target").objectReferenceValue;
-                string callMethod = call.FindPropertyRelative("m_MethodName").stringValue;
-                string callArgument = call.FindPropertyRelative("m_Arguments.m_StringArgument").stringValue;
-
-                if (callTarget == target &&
-                    callMethod == nameof(UdonBehaviour.SendCustomEvent) &&
-                    eventName == callArgument)
-                {
-                    // Event is already included.
-                    return true;
-                }
+                Object persistentTarget = evt.GetPersistentTarget(i);
+                if (persistentTarget != target) continue;
+                
+                string persistentMethodName = evt.GetPersistentMethodName(i);
+                if (persistentMethodName == nameof(UdonBehaviour.SendCustomEvent)) return true;
             }
 
             return false;
