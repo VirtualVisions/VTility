@@ -27,7 +27,11 @@ namespace VirtualVisions.VTility
             DataToken[] values = new DataToken[(int)ValueChangeCallback_Values.Count];
             values[(int)ValueChangeCallback_Values.Value] = initialValue;
             values[(int)ValueChangeCallback_Values.InitialValue] = initialValue;
-            values[(int)ValueChangeCallback_Values.OnChanged] = UdonAction.Create();
+
+            UdonAction onChanged = UdonAction.Create();
+            onChanged.SetOutput(initialValue);
+            values[(int)ValueChangeCallback_Values.OnChanged] = onChanged;
+            
 
             ValueChangeCallback callback = (ValueChangeCallback)new DataList(values);
             return callback;
