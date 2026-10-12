@@ -94,12 +94,12 @@ namespace VirtualVisions.VTility
         /// Enable this GameObject. Plays a tween if available.
         /// </summary>
         [UsedImplicitly]
-        public void _ShowElement() => _ShowElement(false);
+        public void _ShowElement() => ShowElement(false);
 
         /// <summary>
         /// Enable this GameObject. Plays a tween if available.
         /// </summary>
-        public void _ShowElement(bool skipTween)
+        public void ShowElement(bool skipTween)
         {
             if (_tweenOnHide && _tweenOnHide.tweenActive)
             {
@@ -114,12 +114,12 @@ namespace VirtualVisions.VTility
         /// Disable this GameObject. Plays a tween if available, disabling the GameObject after.
         /// </summary>
         [UsedImplicitly]
-        public void _HideElement() => _HideElement(false);
+        public void _HideElement() => HideElement(false);
 
         /// <summary>
         /// Disable this GameObject. Plays a tween if available, disabling the GameObject after.
         /// </summary>
-        public void _HideElement(bool skipTween)
+        public void HideElement(bool skipTween)
         {
             if (_tweenOnShow && _tweenOnShow.tweenActive)
             {
@@ -151,6 +151,5 @@ namespace VirtualVisions.VTility
         protected virtual void _OnValidate()
         {
         }
-        
     }
 }

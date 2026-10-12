@@ -32,7 +32,7 @@ namespace VirtualVisions.VTility
             foreach (CanvasElement element in elementList)
             {
                 if (!element) continue;
-                element._HideElement(true);
+                element.HideElement(true);
             }
 
             Debug.Log($"Created ElementSwitcher with default value of {initialValue}", initialValue);
@@ -69,7 +69,7 @@ namespace VirtualVisions.VTility
         public static void AddElement(this ElementSwitcher switcher, CanvasElement element)
         {
             switcher.ElementList().Add(element);
-            element._HideElement(true);
+            element.HideElement(true);
         }
 
         [PublicAPI]
