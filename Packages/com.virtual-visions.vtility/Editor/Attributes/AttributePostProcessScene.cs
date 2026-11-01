@@ -58,7 +58,7 @@ namespace VirtualVisions.VTility.Editor
                     GetParentAttribute getParent = field.GetCustomAttribute<GetParentAttribute>();
                     if (getParent != null && typeof(MonoBehaviour).IsAssignableFrom(field.FieldType))
                     {
-                        Object foundTarget = script.transform.GetComponentInParent(fieldType);
+                        Object foundTarget = script.transform.GetComponentInParent(fieldType, true);
                         if (foundTarget)
                         {
                             field.SetValue(script, foundTarget);

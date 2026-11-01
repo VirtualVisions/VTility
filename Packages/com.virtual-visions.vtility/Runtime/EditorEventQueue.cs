@@ -2,6 +2,7 @@
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
 using UnityEditor;
 #endif
+using UnityEngine;
 
 namespace VirtualVisions.VTility
 {
@@ -13,8 +14,19 @@ namespace VirtualVisions.VTility
     {
         public static void QueueEvent(Action action)
         {
-#if UNITY_EDITOR && !COMPILER_UDONSHARP
-            EditorApplication.delayCall += () => action?.Invoke();
+#if UNITY_EDITOR
+            EditorApplication.delayCall += () =>
+            {
+                try
+                {
+                    action?.Invoke();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    throw;
+                }
+            };
 #endif
         }
     }
