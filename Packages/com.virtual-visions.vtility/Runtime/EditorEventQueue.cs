@@ -14,7 +14,7 @@ namespace VirtualVisions.VTility
     {
         public static void QueueEvent(Action action)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !COMPILER_UDONSHARP
             EditorApplication.delayCall += () =>
             {
                 try
