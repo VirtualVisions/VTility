@@ -28,7 +28,7 @@ namespace VirtualVisions.VTility
             
             values[(int)ValueSwitcher_Values.Value] = initialValue;
             values[(int)ValueSwitcher_Values.ValueList] = valueList;
-            values[(int)ValueSwitcher_Values.ValueChange] = ValueChangeCallback.Create(initialValue);
+            values[(int)ValueSwitcher_Values.ValueChange] = CallbackValue.Create(initialValue);
 
             DataList objectSwitcher = new DataList(values);
             return (ValueSwitcher)objectSwitcher;
@@ -48,7 +48,7 @@ namespace VirtualVisions.VTility
         
         public static DataList ValueList(this ValueSwitcher switcher) => switcher[(int)ValueSwitcher_Values.ValueList].DataList;
         public static DataToken Value(this ValueSwitcher switcher) => switcher.ValueChange().Value();
-        public static ValueChangeCallback ValueChange(this ValueSwitcher switcher) => switcher[(int)ValueSwitcher_Values.ValueChange].AsValueChangeCallback();
+        public static CallbackValue ValueChange(this ValueSwitcher switcher) => switcher[(int)ValueSwitcher_Values.ValueChange].AsValueChangeCallback();
 
 
         /// <summary>

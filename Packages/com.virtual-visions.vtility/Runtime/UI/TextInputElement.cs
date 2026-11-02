@@ -8,7 +8,7 @@ namespace VirtualVisions.VTility
     public class TextInputElement : UsableElement
     {
 
-        public ValueChangeCallback value => ValueChangeCallbackExtensions.BackingValueChangeCallback(ref _value, _inputField.text);
+        public CallbackValue value => CallbackValueExtensions.BackingValueChangeCallback(ref _value, _inputField.text);
         private DataList _value;
 
         protected TMP_InputField _inputField;

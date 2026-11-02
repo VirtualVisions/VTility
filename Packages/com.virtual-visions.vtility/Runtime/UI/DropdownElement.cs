@@ -8,7 +8,7 @@ namespace VirtualVisions.VTility
     public class DropdownElement : UsableElement
     {
         
-        public ValueChangeCallback value => ValueChangeCallbackExtensions.BackingValueChangeCallback(ref _value, _dropdown.value);
+        public CallbackValue value => CallbackValueExtensions.BackingValueChangeCallback(ref _value, _dropdown.value);
         private DataList _value;
 
         protected TMP_Dropdown _dropdown;

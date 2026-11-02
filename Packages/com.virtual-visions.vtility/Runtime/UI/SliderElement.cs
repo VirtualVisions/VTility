@@ -8,7 +8,7 @@ namespace VirtualVisions.VTility
     public class SliderElement : UsableElement
     {
 
-        public ValueChangeCallback value => ValueChangeCallbackExtensions.BackingValueChangeCallback(ref _value, _slider.value);
+        public CallbackValue value => CallbackValueExtensions.BackingValueChangeCallback(ref _value, _slider.value);
         private DataList _value;
 
         protected Slider _slider;

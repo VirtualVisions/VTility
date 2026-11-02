@@ -31,7 +31,7 @@ namespace VirtualVisions.VTility
 
             values[(int)ObjectSwitcher_Values.Active] = defaultValue;
             values[(int)ObjectSwitcher_Values.ObjectList] = objectList.ToRefList();
-            values[(int)ObjectSwitcher_Values.ObjectChange] = ValueChangeCallback.Create(defaultValue);
+            values[(int)ObjectSwitcher_Values.ObjectChange] = CallbackValue.Create(defaultValue);
 
             DataList objectSwitcher = new DataList(values);
             return (ObjectSwitcher)objectSwitcher;
@@ -51,7 +51,7 @@ namespace VirtualVisions.VTility
         
         public static DataList ObjectList(this ObjectSwitcher switcher) => switcher[(int)ObjectSwitcher_Values.ObjectList].DataList;
         public static GameObject Active(this ObjectSwitcher switcher) => switcher.ObjectChange().Value().AsGameObject();
-        public static ValueChangeCallback ObjectChange(this ObjectSwitcher switcher) => switcher[(int)ObjectSwitcher_Values.ObjectChange].AsValueChangeCallback();
+        public static CallbackValue ObjectChange(this ObjectSwitcher switcher) => switcher[(int)ObjectSwitcher_Values.ObjectChange].AsValueChangeCallback();
 
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace VirtualVisions.VTility
         [SerializeField] private int _defaultIndex;
         [SerializeField] protected TabButtonElement[] _tabButtons;
         
-        public ValueChangeCallback tabIndex => ValueChangeCallbackExtensions.BackingValueChangeCallback(ref _tabIndex, _defaultIndex);
+        public CallbackValue tabIndex => CallbackValueExtensions.BackingValueChangeCallback(ref _tabIndex, _defaultIndex);
         private DataList _tabIndex;
 
         protected override void Init()

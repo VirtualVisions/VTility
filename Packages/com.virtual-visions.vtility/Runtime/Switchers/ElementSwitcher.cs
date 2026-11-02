@@ -39,7 +39,7 @@ namespace VirtualVisions.VTility
 
             values[(int)ElementSwitcher_Values.Active] = initialValue;
             values[(int)ElementSwitcher_Values.ElementList] = elementList.ToRefList();
-            values[(int)ElementSwitcher_Values.ElementChange] = ValueChangeCallback.Create(initialValue);
+            values[(int)ElementSwitcher_Values.ElementChange] = CallbackValue.Create(initialValue);
 
             DataList objectSwitcher = new DataList(values);
             return (ElementSwitcher)objectSwitcher;
@@ -56,7 +56,7 @@ namespace VirtualVisions.VTility
 
         public static DataList ElementList(this ElementSwitcher switcher) => switcher[(int)ElementSwitcher_Values.ElementList].DataList;
         public static CanvasElement ActiveElement(this ElementSwitcher switcher) => switcher.ElementChange().Value().CastReference<CanvasElement>();
-        public static ValueChangeCallback ElementChange(this ElementSwitcher switcher) => switcher[(int)ElementSwitcher_Values.ElementChange].AsValueChangeCallback();
+        public static CallbackValue ElementChange(this ElementSwitcher switcher) => switcher[(int)ElementSwitcher_Values.ElementChange].AsValueChangeCallback();
 
 
         /// <summary>

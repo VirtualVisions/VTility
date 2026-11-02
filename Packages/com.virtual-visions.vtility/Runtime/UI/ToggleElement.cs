@@ -8,7 +8,7 @@ namespace VirtualVisions.VTility
     public class ToggleElement : UsableElement
     {
 
-        public ValueChangeCallback value => ValueChangeCallbackExtensions.BackingValueChangeCallback(ref _value, _toggle.isOn);
+        public CallbackValue value => CallbackValueExtensions.BackingValueChangeCallback(ref _value, _toggle.isOn);
         private DataList _value;
 
         protected Toggle _toggle;
