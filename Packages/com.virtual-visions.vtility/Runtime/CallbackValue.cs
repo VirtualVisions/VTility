@@ -40,8 +40,8 @@ namespace VirtualVisions.VTility
     public static class CallbackValueExtensions
     {
         
-        public static CallbackValue AsValueChangeCallback(this DataToken token) => (CallbackValue)token.DataList;
-        public static CallbackValue AsValueChangeCallback(this DataList list) => (CallbackValue)list;
+        public static CallbackValue AsCallbackValue(this DataToken token) => (CallbackValue)token.DataList;
+        public static CallbackValue AsCallbackValue(this DataList list) => (CallbackValue)list;
 
         public static CallbackValue BackingValueChangeCallback(ref DataList backingValue, DataToken initialValue) =>
             (CallbackValue)(backingValue != null ? backingValue : backingValue = CallbackValue.Create(initialValue));
