@@ -35,8 +35,6 @@ namespace VirtualVisions.VTility
                 element.HideElement(true);
             }
 
-            Debug.Log($"Created ElementSwitcher with default value of {initialValue}", initialValue);
-
             values[(int)ElementSwitcher_Values.Active] = initialValue;
             values[(int)ElementSwitcher_Values.ElementList] = elementList.ToRefList();
             values[(int)ElementSwitcher_Values.ElementChange] = CallbackValue.Create(initialValue);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using UdonSharp;
 using VRC.SDK3.Data;
 using VRC.Udon;
@@ -23,7 +24,7 @@ namespace VirtualVisions.VTility
     /// </summary>
     public abstract class UdonEvent : DataList
     {
-        
+
         // Since Udon doesn't natively support fields of this type,
         // it is recommended to use this format for your fields:
         // 
@@ -59,11 +60,16 @@ namespace VirtualVisions.VTility
             values[(int)UdonEvent_Values.OutputName] = outputName;
             values[(int)UdonEvent_Values.OutputValue] = new DataToken();
 
+            StringBuilder hashBuilder = new StringBuilder();
+            if (target) hashBuilder.Append(target.GetInstanceID());
+            hashBuilder.Append(eventName);
+            hashBuilder.Append(outputName);
+
+            values[(int)UdonEvent_Values.Identifier] = hashBuilder.ToString().GetHashCode();
+
             UdonEvent udonEvent = (UdonEvent)new DataList(values);
-            udonEvent[(int)UdonEvent_Values.Identifier] = udonEvent.ContentsToString().GetHashCode();
             return udonEvent;
         }
-
     }
 
     public static class UdonEventExtensions
@@ -101,7 +107,7 @@ namespace VirtualVisions.VTility
         // ---
 
         public static void _Invoke(this UdonEvent udonEvent, Enum value) => udonEvent._Invoke(Convert.ToInt32(value));
-        
+
         public static void _Invoke(this UdonEvent udonEvent)
         {
             UdonBehaviour target = udonEvent.Target();
@@ -112,7 +118,7 @@ namespace VirtualVisions.VTility
 
             target.SendCustomEvent(udonEvent.EventName());
         }
-        
+
         public static void _Invoke(this UdonEvent udonEvent, DataToken value)
         {
             UdonBehaviour target = udonEvent.Target();

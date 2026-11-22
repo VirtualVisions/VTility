@@ -36,6 +36,7 @@ namespace VirtualVisions.VTility
 
         public void ApplyAllChildren()
         {
+            if (!this) return;
             PaletteComponentBase[] comps = transform.GetComponentsInChildren<PaletteComponentBase>();
             foreach (PaletteComponentBase comp in comps)
             {

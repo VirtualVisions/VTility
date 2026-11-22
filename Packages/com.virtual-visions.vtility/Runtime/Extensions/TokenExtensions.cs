@@ -29,16 +29,29 @@ namespace VirtualVisions.VTility
         /// </summary>
         public static T AsEnum<T>(this DataToken token) where T : Enum
         {
+            int enumIndex;
             switch (token.TokenType)
             {
                 default:
                 case TokenType.Int:
-                    return (T)(object)token.Int;
+                    enumIndex = token.Int;
+                    break;
                 case TokenType.Byte:
-                    return (T)(object)token.Byte;
+                    enumIndex = token.Byte;
+                    break;
+                case TokenType.Double:
+                    enumIndex = (int)token.Double;
+                    break;
+                case TokenType.Float:
+                    enumIndex = (int)token.Float;
+                    break;
                 case TokenType.Reference:
                     return (T)token.Reference;
             }
+
+            // Safe-cast unavailable in UdonSharp.
+            // ReSharper disable once PossibleInvalidCastException
+            return (T)(object)enumIndex;
         }
     }
 }

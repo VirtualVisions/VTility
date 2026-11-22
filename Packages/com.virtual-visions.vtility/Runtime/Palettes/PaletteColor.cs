@@ -9,6 +9,8 @@ namespace VirtualVisions.VTility
     {
         public override void ApplyPalette()
         {
+            if (!this) return;
+            
             UIPalette palette = GetComponentInParent<UIPalette>(true);
             Graphic graphic = GetComponent<Graphic>();
             if (palette && graphic && palette.GetColor(paletteName, out Color color))

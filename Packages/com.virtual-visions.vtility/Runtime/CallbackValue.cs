@@ -1,4 +1,5 @@
-﻿using VRC.SDK3.Data;
+﻿using System;
+using VRC.SDK3.Data;
 
 namespace VirtualVisions.VTility
 {
@@ -17,7 +18,7 @@ namespace VirtualVisions.VTility
         // Since Udon doesn't natively support fields of this type,
         // it is recommended to use this format for your fields:
         // 
-        //    public ValueChangeCallback value => ValueChangeCallbackExtensions.BackingValueChangeCallback(ref _value);
+        //    public CallbackValue value => CallbackValueExtensions.BackingValueChangeCallback(ref _value);
         //    private DataList _value;
         //    
 
@@ -57,6 +58,9 @@ namespace VirtualVisions.VTility
         public static UdonAction OnChanged(this CallbackValue callback) =>
             callback[(int)CallbackValue_Values.OnChanged].AsUdonAction();
 
+        public static void SetValue(this CallbackValue callback, Enum value, bool ignoreCallback = false) => 
+            callback.SetValue(new DataToken(value), ignoreCallback);
+        
         public static void SetValue(this CallbackValue callback, DataToken value, bool ignoreCallback = false)
         {
             callback[(int)CallbackValue_Values.Value] = value;

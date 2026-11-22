@@ -12,6 +12,7 @@ namespace VirtualVisions.VTility.Editor
             foreach (VRCTweenAction tween in tweens)
             {
                 tween.PopulateUdon();
+                Object.DestroyImmediate(tween);
             }
         }
     }
